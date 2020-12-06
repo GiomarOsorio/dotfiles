@@ -1,0 +1,27 @@
+# Font configuration (changes require restart)
+font:
+  # The size to use.
+  size: 11
+  # The normal (roman) font face to use.
+  normal:
+      family: Hurmit NF
+    # Style can be specified to pick a specific face.
+    #style: Regular
+
+  # The bold font face
+  bold:
+    family: Hurmit Nerd Font
+    # Style can be specified to pick a specific face.
+    style: Bold
+
+  # The italic font face
+  italic:
+    family: Hack
+    # Style can be specified to pick a specific face.
+    style: Italic
+
+  # The bold-italic font face
+  #bold-italic:
+  #  family: Hack
+  #  # Style can be specified to pick a specific face.
+  #  style: Bold Italic 
