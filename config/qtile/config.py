@@ -142,19 +142,19 @@ def make_screen(systray=False):
         #    **FONT_PARAMS
         #),
         # Available pacman upgrades
-        widget.TextBox("┊", **FONT_PARAMS),
-        widget.TextBox("⟳",
-                padding=0,
-                mouse_callbacks={
-                    "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e sudo pacman -Syu")
-                    },
-                **FONT_PARAMS),
-        widget.Pacman(
-                update_interval=600,
-                mouse_callbacks={
-                    "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e sudo pacman -Syu")
-                    },
-                **FONT_PARAMS),
+        #widget.TextBox("┊", **FONT_PARAMS),
+        #widget.TextBox("⟳",
+        #        padding=0,
+        #        mouse_callbacks={
+        #            "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e sudo pacman -Syu")
+        #            },
+        #        **FONT_PARAMS),
+        #widget.Pacman(
+        #        update_interval=600,
+        #        mouse_callbacks={
+        #            "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e sudo pacman -Syu")
+        #            },
+        #        **FONT_PARAMS),
         #_separator(),
         widget.TextBox("┊", **FONT_PARAMS),
         # Volume % : scroll mouse wheel to change volume

@@ -12,24 +12,27 @@ is_running() {
 
 # Set screen resolutions (add additional screens here)
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
-#xrandr --output eDP1 --mode 1920x1080 &
 
 # Set the background image
 nitrogen --restore &
-#feh --bg-fill /home/innes/Pictures/Wallpapers/river-boat.jpg &
-# feh --bg-fill /home/innes/Pictures/Wallpapers/dunstanburgh.jpg &
-# feh --bg-fill /home/innes/Pictures/Wallpapers/turtle.jpg &
-# feh --bg-fill /home/innes/Pictures/Wallpapers/cookies.jpg &
-# feh --bg-fill /home/innes/Pictures/Wallpapers/mbridge-fields.jpg &
-# feh --bg-fill /home/innes/Pictures/Wallpapers/elephant.png &
 
 # Wait to let the X-Session start up correctly
 sleep 1
 
-# Bring in mate utils for managing the session
-#[[ $(is_running 'mate-settings-daemon') ]] || mate-settings-daemon &
-#[[ $(is_running 'mintupdate-launcher') ]] || mintupdate-launcher &
-#[[ $(is_running 'mate-power-manager') ]] || mate-power-manager &
+# Polkit agent Authentication
+[[ $(is_running 'polkit-kde-auth') ]] || /usr/lib/polkit-kde-authentication-agent-1 &
+
+# Central daemon of KDE work spaces
+[[ $(is_running 'kded5') ]] || kded5 &
+
+# Central daemon of KDE work spaces
+[[ $(is_running 'kwalletd5') ]] || kwalletd5 &
+
+# Pamac Notifier
+[[ $(is_running 'pamac-tray') ]] || pamac-tray &
+
+# Octopi Notifier
+#[[ $(is_running 'octopi-notifier') ]] || octopi-notifier &
 
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
@@ -58,6 +61,9 @@ fi;
 # Megasync
 [[ $(is_running 'megasync') ]] || megasync &
 
+# Jdownloader
+[[ $(is_running 'java') ]] || jdownloader &
+
 # Screen Shot
 [[ $(is_running 'flameshot') ]] || flameshot &
 
@@ -66,6 +72,7 @@ fi;
 
 # Discord
 [[ $(is_running 'discord') ]] || discord &
+
 
 #
 # Music server
