@@ -2,55 +2,48 @@
 Settings, customisation and tweaks.
 '''
 import os
-
+#from themes import COLOR_SCHEME
+##
+from os import path
+import subprocess
+import json
 
 # Colour codes from gruvbox for use in the UI.
 # TODO :: Parse this out of a common shell script so that colours are
 #         automatically consistant with shell program pango as well.
-COLS = {
-    "dark_0": "#1d2021",
-    "dark_1": "#282828",
-    "dark_2": "#32302f",
-    "dark_3": "#3c3836",
-    "dark_4": "#504945",
-    "dark_5": "#665c54",
-    "dark_6": "#7c6f64",
-    "gray_0": "#928374",
-    "light_0": "#f9f5d7",
-    "light_1": "#fbf1c7",
-    "light_2": "#f2e5bc",
-    "light_3": "#ebdbb2",
-    "light_4": "#d5c4a1",
-    "light_5": "#bdae93",
-    "light_6": "#a89984",
-    "red_0": "#fb4934",
-    "red_1": "#cc241d",
-    "red_2": "#9d0006",
-    "green_0": "#b8bb26",
-    "green_1": "#98971a",
-    "green_2": "#79740e",
-    "yellow_0": "#fabd2f",
-    "yellow_1": "#d79921",
-    "yellow_2": "#b57614",
-    "blue_0": "#83a598",
-    "blue_1": "#458588",
-    "blue_2": "#076678",
-    "purple_0": "#d3869b",
-    "purple_1": "#b16286",
-    "purple_2": "#8f3f71",
-    "aqua_0": "#8ec07c",
-    "aqua_1": "#689d6a",
-    "aqua_2": "#427b58",
-    "orange_0": "#fe8019",
-    "orange_1": "#d65d0e",
-    "orange_2": "#af3a03",
-    # Additional related colors from the deus colorscheme
-    'deus_1': '#2C323B',
-    'deus_2': '#646D7A',
-    'deus_3': '#48505D',
-    'deus_4': '#1A222F',
-    'deus_5': '#101A28',
+THEME = 'gruvbox-dark'
+
+default_theme = {
+    "background": "#282828",
+    "inactive_group": "#928374",
+    "focus": "#fb4934",
+    "urgent": "#689d6a",
+    "selected": "#8ec07c",
+    "foreground": "#ebdbb2",
+    "active_group": "#d65d0e"
 }
+
+
+def load_theme(theme=''):
+    qtile_path = path.join(path.expanduser('~'), ".config", "qtile")
+
+    if not theme:
+        return default_theme
+
+    theme_file = path.join(qtile_path, "misc/themes/", f'{theme}.json')
+
+    if not path.isfile(theme_file):
+        #        message = f'"{theme}" does not exist, using default theme'
+        #        run('notify-send "Qtile theme config" "%s"' %message, with_output=False)
+        return default_theme
+
+    with open(theme_file) as f:
+        return json.load(f)
+
+
+COLOR_SCHEME = load_theme(THEME)
+##
+
 
 # Modifier keys
 ALT = "mod1"    # Left Alt
@@ -61,10 +54,10 @@ R_ALT = "mod3"  # Right Alt
 # DIRECTIONS = ("h", "j", "k", "l")
 DIRECTIONS = ("Left", "Down", "Up", "Right")
 
-#Keyboard Layouts
-K_LAYOUTS = ['us','es']
-# Programs_LAYOUTS 
-# Programs_LAYOUTS 
+# Keyboard Layouts
+K_LAYOUTS = ['us', 'es']
+# Programs_LAYOUTS
+# Programs_LAYOUTS
 # Programs
 # TERMINAL = "urxvt"
 # TERMINAL = "mate-terminal"
@@ -77,8 +70,10 @@ TERMINAL = "alacritty"
 # FONT = 'ProFont for Powerline Regular'
 #FONT = 'TerminessTTF Nerd Font Medium'
 FONT = 'Hurmit NF Medium'
-FOREGROUND = COLS['light_3']
-ALERT = COLS['red_1']
+#FOREGROUND = COLS['light_3']
+#ALERT = COLS['red_1']
+FOREGROUND = COLOR_SCHEME['foreground']
+ALERT = COLOR_SCHEME['focus']
 FONTSIZE = 15
 PADDING = 2
 

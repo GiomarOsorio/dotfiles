@@ -32,25 +32,6 @@ groups = [
     Group("4 "),
     Group("5 "),
     Group("6 "),
-    #Group("3 "),
-    #Group("4 "),
-    #Group("6 "),
-    #Group("7 "),
-    #Group("8 λ"),
-    #Group("9 "),
-    #Group("10 "),
-    # Group("scratchpad"),
-    # Scratchpads on M-/ and M-S-/
-   # ScratchPad("scratchpad", [
-   #     # NOTE :: Need to force spawning as a new process so that
-   #     #         qtile can capture the new terminal by pid.
-   #     DropDown("term", "tilix --new-process",
-   #              on_focus_lost_hide=False, x=0.05, y=0.05,
-   #              width=0.9, height=0.9),
-   #     DropDown("ipython", "python3.7 -m qtconsole",
-   #              on_focus_lost_hide=False, x=0.05, y=0.05,
-   #              width=0.9, height=0.9)
-   # ]),
 ]
 
 # Simple numbered groups

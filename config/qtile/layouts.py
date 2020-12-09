@@ -11,17 +11,21 @@ Look at porting some Xmonad layouts to qtile:
 >>  Try cribbing from what the XmonadTall layout does:
         http://qtile.readthedocs.io/en/latest/_modules/libqtile/layout/xmonad.html#MonadTall
 '''
-from settings import COLS, FONT_PARAMS
 from libqtile import layout
+
+from settings import FONT_PARAMS, COLOR_SCHEME
+#from themes import COLOR_SCHEME
 
 
 # Annoyingly, there isn't a common subset of parameters for all layouts that
 # can be passed as a dict splat. There _are_ some common ones for multiple
 # layouts, so they are defined here and used where possible to give a
 # consistent UI.
-BORDER_NORMAL = COLS["dark_2"]
+#BORDER_NORMAL = COLS["dark_2"]
+BORDER_NORMAL = COLOR_SCHEME["background"]
 # BORDER_FOCUS = COLS["blue_2"]
-BORDER_FOCUS = COLS["red_1"]
+#BORDER_FOCUS = COLS["red_1"]
+BORDER_FOCUS = COLOR_SCHEME["focus"]
 BORDER_WIDTH = 3
 MARGIN = 10
 
@@ -57,9 +61,11 @@ layouts = [
     # XXX : Good for browser style flipping between windows when working on
     #       large coding projects (beats constant buffer/tab swaps in Vim!)
     layout.TreeTab(
-        inactive_fg=COLS["light_0"],
+        # inactive_fg=COLS["light_0"],
+        inactive_fg=COLOR_SCHEME["inactive_group"],
         inactive_bg=BORDER_NORMAL,
-        active_bg=COLS["light_3"],
+        # active_bg=COLS["light_3"],
+        active_bg=COLOR_SCHEME["active_group"],
         active_fg=BORDER_NORMAL,
         sections=["    .: Windows :."],
         # Want a consistant font w. the terminal here
@@ -70,12 +76,12 @@ layouts = [
     # XXX : Emulate Wmii tiling: each new window adds to the focused
     #       column. Moving a window "out" of the current colmun creates
     #       a new column.
-    #layout.Wmii(
+    # layout.Wmii(
     #    border_normal=BORDER_NORMAL,
     #    border_focus=BORDER_FOCUS,
     #    border_width=BORDER_WIDTH,
     #    margin=MARGIN,
-    #),
+    # ),
     # XXX : A simple grid fill of the screen aiming for square number tilings
     #       at the expense of leaving blank positions if it correctly places
     #       the remaining windows.

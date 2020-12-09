@@ -1,0 +1,9 @@
+{
+  "background": "#fbf1c7",
+  "inactive_group": "#928374",
+  "focus": "#9d0006",
+  "urgent": "#689d6a",
+  "selected": "#427b58",
+  "foreground": "#3c3836",
+  "active_group": "#d65d0e"
+}

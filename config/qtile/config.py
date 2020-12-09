@@ -12,7 +12,7 @@ from libqtile import bar, widget
 from libqtile.config import Screen, hook
 
 # Settings/helpers
-from settings import COLS, FONT_PARAMS, K_LAYOUTS, TERMINAL, WITH_SYS_TRAY
+from settings import FONT_PARAMS, K_LAYOUTS, TERMINAL, WITH_SYS_TRAY, COLOR_SCHEME
 from helpers import run_script
 
 # Import the parts of my config defined in other files
@@ -48,123 +48,84 @@ def restart_on_randr(qtile, ev):
     qtile.cmd_restart()
 
 
-@hook.subscribe.setgroup
-def remove_scratchpad_on_group_change():
-    """
-    If we were showing windows from the scratchpad when we move to a new
-    group, we hide them again automatically.
-    """
-    previous_group = hook.qtile.currentScreen.previous_group
-    if not previous_group:
-        # No windows to hide
-        return
-
-    for w in list(previous_group.windows):
-        if w.on_scratchpad:
-            w.togroup('scratchpad')
-
-
-@hook.subscribe.client_new
-def init_scratchpad_on_new(window):
-    """
-    When a new window gets created, set the `on_scratchpad` property to false
-    so that it is there for us to filter on later when we use scratchpad
-    actions.
-    """
-    window.on_scratchpad = False
-
-
 # ----------------------------------------------------------------------------
 def make_screen(systray=False):
     """Defined as a function so that I can duplicate this on other monitors"""
-    def _separator():
-        # return widget.Sep(linewidth=2, foreground=COLS["dark_3"])
-        return widget.Sep(linewidth=2, foreground=COLS["deus_1"])
-
     blocks = [
         # Marker for the start of the groups to give a nice bg: ◢■■■■■■■◤
         widget.TextBox(
-            font="Arial", foreground=COLS["dark_4"],
-            # font="Arial", foreground=COLS["deus_3"],
+            font="Arial", foreground=COLOR_SCHEME["foreground"],
             text="◢", fontsize=50, padding=-1
         ),
         widget.GroupBox(
-            other_current_screen_border=COLS["orange_0"],
-            this_current_screen_border=COLS["blue_0"],
-            # this_current_screen_border=COLS["deus_2"],
-            other_screen_border=COLS["orange_0"],
-            this_screen_border=COLS["blue_0"],
-            # this_screen_border=COLS["deus_2"],
-            highlight_color=COLS["blue_0"],
-            # highlight_color=COLS["deus_2"],
-            urgent_border=COLS["red_1"],
-            background=COLS["dark_4"],
-            # background=COLS["deus_3"],
+            other_current_screen_border=COLOR_SCHEME["selected"],
+            this_current_screen_border=COLOR_SCHEME["selected"],
+            other_screen_border=COLOR_SCHEME["foreground"],
+            this_screen_border=COLOR_SCHEME["foreground"],
+            highlight_color=COLOR_SCHEME["selected"],
+            urgent_border=COLOR_SCHEME["urgent"],
+            background=COLOR_SCHEME["foreground"],
             highlight_method="line",
-            inactive=COLS["dark_2"],
-            active=COLS["light_2"],
+            inactive=COLOR_SCHEME["inactive_group"],
+            active=COLOR_SCHEME["active_group"],
             disable_drag=True,
-            borderwidth=2,
+            borderwidth=3,
             **FONT_PARAMS,
         ),
         # Marker for the end of the groups to give a nice bg: ◢■■■■■■■◤
         widget.TextBox(
-            font="Arial", foreground=COLS["dark_4"],
-            # font="Arial", foreground=COLS["deus_3"],
+            font="Arial", foreground=COLOR_SCHEME["foreground"],
             text="◤ ", fontsize=50, padding=-5
         ),
         # Show the title for the focused window
         widget.WindowName(**FONT_PARAMS),
         # Allow for quick command execution
         widget.Prompt(
-            cursor_color=COLS["light_3"],
-            # ignore_dups_history=True,
+            cursor_color=COLOR_SCHEME["foreground"],
             bell_style="visual",
             prompt="λ : ",
             **FONT_PARAMS
         ),
-        _separator(),
+        widget.Sep(linewidth=2, foreground=COLOR_SCHEME["background"]),
         # Resource usage graphs
         # IP information
-       # ShellScript(
-       #     fname="ipadr.sh",
-       #     update_interval=10,
-       #     markup=True,
-       #     padding=1,
-       #     **FONT_PARAMS
-       # ),
+        # ShellScript(
+        #     fname="ipadr.sh",
+        #     update_interval=10,
+        #     markup=True,
+        #     padding=1,
+        #     **FONT_PARAMS
+        # ),
         # Available apt upgrades
-        #ShellScript(
+        # ShellScript(
         #    fname="aptupgrades.sh",
         #    update_interval=600,
         #    markup=True,
         #    padding=1,
         #    **FONT_PARAMS
-        #),
+        # ),
         # Available pacman upgrades
-        #widget.TextBox("┊", **FONT_PARAMS),
-        #widget.TextBox("⟳",
+        # widget.TextBox("┊", **FONT_PARAMS),
+        # widget.TextBox("⟳",
         #        padding=0,
         #        mouse_callbacks={
         #            "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e sudo pacman -Syu")
         #            },
         #        **FONT_PARAMS),
-        #widget.Pacman(
+        # widget.Pacman(
         #        update_interval=600,
         #        mouse_callbacks={
         #            "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e sudo pacman -Syu")
         #            },
         #        **FONT_PARAMS),
-        #_separator(),
         widget.TextBox("┊", **FONT_PARAMS),
         # Volume % : scroll mouse wheel to change volume
         widget.TextBox("", **FONT_PARAMS),
         widget.Volume(**FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
-        #_separator(),
         # Current time
         widget.Clock(
-                format="%I:%M %p, %a %d de %b %Y",
+            format="%I:%M %p, %a %d de %b %Y",
             **FONT_PARAMS
         ),
         # Keyboard layout
@@ -184,10 +145,11 @@ def make_screen(systray=False):
     if systray:
         # Add in the systray and additional separator
         blocks.insert(-1, widget.Systray())
-        blocks.insert(-1, _separator())
+        blocks.insert(-1, widget.Sep(linewidth=2,
+                                     foreground=COLOR_SCHEME["background"]))
 
     # return Screen(top=bar.Bar(blocks, 25, background=COLS["deus_1"]))
-    return Screen(top=bar.Bar(blocks, 25, background=COLS["dark_2"]))
+    return Screen(top=bar.Bar(blocks, 25, background=COLOR_SCHEME["background"]))
 
 
 # XXX : When I run qtile inside of mate, I don"t actually want a qtile systray
@@ -203,7 +165,7 @@ follow_mouse_focus = True
 bring_front_click = False
 auto_fullscreen = True
 dgroups_app_rules = []
-cursor_warp = False 
+cursor_warp = False
 # main = None
 
 # XXX :: Horrible hack needed to make grumpy java apps work correctly.
