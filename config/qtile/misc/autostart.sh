@@ -37,7 +37,7 @@ sleep 1
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
   [[ $(is_running 'compton') ]] || compton -CG &
-#else
+else
   [[ $(is_running 'picom') ]] || picom -CG &
 fi;
 

@@ -149,7 +149,7 @@ def make_screen(systray=False):
                                      foreground=COLOR_SCHEME["background"]))
 
     # return Screen(top=bar.Bar(blocks, 25, background=COLS["deus_1"]))
-    return Screen(top=bar.Bar(blocks, 25, background=COLOR_SCHEME["background"]))
+    return Screen(top=bar.Bar(widgets=blocks, opacity=0.9, size=25, background=COLOR_SCHEME["background"]))
 
 
 # XXX : When I run qtile inside of mate, I don"t actually want a qtile systray
