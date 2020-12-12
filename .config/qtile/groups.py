@@ -39,16 +39,12 @@ groups = [
 
 # Roman numerals + icons
 # groups = [
-#     Group("I "),
-#     Group("II "),
-#     Group("III "),
-#     Group("IV "),
-#     Group("V "),
-#     Group("VI "),
-#     Group("VII "),
-#     Group("VIII λ"),
-#     Group("IX "),
-#     Group("X "),
+#    Group("I "),
+#    Group("II "),
+#    Group("III "),
+#    Group("IV "),
+#    Group("V "),
+#    Group("VI "),
 # ]
 
 # Roman numerals only
@@ -59,36 +55,24 @@ groups = [
 #     Group("IV"),
 #     Group("V"),
 #     Group("VI"),
-#     Group("VII"),
-#     Group("VIII"),
-#     Group("IX"),
-#     Group("X"),
 # ]
 
 # Icons only
 # groups = [
-#     Group(""),
-#     Group(""),
-#     Group(""),
-#     Group(""),
-#     Group(""),
-#     Group(""),
-#     Group(""),
-#     Group("λ"),
-#     Group(""),
-#     Group(""),
+#    Group(""),
+#    Group(""),
+#    Group(""),
+#    Group(""),
+#    Group(""),
+#    Group(""),
 # ]
 
 # Named
 # groups = [
+#     Group("WEB"),
 #     Group("TERM"),
 #     Group("NOTES"),
-#     Group("DOCS"),
-#     Group("SCRATCH"),
-#     Group("COMS"),
-#     Group("WEB"),
 #     Group("CODE"),
-#     Group("REPL"),
-#     Group("MUSIC"),
+#     Group("SOCIAL"),
 #     Group("GAMES"),
 # ]

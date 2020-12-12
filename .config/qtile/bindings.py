@@ -21,12 +21,13 @@ Anything bound to arrow keys is movement based. I'm having problems binding
 `M-C={h,j,k,l}` which is preventing me using that for movement. (Though this
 may be something to do with my own ez_keys function...!)
 '''
-import os, re
+import os
+import re
 
 from libqtile.config import Click, Drag, EzKey, Key
 from libqtile.command import lazy
 
-from settings import MOD, TERMINAL, K_LAYOUTS 
+from settings import MOD, TERMINAL, K_LAYOUTS, COLOR_SCHEME
 from helpers import script, notify, run
 from groups import groups
 
@@ -39,8 +40,9 @@ def toggle_klayout(qtile):
     next_layout = K_LAYOUTS.index(current_layout) + 1
     if next_layout >= len(K_LAYOUTS):
         next_layout = 0
-    command= "setxkbmap {}".format(K_LAYOUTS[next_layout])
+    command = "setxkbmap {}".format(K_LAYOUTS[next_layout])
     run(command, with_output=False)
+
 
 def to_scratchpad(window):
     '''
@@ -66,7 +68,7 @@ def to_scratchpad(window):
         y=int(screen.height / 10),
         w=int(screen.width / 1.2),
         h=int(screen.height / 1.2),
-        )
+    )
 
 
 def show_scratchpad(qtile):
@@ -102,44 +104,50 @@ def show_scratchpad(qtile):
 keys = [Key(k[0], k[1], k[2]) for k in [
     # .: Movement :.
     # Swtich focus between panes
-    ([MOD],"Up", lazy.layout.up()),
-    ([MOD],"Down", lazy.layout.down()),
-    ([MOD],"Left", lazy.layout.left()),
-    ([MOD],"Right", lazy.layout.right()),
+    ([MOD], "Up", lazy.layout.up()),
+    ([MOD], "Down", lazy.layout.down()),
+    ([MOD], "Left", lazy.layout.left()),
+    ([MOD], "Right", lazy.layout.right()),
 
-    ([MOD],"h", lazy.layout.left()),
-    ([MOD],"j", lazy.layout.down()),
-    ([MOD],"k", lazy.layout.up()),
-    ([MOD],"l", lazy.layout.right()),
+    ([MOD], "h", lazy.layout.left()),
+    ([MOD], "j", lazy.layout.down()),
+    ([MOD], "k", lazy.layout.up()),
+    ([MOD], "l", lazy.layout.right()),
 
-    ## Swap panes: target relative to active.
-    ## NOTE :: The `swap` commands are for XMonad
-    ([MOD,"shift"],"Up", lazy.layout.shuffle_up()),
-    ([MOD,"shift"],"Down", lazy.layout.shuffle_down()),
-    ([MOD,"shift"],"Left", lazy.layout.shuffle_left(), lazy.layout.swap_left()),
-    ([MOD,"shift"],"Right", lazy.layout.shuffle_right(), lazy.layout.swap_right()),
+    # Swap panes: target relative to active.
+    # NOTE :: The `swap` commands are for XMonad
+    ([MOD, "shift"], "Up", lazy.layout.shuffle_up()),
+    ([MOD, "shift"], "Down", lazy.layout.shuffle_down()),
+    ([MOD, "shift"], "Left", lazy.layout.shuffle_left(), lazy.layout.swap_left()),
+    ([MOD, "shift"], "Right", lazy.layout.shuffle_right(), lazy.layout.swap_right()),
 
-    ([MOD,"shift"],"h", lazy.layout.shuffle_left(), lazy.layout.swap_left()),
-    ([MOD,"shift"],"j", lazy.layout.shuffle_down()),
-    ([MOD,"shift"],"k", lazy.layout.shuffle_up()),
-    ([MOD,"shift"],"l", lazy.layout.shuffle_right(), lazy.layout.swap_right()),
+    ([MOD, "shift"], "h", lazy.layout.shuffle_left(), lazy.layout.swap_left()),
+    ([MOD, "shift"], "j", lazy.layout.shuffle_down()),
+    ([MOD, "shift"], "k", lazy.layout.shuffle_up()),
+    ([MOD, "shift"], "l", lazy.layout.shuffle_right(), lazy.layout.swap_right()),
 
     ## .: Program Launchers :. #
     ([MOD], "Return", lazy.spawn(TERMINAL)),
-    ([MOD, "shift"],"Return", lazy.spawn(
-        "dmenu_run -b -p 'λ' -sb '#83a598' -nb '#504945' -nf '#ebdbb2'")),
+    ([MOD, "shift"], "Return", lazy.spawn(
+        "dmenu_run -b -p 'λ' -sb '{}' -sf '{}' -nb '{}' -nf '{}'".format(
+            COLOR_SCHEME["selected"],
+            COLOR_SCHEME["active_group"],
+            COLOR_SCHEME["background"],
+            COLOR_SCHEME["foreground"],)
+    )
+    ),
     ([MOD], "w", lazy.spawn('rofi -show window')),
     ([MOD], "b", lazy.spawn("google-chrome-stable")),
     ([MOD], "r", lazy.spawn(TERMINAL + ' -e "ranger"')),
     ([MOD], "d", lazy.spawn("dolphin")),
-    ([],"XF86AudioLowerVolume",lazy.spawn("pamixer --decrease 5")),
+    ([], "XF86AudioLowerVolume", lazy.spawn("pamixer --decrease 5")),
     ([], "XF86AudioRaiseVolume", lazy.spawn("pamixer --increase 5")),
     ([], "XF86AudioMute", lazy.spawn("pamixer --toggle-mute")),
     (["shift"], "F12", lazy.spawn("pamixer --decrease 5")),
     (["shift"], "F11", lazy.spawn("pamixer --increase 5")),
     ([], "Print", lazy.spawn("flameshot gui")),
 
-    ## Scratchpad toggles
+    # Scratchpad toggles
     #("M-<slash>", lazy.group['scratchpad'].dropdown_toggle('term')),
     #("M-S-<slash>", lazy.group['scratchpad'].dropdown_toggle('ipython')),
     ## ("M-<slash>", lazy.window.function(to_scratchpad)),
@@ -147,19 +155,19 @@ keys = [Key(k[0], k[1], k[2]) for k in [
 
     ## .: Layout / Focus Manipulation :. #
     ([MOD], "f", lazy.window.toggle_fullscreen()),
-    ## Toggle between the available layouts.
+    # Toggle between the available layouts.
     ([MOD], "Tab", lazy.next_layout()),
     ([MOD, "shift"], "Tab", lazy.prev_layout()),
-    ## Close the current window: NO WARNING!
-    ([MOD],"w", lazy.window.kill()),
+    # Close the current window: NO WARNING!
+    ([MOD], "w", lazy.window.kill()),
 
     ## .: Sys + Utils :. #
-    ## Restart qtile in place and pull in config changes (check config before
-    ## doing this with `check-qtile-conf` script to avoid crashes)
-    ([MOD,"shift"],"r", lazy.restart()),
-    ## Shut down qtile.
-    ([MOD,"shift"],"Escape", lazy.shutdown()),
-    ([MOD,"shift"],"l", lazy.spawn("dm-tool switch-to-greeter")),
+    # Restart qtile in place and pull in config changes (check config before
+    # doing this with `check-qtile-conf` script to avoid crashes)
+    ([MOD, "shift"], "r", lazy.restart()),
+    # Shut down qtile.
+    ([MOD, "shift"], "Escape", lazy.shutdown()),
+    ([MOD, "shift"], "l", lazy.spawn("dm-tool switch-to-greeter")),
     ([MOD], "space", lazy.function(toggle_klayout))
     #([MOD,"shift"],"Delete", lazy.spawn(script("power-menu.sh"))),
 
@@ -171,7 +179,7 @@ for ix, group in enumerate(groups, 1):
         # ("M-%d" % ix, lazy.group[group.name].toscreen()),
         ([MOD], str(ix), lazy.group[group.name].toscreen()),
         # M-S-ix = switch to & move focused window to that group
-        ([MOD,"shift"], str(ix), lazy.window.togroup(group.name)),
+        ([MOD, "shift"], str(ix), lazy.window.togroup(group.name)),
     ]])
 
 # .: Use the mouse to drag floating layouts :. #

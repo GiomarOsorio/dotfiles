@@ -2,15 +2,13 @@
 Settings, customisation and tweaks.
 '''
 import os
-#from themes import COLOR_SCHEME
-##
 from os import path
 import subprocess
 import json
 
-# Colour codes from gruvbox for use in the UI.
-# TODO :: Parse this out of a common shell script so that colours are
-#         automatically consistant with shell program pango as well.
+# Colour codes for built-in qtile bar, default custom gruvbox color_scheme
+#
+#
 THEME = 'gruvbox-dark'
 
 default_theme = {
@@ -42,8 +40,6 @@ def load_theme(theme=''):
 
 
 COLOR_SCHEME = load_theme(THEME)
-##
-
 
 # Modifier keys
 ALT = "mod1"    # Left Alt
@@ -51,27 +47,16 @@ MOD = "mod4"    # Windows/Super
 R_ALT = "mod3"  # Right Alt
 
 # Directions
-# DIRECTIONS = ("h", "j", "k", "l")
 DIRECTIONS = ("Left", "Down", "Up", "Right")
 
 # Keyboard Layouts
-K_LAYOUTS = ['us', 'es']
-# Programs_LAYOUTS
-# Programs_LAYOUTS
+K_LAYOUTS = ['es', 'us', 'us dvp']
+
 # Programs
-# TERMINAL = "urxvt"
-# TERMINAL = "mate-terminal"
-# TERMINAL = "tilix"
-# TERMINAL = "st"
 TERMINAL = "alacritty"
 
 # UI Config vars
-# FONT = 'Hack Regular'
-# FONT = 'ProFont for Powerline Regular'
-#FONT = 'TerminessTTF Nerd Font Medium'
 FONT = 'Hurmit NF Medium'
-#FOREGROUND = COLS['light_3']
-#ALERT = COLS['red_1']
 FOREGROUND = COLOR_SCHEME['foreground']
 ALERT = COLOR_SCHEME['focus']
 FONTSIZE = 15
