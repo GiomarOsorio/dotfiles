@@ -20,10 +20,13 @@ from layouts import layouts, floating_layout    # NOQA
 from bindings import keys, mouse                # NOQA
 from groups import groups                       # NOQA
 from widgets import ShellScript
-
+from custom_checkupdates import Custom_CheckUpdates
+#from widgets_test import Custom_CheckUpdates
 
 # ----------------------------------------------------------------------------
 # Hooks
+
+
 @hook.subscribe.startup_complete
 def autostart():
     """
@@ -120,14 +123,16 @@ def make_screen(systray=False):
         #        **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Check Updates using YAY, every 5min
-        widget.CheckUpdates(
+        Custom_CheckUpdates(
             distro='Arch_yay',
             update_interval=300,
-            execute=TERMINAL + " -e yay -Syu",
             display_format='聯',
-            colour_no_updates=COLOR_SCHEME['foreground'],
+            mouse_callbacks={
+                "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e yay -Syu")
+            },
+            #execute=TERMINAL + " -e yay -Syu",
+            colour_no_updates=COLOR_SCHEME['focus'],
             colour_have_updates=COLOR_SCHEME['focus'],
-            restart_indicator='勒',
             no_update_string='聯',
             **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
