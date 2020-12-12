@@ -119,6 +119,18 @@ def make_screen(systray=False):
         #            },
         #        **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
+        # Check Updates using YAY, every 5min
+        widget.CheckUpdates(
+            distro='Arch_yay',
+            update_interval=300,
+            execute=TERMINAL + " -e yay -Syu",
+            display_format='聯',
+            colour_no_updates=COLOR_SCHEME['foreground'],
+            colour_have_updates=COLOR_SCHEME['focus'],
+            restart_indicator='勒',
+            no_update_string='聯',
+            **FONT_PARAMS),
+        widget.TextBox("┊", **FONT_PARAMS),
         # Volume % : scroll mouse wheel to change volume
         widget.TextBox("", **FONT_PARAMS),
         widget.Volume(**FONT_PARAMS),

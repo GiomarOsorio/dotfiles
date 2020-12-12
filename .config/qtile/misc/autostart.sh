@@ -28,12 +28,6 @@ sleep 1
 # Central daemon of KDE work spaces
 [[ $(is_running 'kwalletd5') ]] || kwalletd5 &
 
-# Pamac Notifier
-[[ $(is_running 'pamac-tray') ]] || pamac-tray &
-
-# Octopi Notifier
-#[[ $(is_running 'octopi-notifier') ]] || octopi-notifier &
-
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
   [[ $(is_running 'compton') ]] || compton -CG &
