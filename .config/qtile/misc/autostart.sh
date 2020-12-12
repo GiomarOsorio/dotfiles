@@ -55,9 +55,6 @@ fi;
 # Megasync
 [[ $(is_running 'megasync') ]] || megasync &
 
-# Jdownloader
-[[ $(is_running 'java') ]] || jdownloader &
-
 # Screen Shot
 [[ $(is_running 'flameshot') ]] || flameshot &
 
