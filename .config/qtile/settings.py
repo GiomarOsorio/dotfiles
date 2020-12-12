@@ -50,7 +50,7 @@ R_ALT = "mod3"  # Right Alt
 DIRECTIONS = ("Left", "Down", "Up", "Right")
 
 # Keyboard Layouts
-K_LAYOUTS = ['es', 'us', 'us dvp']
+K_LAYOUTS = ['us', 'es', 'us dvp']
 
 # Programs
 TERMINAL = "alacritty"

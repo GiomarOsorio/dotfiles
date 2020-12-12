@@ -32,11 +32,24 @@ from helpers import script, notify, run
 from groups import groups
 
 
+# def toggle_klayout(qtile):
+#    """Change the keyboard layout taking into account the positions defined in K_LAYOUTS"""
+#    query = run('setxkbmap -query', with_output=True)
+#    search_layout = re.search('\\nlayout:(.*)\\n', query)
+#    current_layout = search_layout.group(1).strip()
+#    search_variant = re.search('\\nvariant:(.*)\\n', query)
+#    current_layout = '{} {}'.format(current_layout, search_variant.group(1).strip()) if search_layout else current_layout
+#    next_layout = K_LAYOUTS.index(current_layout) + 1
+#    if next_layout >= len(K_LAYOUTS):
+#        next_layout = 0
+#    command = "setxkbmap {}".format(K_LAYOUTS[next_layout])
+#    run(command, with_output=False)
+
 def toggle_klayout(qtile):
     """Change the keyboard layout taking into account the positions defined in K_LAYOUTS"""
-    query = run('setxkbmap -query', with_output=True)
-    search_layout = re.search('\\nlayout:(.*)\\n', query)
-    current_layout = search_layout.group(1).strip()
+    query = run('setxkbmap -print', with_output=True)
+    search_layout = re.search('\+(.*)\+', query).group(1)
+    current_layout = re.sub(r"\)", "", re.sub(r"\(", " ", search_layout))
     next_layout = K_LAYOUTS.index(current_layout) + 1
     if next_layout >= len(K_LAYOUTS):
         next_layout = 0
