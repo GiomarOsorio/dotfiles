@@ -1,0 +1,9 @@
+{
+    "html.autoClosingTags": true,
+    "less.lint.duplicateProperties": "error",
+    "coc.preferences.formatOnSaveFiletypes": ["python","javascript", "javascriptreact", "typescript", "typescriptreact", "json", "graphql","css", "markdown"],
+    "prettier.singleQuote": true,
+    "python.formatting.provider": "black",
+    "python.linting.pydocstyleEnabled": false
+}
+
