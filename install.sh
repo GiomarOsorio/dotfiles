@@ -444,8 +444,27 @@ echo "########################"
 echo "### SETTING UP QTILE ###"
 echo "########################"
 
-DIR_TMP="/tmp/aurbuilder/"
-DIR_YAY="/tmp/aurbuilder/yay"
+#copy config file
+cd ~
+cp -vf ~/dotfiles/.config/qtile ~/.config/
+
+###############################################################################
+#Setup Ranger
+
+echo "#################################"
+echo "### SETTING UP RANGER CONFIGS ###"
+echo "#################################"
+
+cp -vf ~/dotfiles/.config/ranger/ ~/.config/
+
+# Add devicons to ranger
+DIR_TMP="/tmp/ranger_devicons/"
+DIR_YAY="/tmp/ranger_devicons/ranger_devicons"
 [ ! -d "$DIR_TMP" ] && mkdir -p "$DIR_TMP"
-cd /tmp/aurbuilder
+cd $DIR_TMP
 [ -d "$DIR_YAY" ] && rm -r "$DIR_YAY"
+sudo git clone https://github.com/alexanderjeurissen/ranger_devicons.git
+cd $DIR_YAY
+makepkg --needed -Acs
+makepkg -i
+cd ~
