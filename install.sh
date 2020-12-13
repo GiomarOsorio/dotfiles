@@ -302,6 +302,7 @@ echo "#####################################"
 list_packages=(
     alacritty
     bashmount
+    ctags
     dunst
     firefox
     flameshot
@@ -317,7 +318,11 @@ list_packages=(
     mpv
     mythes-es
     ncmpcpp
+    nodejs
+    npm
     picom
+    python3-pip
+    python3-neovim
     qbittorrent
     qtile
     ranger
@@ -414,3 +419,33 @@ wait
 #install powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
+###############################################################################
+#Setup vim with powerline that we installed before (but no plugins)
+
+echo "######################"
+echo "### SETTING UP VIM ###"
+echo "######################"
+
+#Install dependencies
+#Python dependencies
+pip install virtualenv pynvim python-language-server flake8 pylint black jedi
+#Node dependencies
+npm install neovim eslint eslint-config-airbnb-base --save-dev
+
+#copy config file
+cd ~
+cp -vf ~/dotfiles/.config/nvim ~/.config/
+cp -vf ~/dotfiles/.eslintrc.json .
+
+###############################################################################
+#Set up Qtile
+
+echo "########################"
+echo "### SETTING UP QTILE ###"
+echo "########################"
+
+DIR_TMP="/tmp/aurbuilder/"
+DIR_YAY="/tmp/aurbuilder/yay"
+[ ! -d "$DIR_TMP" ] && mkdir -p "$DIR_TMP"
+cd /tmp/aurbuilder
+[ -d "$DIR_YAY" ] && rm -r "$DIR_YAY"
