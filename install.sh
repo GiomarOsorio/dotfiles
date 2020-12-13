@@ -77,6 +77,27 @@ done
 sudo systemctl enable lightdm.service -f
 sudo systemctl set-default graphical.target
 
+## Main Desktop installed
+
+#Creating personal directories
+list_personald=(
+    xdg-user-dirs
+    xdg-user-dirs-gtk
+)
+
+for name in "${list_aur_packages[@]}" ; do
+	count=$[count+1]
+	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
+	func_install_aur $name
+done
+
+xdg-user-dirs-update
+xdg-user-dirs-update --force
+
+[ -d $HOME"/.icons" ] || mkdir -p $HOME"/.icons"
+[ -d $HOME"/.themes" ] || mkdir -p $HOME"/.themes"
+[ -d $HOME"/.fonts" ] || mkdir -p $HOME"/.fonts"
+
 ###############################################################################
 #Install Sound
 
@@ -322,7 +343,6 @@ for name in "${list_packages[@]}" ; do
 done
 
 ###############################################################################
-###############################################################################
 #Install AUR packages
 
 tput setaf 11
@@ -372,3 +392,25 @@ for name in "${list_aur_packages[@]}" ; do
 done
 
 ###############################################################################
+#Set up zsh
+
+echo "######################"
+echo "### SETTING UP ZSH ###"
+echo "######################"
+
+sudo pacman -S --needed  --noconfirm zsh zsh-doc zsh-autosuggestions zsh-completions zsh-lovers tig
+cp ~/dotfiles/.zshrc ~/.zshrc
+
+## Setup oh-my-zsh
+cd ~
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &
+wait
+[ -d $HOME"/.oh-my-zsh" ] || echo "### OH MY ZSH DIR NOT FOUND!" ; exit 1
+cd ~/.oh-my-zsh/
+# Its no longer necessary to copy over oh-my-zsh.zsh
+cp -vf ~/dotfiles/.oh-my-zsh/custom/*.zsh ~/.oh-my-zsh/custom/
+git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+
+git clone https://github.com/softmoth/zsh-vim-mode.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-vim-mode
