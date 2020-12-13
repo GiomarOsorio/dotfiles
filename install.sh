@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 ###############################################################################
 #
@@ -47,6 +46,18 @@ func_install_aur() {
 }
 
 cd ~
+set -e
+tput setaf 11
+echo "#####################################"
+echo "###     ENABLE MULTILIB REPO      ###"
+echo "#####################################"
+sudo sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
+sudo sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
+tput setaf 11
+echo "#####################################"
+echo "###     INSTALL BASE PACKAGES     ###"
+echo "#####################################"
+tput sgr0
 sudo pacman -Syyu --noconfirm
 sudo pacman -S --noconfirm --needed neovim git curl wget base base-devel
 
@@ -239,6 +250,7 @@ tput setaf 11
 echo "#####################################"
 echo "###      INSTALLING SERVICES      ###"
 echo "#####################################"
+tput sgr0
 
 list_services=(
     networkmanager
@@ -269,6 +281,7 @@ tput setaf 11
 echo "#####################################"
 echo "### INSTALLING FILE SYSTEM EXTRAS ###"
 echo "#####################################"
+tput sgr0
 
 list_fsystem=(
     os-prober
@@ -298,6 +311,7 @@ tput setaf 11
 echo "#####################################"
 echo "###      INSTALLING PACKAGES      ###"
 echo "#####################################"
+tput sgr0
 
 list_packages=(
     alacritty
@@ -358,6 +372,7 @@ tput setaf 11
 echo "#####################################"
 echo "###    INSTALLING AUR PACKAGES    ###"
 echo "#####################################"
+tput sgr0
 
 #Install ADIRUR Helper (yay)
 tmpdir="$(command mktemp -d)"
@@ -404,11 +419,24 @@ for name in "${list_aur_packages[@]}" ; do
 done
 
 ###############################################################################
+#Clone Dotfiles
+
+cd
+if [ ! -d "~/dotfiles" ] ; then
+    git clone https://github.com/GiomarOsorio/dotfiles.git
+else
+    cd "~/dotfiles"
+    git pull origin master
+fi
+
+###############################################################################
 #Set up zsh
 
+tput setaf 11
 echo "######################"
 echo "### SETTING UP ZSH ###"
 echo "######################"
+tput sgr0
 
 #move config to folder
 cp ~/dotfiles/.zshrc ~/.zshrc
@@ -425,9 +453,11 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 ###############################################################################
 #Setup vim with powerline that we installed before (but no plugins)
 
+tput setaf 11
 echo "######################"
 echo "### SETTING UP VIM ###"
 echo "######################"
+tput sgr0
 
 #Install dependencies
 #Python dependencies
@@ -443,9 +473,11 @@ cp -vf ~/dotfiles/.eslintrc.json .
 ###############################################################################
 #Set up Qtile
 
+tput setaf 11
 echo "########################"
 echo "### SETTING UP QTILE ###"
 echo "########################"
+tput sgr0
 
 #copy config file
 cd ~
@@ -454,9 +486,11 @@ cp -vf ~/dotfiles/.config/qtile ~/.config/
 ###############################################################################
 #Setup Ranger
 
+tput setaf 11
 echo "#################################"
 echo "### SETTING UP RANGER CONFIGS ###"
 echo "#################################"
+tput sgr0
 
 cp -vf ~/dotfiles/.config/ranger/ ~/.config/
 
