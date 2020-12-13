@@ -48,7 +48,7 @@ func_install_aur() {
 
 cd ~
 sudo pacman -Syyu --noconfirm
-sudo pacman -S --noconfirm --needed neovim git curl wget base-devel
+sudo pacman -S --noconfirm --needed neovim git curl wget base base-devel
 
 ###############################################################################
 #Install LightDM and XFCE4
@@ -321,8 +321,8 @@ list_packages=(
     nodejs
     npm
     picom
-    python3-pip
-    python3-neovim
+    python-pip
+    python-neovim
     qbittorrent
     qtile
     ranger
@@ -360,16 +360,19 @@ echo "###    INSTALLING AUR PACKAGES    ###"
 echo "#####################################"
 
 #Install ADIRUR Helper (yay)
-DIR_TMP="/tmp/aurbuilder/"
-DIR_YAY="/tmp/aurbuilder/yay"
-[ ! -d "$DIR_TMP" ] && mkdir -p "$DIR_TMP"
-cd /tmp/aurbuilder
-[ -d "$DIR_YAY" ] && rm -r "$DIR_YAY"
-sudo git clone https://aur.archlinux.org/yay.git
-cd yay
-makepkg --needed -Acs
-makepkg -i
-cd ~
+tmpdir="$(command mktemp -d)"
+command cd "${tmpdir}" || return 1
+dl_url="$(
+    command curl -sfLS 'https://api.github.com/repos/Jguer/yay/releases/latest' |
+    command grep 'browser_download_url' |
+    command tail -1 |
+    command cut -d '"' -f 4
+)"
+command wget "${dl_url}"
+command tar xzvf yay_*_x86_64.tar.gz
+command cd yay_*_x86_64 || return 1
+./yay -Sy --nocleanmenu --nodiffmenu yay-bin
+rm -rf "${tmpdir}"
 
 list_aur_packages=(
     aic94xx-firmware
@@ -458,13 +461,5 @@ echo "#################################"
 cp -vf ~/dotfiles/.config/ranger/ ~/.config/
 
 # Add devicons to ranger
-DIR_TMP="/tmp/ranger_devicons/"
-DIR_YAY="/tmp/ranger_devicons/ranger_devicons"
-[ ! -d "$DIR_TMP" ] && mkdir -p "$DIR_TMP"
-cd $DIR_TMP
-[ -d "$DIR_YAY" ] && rm -r "$DIR_YAY"
-sudo git clone https://github.com/alexanderjeurissen/ranger_devicons.git
-cd $DIR_YAY
-makepkg --needed -Acs
-makepkg -i
-cd ~
+git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
+
