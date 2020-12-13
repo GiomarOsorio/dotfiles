@@ -323,15 +323,19 @@ list_packages=(
     ranger
     ranger
     redshift
-    #redshift-gtk
     sdl_ttf
+    tig
     ttf-bitstream-vera
     ttf-dejavu
     ttf-liberation
     udiskie
-    #udiskie
     xorg-fonts-type1
     zsh
+    zsh
+    zsh-doc
+    zsh-autosuggestions
+    zsh-completions
+    zsh-lovers
 )
 
 count=0
@@ -398,7 +402,7 @@ echo "######################"
 echo "### SETTING UP ZSH ###"
 echo "######################"
 
-sudo pacman -S --needed  --noconfirm zsh zsh-doc zsh-autosuggestions zsh-completions zsh-lovers tig
+#move config to folder
 cp ~/dotfiles/.zshrc ~/.zshrc
 
 ## Setup oh-my-zsh
@@ -406,11 +410,7 @@ cd ~
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" &
 wait
 [ -d $HOME"/.oh-my-zsh" ] || echo "### OH MY ZSH DIR NOT FOUND!" ; exit 1
-cd ~/.oh-my-zsh/
-# Its no longer necessary to copy over oh-my-zsh.zsh
-cp -vf ~/dotfiles/.oh-my-zsh/custom/*.zsh ~/.oh-my-zsh/custom/
-git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
 
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+#install powerlevel10k
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
-git clone https://github.com/softmoth/zsh-vim-mode.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-vim-mode
