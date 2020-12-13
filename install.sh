@@ -54,9 +54,9 @@ sudo pacman -S --noconfirm --needed neovim git curl wget base-devel
 #Install LightDM and XFCE4
 
 tput setaf 11
-echo "#########################"
-echo "### INSTALLING XFCE4 ###"
-echo "########################"
+echo "#####################################"
+echo "###       INSTALLING XFCE4        ###"
+echo "#####################################"
 
 list_xfce=(
     lightdm
@@ -81,9 +81,9 @@ sudo systemctl set-default graphical.target
 #Install Sound
 
 tput setaf 11
-echo "#########################"
-echo "### INSTALLING SOUND ###"
-echo "########################"
+echo "#####################################"
+echo "###       INSTALLING SOUND        ###"
+echo "#####################################"
 
 list_sound=(
 pulseaudio
@@ -114,9 +114,9 @@ done
 #Install printing stuff
 
 tput setaf 11
-echo "###########################"
-echo "### INSTALLING PRINTERS ###"
-echo "##########################"
+echo "#####################################"
+echo "###      INSTALLING PRINTERS      ###"
+echo "#####################################"
 
 list_printers=(
     cups
@@ -144,9 +144,9 @@ sudo systemctl enable cups
 #Install Console stuff
 
 tput setaf 11
-echo "###########################"
-echo "### INSTALLING CONSOLE  ###"
-echo "###########################"
+echo "#####################################"
+echo "###      INSTALLING CONSOLE       ###"
+echo "#####################################"
 
 list_console=(
     pacman-contrib
@@ -170,9 +170,9 @@ done
 #Install Compression Tools
 
 tput setaf 11
-echo "###################################"
-echo "### INSTALLING COMPRESION TOOLS ###"
-echo "###################################"
+echo "#####################################"
+echo "###  INSTALLING COMPRESION TOOLS  ###"
+echo "#####################################"
 
 list_compressiont=(
     zip
@@ -194,9 +194,9 @@ done
 #Install Kernel Stuff
 
 tput setaf 11
-echo "###################################"
-echo "###   INSTALLING SYSTEM STUFF   ###"
-echo "###################################"
+echo "#####################################"
+echo "###    INSTALLING SYSTEM STUFF    ###"
+echo "#####################################"
 
 list_system=(
     linux
@@ -215,9 +215,9 @@ done
 #Install Services
 
 tput setaf 11
-echo "###################################"
-echo "###     INSTALLING SERVICES     ###"
-echo "###################################"
+echo "#####################################"
+echo "###      INSTALLING SERVICES      ###"
+echo "#####################################"
 
 list_services=(
     networkmanager
@@ -329,14 +329,6 @@ tput setaf 11
 echo "#####################################"
 echo "###    INSTALLING AUR PACKAGES    ###"
 echo "#####################################"
-
-#Install AUR Helper(yay)
-#cd /tmp/
-#git clone https://aur.archlinux.org/yay.git
-#cd yay
-#makepkg -si
-#cd ~
-
 
 #Install ADIRUR Helper (yay)
 DIR_TMP="/tmp/aurbuilder/"
