@@ -78,4 +78,7 @@ loadconfigs(){
 }
 
 loadconfigs
+setkeymap
+chooseeditor
 selectdisk
+selectswapsize
