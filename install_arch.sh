@@ -56,7 +56,7 @@ pressanykey(){
 }
 
 showmessage(){
-    whiptail --title "$1" --msgbox "$2" 8 78
+    whiptail --title "${1}" --msgbox "${2}" 8 78
 }
 
 loadconfigs(){
