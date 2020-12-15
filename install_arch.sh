@@ -56,21 +56,21 @@ pressanykey(){
 
 loadconfigs(){
     # keymap ---------------------------------------------
-    keymap = "us"
+    keymap="us"
     
     # editor ---------------------------------------------
-    editor = "vim"
+    editor="vim"
 
     # hard disk ------------------------------------------
-    hd = ""
-    title_hd = "Choose your hard drive"
-    menu_hd = "Where do you want to install your new system?\n\nSelect with SPACE, valid with ENTER.\n\nWARNING: Everything will be DESTROYED on the hard disk!"
+    hd=""
+    title_hd="Choose your hard drive"
+    menu_hd="Where do you want to install your new system?\n\nSelect with SPACE, valid with ENTER.\n\nWARNING: Everything will be DESTROYED on the hard disk!"
     
     
     #Swap ------------------------------------------------
-    default_swap_size = "6"
-    title_swap = "Choose your swap size"
-    menu_swap = "The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you dont enter anything: \nswap -> ${default_size}G \n\n"
+    default_swap_size="6"
+    title_swap="Choose your swap size"
+    menu_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you dont enter anything: \nswap -> ${default_size}G \n\n"
     
     
     # hard disk ------------------------------------------
