@@ -36,7 +36,7 @@ selectdisk(){
 			options+=("${item}" "")
 	done
 	IFS=$IFS_ORIG
-	hd=$(whiptail --backtitle "Arch Install Script" --title "Choose your hard drive" --menu "The boot will be 512M\n\The root will be the rest of the hard disk\n\Enter partitionsize in gb for the Swap. \n\n\If you dont enter anything: \n\swap -> ${default_size}G \n\n" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
+	hd=$(whiptail --backtitle "Arch Install Script" --title "Choose your hard drive" --menu "The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you dont enter anything: \nswap -> ${default_swap_size}G \n\n" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
 	echo ${hd%%\ *}   
 }
 # --------------------------------------------------------
@@ -53,7 +53,9 @@ loadconfigs(){
 
     # hard disk ---------------------------------------------
     hd = ""
+    default_swap_size = "6"
     
+    # hard disk ---------------------------------------------
     txtpressanykey="Press any key to continue."
 }
 
