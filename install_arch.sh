@@ -44,6 +44,7 @@ selectswapsize(){
     echo "################################################################"
     echo "SELECTING SWAP SIZE"
     echo "################################################################"
+    txt_swap $txt_swap
     swap_size=$(whiptail --backtitle "Arch Install Script" --inputbox "${menu_swap}" 8 39 ${default_swap_size} --title "${title_swap}" 3>&1 1>&2 2>&3)
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_size
 	#hd=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "{$menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
@@ -52,6 +53,10 @@ selectswapsize(){
 # --------------------------------------------------------
 pressanykey(){
 	read -n1 -p "${txtpressanykey}"
+}
+
+showmessage(){
+    whiptail --title "Example Dialog" --msgbox "${txt_swap}" 8 78
 }
 
 loadconfigs(){
@@ -66,15 +71,14 @@ loadconfigs(){
     title_hd="Choose your hard drive"
     menu_hd="Where do you want to install your new system?\n\nSelect with SPACE, valid with ENTER.\n\nWARNING: Everything will be DESTROYED on the hard disk!"
     
-    
     #Swap ------------------------------------------------
     default_swap_size="6"
     title_swap="Choose your swap size"
-    menu_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you dont enter anything: \nswap -> ${default_size}G \n\n"
+    menu_swap="Enter the size of swap partition in GB (only numbers)"
     
-    
-    # hard disk ------------------------------------------
+    # messages ------------------------------------------
     txtpressanykey="Press any key to continue."
+    txt_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you dont enter anything: \nswap -> ${default_size}G \n\n"
 }
 
 loadconfigs
