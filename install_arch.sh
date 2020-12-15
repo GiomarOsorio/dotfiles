@@ -36,7 +36,7 @@ selectdisk(){
 			options+=("${item}" "")
 	done
 	IFS=$IFS_ORIG
-	hd=$(whiptail --backtitle "${APPTITLE}" --title "${1}" --menu "" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
+	hd=$(whiptail --backtitle "Arch Install Script" --title "Choose your hard drive" --menu "The boot will be 512M\n\The root will be the rest of the hard disk\n\Enter partitionsize in gb for the Swap. \n\n\If you dont enter anything: \n\swap -> ${default_size}G \n\n" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
 	echo ${hd%%\ *}   
 }
 # --------------------------------------------------------
