@@ -3,23 +3,26 @@
 
 # --------------------------------------------------------
 setkeymap(){
-    echo "################################################################"
-    echo "LOADING KEYMAP"
-    echo "################################################################"
-	echo "loadkeys ${keymap}"
+    #showmessage ${title_swap} ${txt_swap}
+    #echo "################################################################"
+    #echo "LOADING KEYMAP"
+    #echo "################################################################"
+	#echo "loadkeys ${keymap}"
+    showmessage ${title_keymap} ${txt_keymap}
 	loadkeys $keymap
-	pressanykey
+	#pressanykey
 }
 
 # --------------------------------------------------------
 chooseeditor(){
-    echo "################################################################"
-    echo "SETTING EDITOR"
-    echo "################################################################"
-	echo "export EDITOR=${editor}"
+    #echo "################################################################"
+    #echo "SETTING EDITOR"
+    #echo "################################################################"
+	#echo "export EDITOR=${editor}"
+    showmessage ${title_editor} ${txt_editor}
 	export EDITOR=${editor}
 	EDITOR=${editor}
-	pressanykey
+	#pressanykey
 }
 
 # --------------------------------------------------------
@@ -44,7 +47,7 @@ selectswapsize(){
     echo "################################################################"
     echo "SELECTING SWAP SIZE"
     echo "################################################################"
-    showmessage $title_swap $txt_swap
+    showmessage ${title_swap} ${txt_swap}
     swap_size=$(whiptail --backtitle "Arch Install Script" --inputbox "${menu_swap}" 8 39 ${default_swap_size} --title "${title_swap}" 3>&1 1>&2 2>&3)
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_size
 	#hd=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "{$menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
@@ -56,15 +59,19 @@ pressanykey(){
 }
 
 showmessage(){
-    whiptail --title "${1}" --msgbox "${2}" 8 78
+    whiptail --title "$1" --msgbox "$2" 15 80
 }
 
 loadconfigs(){
     # keymap ---------------------------------------------
     keymap="us"
+    title_keymap="Loading Keymap"
+    menu_keymap="loadkeys ${keymap}"
     
     # editor ---------------------------------------------
     editor="vim"
+    title_editor="Setting Editor"
+    menu_editor="export EDITOR=${editor}"
 
     # hard disk ------------------------------------------
     hd=""
