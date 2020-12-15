@@ -47,7 +47,11 @@ selectswapsize(){
     echo "################################################################"
     echo "SELECTING SWAP SIZE"
     echo "################################################################"
+<<<<<<< HEAD
     showmessage ${title_swap} ${txt_swap}
+=======
+    showmessage "$title_swap" "$txt_swap"
+>>>>>>> 0f06f468e88a51532f2c1bfdc680fde652d06b86
     swap_size=$(whiptail --backtitle "Arch Install Script" --inputbox "${menu_swap}" 8 39 ${default_swap_size} --title "${title_swap}" 3>&1 1>&2 2>&3)
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_size
 	#hd=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "{$menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
@@ -59,7 +63,11 @@ pressanykey(){
 }
 
 showmessage(){
+<<<<<<< HEAD
     whiptail --title "$1" --msgbox "$2" 15 80
+=======
+	whiptail --title "$1" --msgbox "$2" 8 78
+>>>>>>> 0f06f468e88a51532f2c1bfdc680fde652d06b86
 }
 
 loadconfigs(){
