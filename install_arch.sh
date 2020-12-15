@@ -36,7 +36,24 @@ selectdisk(){
 			options+=("${item}" "")
 	done
 	IFS=$IFS_ORIG
-	hd=$(whiptail --backtitle "Arch Install Script" --title "Choose your hard drive" --menu "The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you dont enter anything: \nswap -> ${default_swap_size}G \n\n" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
+	hd=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "{$menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
+	echo ${hd%%\ *}   
+}
+# --------------------------------------------------------
+selectswapsize(){
+    echo "################################################################"
+    echo "SELECTING HARD DISK"
+    echo "################################################################"
+	items=$(lsblk -d -p -n -l -o NAME,SIZE -e 7,11)
+	options=()
+	IFS_ORIG=$IFS
+	IFS=$'\n'
+	for item in ${items}
+	do  
+			options+=("${item}" "")
+	done
+	IFS=$IFS_ORIG
+	hd=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "{$menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3)
 	echo ${hd%%\ *}   
 }
 # --------------------------------------------------------
@@ -52,6 +69,8 @@ loadconfigs(){
     editor = "vim"
 
     # hard disk ---------------------------------------------
+    title_hd = "Choose your hard drive"
+    menu_hd = "Where do you want to install your new system?\n\nSelect with SPACE, valid with ENTER.\n\nWARNING: Everything will be DESTROYED on the hard disk!"
     hd = ""
     default_swap_size = "6"
     
