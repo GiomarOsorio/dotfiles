@@ -22,7 +22,7 @@ func_install() {
     	echo "###############################################################################"
     	echo
     	tput sgr0
-    	sudo pacman -S --noconfirm --needed $1
+    	su pacman -S --noconfirm --needed $1
     fi
 }
 
@@ -41,7 +41,7 @@ func_install_aur() {
     	echo "###############################################################################"
     	echo
     	tput sgr0
-        sudo -u aurbuilder yay -S --needed $1
+        su -u aurbuilder yay -S --needed $1
     fi
 }
 
@@ -51,15 +51,15 @@ tput setaf 11
 echo "#####################################"
 echo "###     ENABLE MULTILIB REPO      ###"
 echo "#####################################"
-sudo sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
-sudo sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
+su sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
+su sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
 tput setaf 11
 echo "#####################################"
 echo "###     INSTALL BASE PACKAGES     ###"
 echo "#####################################"
 tput sgr0
-sudo pacman -Syyu --noconfirm
-sudo pacman -S --noconfirm --needed neovim git curl wget base base-devel
+su pacman -Syyu --noconfirm
+su pacman -S --noconfirm --needed neovim git curl wget base base-devel
 
 ###############################################################################
 #Install LightDM and XFCE4
@@ -79,14 +79,14 @@ list_xfce=(
 
 count=0
 
-for name in "${list_xfce[@]}" ; do
+for name in "${list_xfce[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
-sudo systemctl enable lightdm.service -f
-sudo systemctl set-default graphical.target
+su systemctl enable lightdm.service -f
+su systemctl set-default graphical.target
 
 ## Main Desktop installed
 
@@ -96,11 +96,11 @@ list_personald=(
     xdg-user-dirs-gtk
 )
 
-for name in "${list_aur_packages[@]}" ; do
+for name in "${list_aur_packages[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install_aur $name
-done
+ne
 
 xdg-user-dirs-update
 xdg-user-dirs-update --force
@@ -136,11 +136,11 @@ playerctl
 
 count=0
 
-for name in "${list_sound[@]}" ; do
+for name in "${list_sound[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
 ###############################################################################
 #Install printing stuff
@@ -163,14 +163,14 @@ list_printers=(
 
 count=0
 
-for name in "${list_printers[@]}" ; do
+for name in "${list_printers[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
-sudo systemctl start cups
-sudo systemctl enable cups
-#sudo systemctl enable org.cups.cupsd.service
+ne
+su systemctl start cups
+su systemctl enable cups
+#su systemctl enable org.cups.cupsd.service
 
 ###############################################################################
 #Install Console stuff
@@ -192,11 +192,11 @@ list_console=(
 
 count=0
 
-for name in "${list_console[@]}" ; do
+for name in "${list_console[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
 ###############################################################################
 #Install Compression Tools
@@ -216,11 +216,11 @@ list_compressiont=(
 
 count=0
 
-for name in "${list_compressiont[@]}" ; do
+for name in "${list_compressiont[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
 ###############################################################################
 #Install Kernel Stuff
@@ -237,11 +237,11 @@ list_system=(
 
 count=0
 
-for name in "${list_system[@]}" ; do
+for name in "${list_system[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
 ###############################################################################
 #Install Services
@@ -263,16 +263,16 @@ list_services=(
 
 count=0
 
-for name in "${list_services[@]}" ; do
+for name in "${list_services[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
-sudo systemctl enable NetworkManager
-sudo systemctl enable sshd
-sudo systemctl enable cronie
-sudo systemctl enable haveged
+su systemctl enable NetworkManager
+su systemctl enable sshd
+su systemctl enable cronie
+su systemctl enable haveged
 
 ###############################################################################
 #Install File System Extras
@@ -285,7 +285,7 @@ tput sgr0
 
 list_fsystem=(
     os-prober
-    dosfstools
+    sfstools
     ntfs-3g
     btrfs-progs
     exfat-utils
@@ -298,11 +298,11 @@ list_fsystem=(
 
 count=0
 
-for name in "${list_fsystem[@]}" ; do
+for name in "${list_fsystem[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
 ###############################################################################
 #Install Packages
@@ -351,7 +351,7 @@ list_packages=(
     xorg-fonts-type1
     zsh
     zsh
-    zsh-doc
+    zsh-c
     zsh-autosuggestions
     zsh-completions
     zsh-lovers
@@ -359,11 +359,11 @@ list_packages=(
 
 count=0
 
-for name in "${list_packages[@]}" ; do
+for name in "${list_packages[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install $name
-done
+ne
 
 ###############################################################################
 #Install AUR packages
@@ -379,7 +379,7 @@ tmpdir="$(command mktemp -d)"
 command cd "${tmpdir}" || return 1
 dl_url="$(
     command curl -sfLS 'https://api.github.com/repos/Jguer/yay/releases/latest' |
-    command grep 'browser_download_url' |
+    command grep 'browser_wnload_url' |
     command tail -1 |
     command cut -d '"' -f 4
 )"
@@ -394,7 +394,7 @@ list_aur_packages=(
     bashmount
     discord_arch_electron
     google-chrome
-    jdownloader2
+    jwnloader2
     megasync
     minecraft-launcher
     nerd-fonts-ubuntu-mono
@@ -412,20 +412,20 @@ list_aur_packages=(
 
 count=0
 
-for name in "${list_aur_packages[@]}" ; do
+for name in "${list_aur_packages[@]}" ; 
 	count=$[count+1]
 	tput setaf 3;echo "Installing package nr.  "$count " " $name;tput sgr0;
 	func_install_aur $name
-done
+ne
 
 ###############################################################################
 #Clone Dotfiles
 
 cd
-if [ ! -d "~/dotfiles" ] ; then
-    git clone https://github.com/GiomarOsorio/dotfiles.git
+if [ ! -d "~/tfiles" ] ; then
+    git clone https://github.com/GiomarOsorio/tfiles.git
 else
-    cd "~/dotfiles"
+    cd "~/tfiles"
     git pull origin master
 fi
 
@@ -439,7 +439,7 @@ echo "######################"
 tput sgr0
 
 #move config to folder
-cp ~/dotfiles/.zshrc ~/.zshrc
+cp ~/tfiles/.zshrc ~/.zshrc
 
 ## Setup oh-my-zsh
 cd ~
@@ -467,8 +467,8 @@ npm install neovim eslint eslint-config-airbnb-base --save-dev
 
 #copy config file
 cd ~
-cp -vf ~/dotfiles/.config/nvim ~/.config/
-cp -vf ~/dotfiles/.eslintrc.json .
+cp -vf ~/tfiles/.config/nvim ~/.config/
+cp -vf ~/tfiles/.eslintrc.json .
 
 ###############################################################################
 #Set up Qtile
@@ -481,7 +481,7 @@ tput sgr0
 
 #copy config file
 cd ~
-cp -vf ~/dotfiles/.config/qtile ~/.config/
+cp -vf ~/tfiles/.config/qtile ~/.config/
 
 ###############################################################################
 #Setup Ranger
@@ -492,7 +492,7 @@ echo "### SETTING UP RANGER CONFIGS ###"
 echo "#################################"
 tput sgr0
 
-cp -vf ~/dotfiles/.config/ranger/ ~/.config/
+cp -vf ~/tfiles/.config/ranger/ ~/.config/
 
 # Add devicons to ranger
 git clone https://github.com/alexanderjeurissen/ranger_devicons ~/.config/ranger/plugins/ranger_devicons
