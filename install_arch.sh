@@ -46,6 +46,7 @@ selectdisk(){
     while [ -z "$device" ]; do
         device=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "${menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3);
     done
+    clear
     device=${device%%\ *}
     echo ">select "${device}
     echo ""
@@ -60,6 +61,7 @@ selectswapsize(){
     tput setaf 2
 	pressanykey
     swap_size=$(whiptail --backtitle "Arch Install Script" --inputbox "${menu_swap}" 8 39 ${default_swapsize} --title "${title_swap}" 3>&1 1>&2 2>&3)
+    clear
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_swapsize
 	echo ">have selected "${swap_size%%\ *}"MB in swap size"
 	echo ""
@@ -99,10 +101,10 @@ diskpart(){
             diskpartautogptefi
         ;;
     esac
-    if [ "bootdev::" == "/dev/nvm"]; then
+    if [ "bootdev::" == "/dev/nvm" ]; then
 	    isnvme=1
     fi
-    if [ "bootdev::" == "/dev/nvm"]; then
+    if [ "bootdev::" == "/dev/nvm" ]; then
 	    isnvme=1
     fi
 }
@@ -414,6 +416,7 @@ mountparts(){
         echo ">mount ${homedev} /mnt/home"
         mount ${homedev} /mnt/home
     fi
+    echo ""
 }
 # --------------------------------------------------------
 installmenu(){
@@ -438,6 +441,7 @@ installmenu(){
         "1")
             #"${txteditmirrorlist}")
             ${editor} /etc/pacman.d/mirrorlist
+            clear
         ;;
         "2")
             #"${txtinstallarchlinux}")
@@ -803,7 +807,18 @@ loadconfigs(){
     txtpressanykey="Press any key to continue..."
 }
 
-if [ "${chroot}" ="1"]; then
+# --------------------------------------------------------
+while (( "$#" )); do
+    case ${1} in
+        --chroot)
+            chroot=1
+            command=${2}
+            args=${3}
+        ;;
+    esac
+done
+
+if [ "${chroot}" = "1" ]; then
     case ${command} in
         'setrootpassword') archsetrootpasswordchroot;;
         'setlocale') archsetlocalechroot;;
@@ -829,6 +844,7 @@ if [ "${chroot}" ="1"]; then
         #'');;
     esac
 else
+    pacman -S --needed arch-install-scripts wget libnewt
     loadconfigs
     checkefi
     setkeymap
