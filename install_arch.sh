@@ -1,4 +1,3 @@
-
 #!/bin/bash
 # --------------------------------------------------------
 checkefi(){
@@ -423,10 +422,6 @@ installmenu(){
     showtitle "INSTALATION MENU"
     options+="[1] ${txteditmirrorlist}\n"
     options+="[2] ${txtinstallarchlinux}\n"
-    if [[ ${installed} != 0 ]]; then
-        re='^[1-3]$'
-	options+="[3] ${txtconfigarchlinux}\n"
-    fi
     echo -e "${textinstallmenu}"
     echo -e "${options}"
     while true;do
@@ -447,16 +442,14 @@ installmenu(){
         "2")
             #"${txtinstallarchlinux}")
             installbase
-	    installed=1
-        ;;
-        "3")
-            #"${txtconfigarchlinux}")
-	    archmenu
-             
+	        installed=1
         ;;
     esac
-    installmenu
-    unmountdevices
+    if [[ ${installed} != 0 ]]; then
+        archmenu
+    else
+        installmenu
+    fi
 }
 # --------------------------------------------------------
 installbase(){
@@ -565,10 +558,10 @@ installbase(){
 }
 # --------------------------------------------------------
 archmenu(){
-   hostname
    archsetkeymap
    archsetlocale
    archsettime
+   hostname
    archsetrootpassword
    #archgentfstabmenu
    #archgencrypttab
@@ -632,7 +625,7 @@ archsetlocale(){
     echo "LC_COLLATE=C" >> /mnt/etc/locale.conf
     echo ">sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
     sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
-    archroot setlocale
+    archchroot setlocale
 }
 # --------------------------------------------------------
 archsetlocalechroot(){
@@ -656,21 +649,21 @@ archsettime(){
     echo -e "${options}"
     while true;do
         echo "Select a option: "
-	read hwclock 
-	if [ ${hwclock} =~ ${re} ];then
+        read hwclock 
+	    if [ ${hwclock} =~ ${re} ];then
             echo -e "Invalid option, try again\n"
-	else
-		case ${sel} in
-			"1")
-				archchroot settimeutc
+    	else
+	    	case ${sel} in
+		    	"1")
+			    	archchroot settimeutc
+			    ;;
+    			"2")
+	    			archchroot settimelocal
 				;;
-			"2")
-				archchroot settimelocal
-				;;
-		esac
-		echo ""
-		break
-	fi
+	    	esac
+		    echo ""
+    		break
+	    fi
     done
 }
 # --------------------------------------------------------
