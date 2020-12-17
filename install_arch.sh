@@ -421,8 +421,12 @@ installmenu(){
     re='^[1-2]$'
     options=""
     showtitle "INSTALATION MENU"
-    options+="[1] ""${txteditmirrorlist}""\n"
-    options+="[2] ""${txtinstallarchlinux}""\n"
+    options+="[1] ${txteditmirrorlist}\n"
+    options+="[2] ${txtinstallarchlinux}\n"
+    if [[ ${installed} != 0 ]]; then
+        re='^[1-3]$'
+	options+="[3] ${txtconfigarchlinux}\n"
+    fi
     echo -e "${textinstallmenu}"
     echo -e "${options}"
     while true;do
@@ -443,11 +447,15 @@ installmenu(){
         "2")
             #"${txtinstallarchlinux}")
             installbase
+	    installed=1
+        ;;
+        "3")
+            #"${txtconfigarchlinux}")
+	    archmenu
+             
         ;;
     esac
-    if [[ "${sel}" == "1" ]];then
-        installmenu
-    fi
+    installmenu
     unmountdevices
 }
 # --------------------------------------------------------
@@ -559,22 +567,21 @@ installbase(){
 archmenu(){
    hostname
    archsetkeymap
-   #archsetfont
    archsetlocale
    archsettime
    archsetrootpassword
-   archgentfstabmenu
-   archgencrypttab
-   if [ "${isnvme}" = "1" ]; then
-       archgenmkinitcpionvme
-   fi
-   edit "/mnt/etc/fstab/"
-   edit "/mnt/etc/crypttab/"
-   archeditmkinitcpio
-   edit "/mnt/etc/pacman.d/mirrorList/"
-   archbootloadermenu
-   archextrasmenu
-   archdi
+   #archgentfstabmenu
+   #archgencrypttab
+   #if [ "${isnvme}" = "1" ]; then
+   #    archgenmkinitcpionvme
+   #fi
+   #edit "/mnt/etc/fstab/"
+   #edit "/mnt/etc/crypttab/"
+   #archeditmkinitcpio
+   #edit "/mnt/etc/pacman.d/mirrorList/"
+   #archbootloadermenu
+   #archextrasmenu
+   #archdi
 }
 # --------------------------------------------------------
 archchroot(){
@@ -602,6 +609,7 @@ hostname(){
 		break
 	fi
     done
+    echo -e "\n${txtsethostname}\n"
     echo -e ">echo \"${hostame}\" > /mnt/etc/hostname"
     echo "${hostname}" > /mnt/etc/hostname
     echo ""
@@ -609,22 +617,87 @@ hostname(){
 # --------------------------------------------------------
 archsetkeymap(){
     showtitle "SETTING KEYMAP"
+    echo ""
     echo -e ">echo \"${keymap}\" > /mnt/etc/vconsole.conf"
     echo "${keymap}" > /mnt/etc/vconsole.conf
     echo ""
-
 }
 # --------------------------------------------------------
 archsetlocale(){
     showtitle "SETTING LOCALE"
-    echo -e ">echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
+    echo -e "\n${txtsetlocale}\n"
+    echo ">echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
     echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
-    echo "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
+    echo ">echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
     echo "LC_COLLATE=C" >> /mnt/etc/locale.conf
-    echo "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
+    echo ">sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
     sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
     archroot setlocale
+}
+# --------------------------------------------------------
+archsetlocalechroot(){
+    echo ">locale-gen"
+    locale-gen
+    exit
+}
+# --------------------------------------------------------
+archsettime(){
+    showtitle "SETTING TIME"
+    re="^[1-2]$"
+    options=""
+    options+="[1] UTC\n"
+    options+="[2] LOCAL\n"
 
+    echo -e "${txtsettime}\n"
+    echo ">ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime"
+    ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime
+    
+    echo -e ">\n${txthwclock}"
+    echo -e "${options}"
+    while true;do
+        echo "Select a option: "
+	read hwclock 
+	if [ ${hwclock} =~ ${re} ];then
+            echo -e "Invalid option, try again\n"
+	else
+		case ${sel} in
+			"1")
+				archchroot settimeutc
+				;;
+			"2")
+				archchroot settimelocal
+				;;
+		esac
+		echo ""
+		break
+	fi
+    done
+}
+# --------------------------------------------------------
+archsettimeutcchroot(){
+    echo ">hwclock --systohc --utc"
+    hwclock --systohc --utc
+    exit
+}
+# --------------------------------------------------------
+archsettimelocalchroot(){
+    echo ">hwclock --systohc --localtime"
+    hwclock --systohc --localtime
+    exit
+}
+# --------------------------------------------------------
+archsetrootpassword(){
+    archchroot setrootpassword
+}
+# --------------------------------------------------------
+archsetrootpasswordchroot(){
+    echo ">passwd root"
+    passed=1
+    while [[ ${passed} != 0 ]]; do
+	    passwd root
+	    passed=$?
+    done
+    exit
 }
 # --------------------------------------------------------
 unmountdevices(){
@@ -710,18 +783,29 @@ loadconfigs(){
     txtinstallarchlinux="Install Arch Linux"
 
     # install base -----------------------------------
+    installed=0
     txtinstallarchlinuxkernel="Kernel"
     txtinstallarchlinuxfirmwares="Firmwares"
     txtinstallarchlinuxfilesystems="File Systems"
     
     # hostname ---------------------------------------
     hostname=""
+    txtsethostname="Set Computer Name"
 
     # locale -----------------------------------------
     locale="es_VE"
+    txtsetlocale="Set Locale"
+
+    # set time ---------------------------------------
+    timezone="America/Caracas"
+    txtsettime="Set Time"
+    txthwclock="Hardware clock: "
+    txthwclockutc="UTC"
+    txthwclocklocal="Local"
 
     # rootpassword -----------------------------------
-    # messages ---------------------------------------
+    txtsetrootpassword="Set root password"
+
     # messages ---------------------------------------
     txtpressanykey="Press any key to continue..."
 }
@@ -737,6 +821,7 @@ if [[ `whoami` == 'root' ]] ; then
     formatdevice
     mountparts
     installmenu
+    archmenu
 else
 	tput setaf 1
     echo "You must be root to do this"
