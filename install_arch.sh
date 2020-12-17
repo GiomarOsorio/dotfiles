@@ -592,15 +592,15 @@ hostname(){
     showtitle "SETTING HOSTNAME"
     while true;do
         echo "Enter a hostname: "
-	read hostname
-	if [ ${hostname} =~ ${re} ];then
-		echo -e "Valid characters for hostname are letters from a to z,"
-		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
-		echo -e "may not start with a hyphen. Max 63 characters long."
-	else
-		echo ""
-		break
-	fi
+        read hostname
+	    if [ ${hostname} =~ ${re} ];then
+		    echo -e "Valid characters for hostname are letters from a to z,"
+    		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
+    		echo -e "may not start with a hyphen. Max 63 characters long."
+	    else
+		    echo ""
+    		break
+    	fi
     done
     echo -e "\n${txtsethostname}\n"
     echo -e ">echo \"${hostame}\" > /mnt/etc/hostname"
@@ -649,8 +649,8 @@ archsettime(){
     echo -e "${options}"
     while true;do
         echo "Select a option: "
-        read hwclock 
-	    if [ ${hwclock} =~ ${re} ];then
+        read sel 
+	    if [ ${sel} =~ ${re} ];then
             echo -e "Invalid option, try again\n"
     	else
 	    	case ${sel} in
@@ -803,7 +803,32 @@ loadconfigs(){
     txtpressanykey="Press any key to continue..."
 }
 
-if [[ `whoami` == 'root' ]] ; then
+if [ "${chroot}" ="1"]; then
+    case ${command} in
+        'setrootpassword') archsetrootpasswordchroot;;
+        'setlocale') archsetlocalechroot;;
+        'settimeutc') archsettimeutcchroot;;
+        'settimelocal') archsettimelocalchroot;;
+        'genmkinitcpio') archgenmkinitcpiochroot;;
+        'enabledhcpcd') archenabledhcpcdchroot;;
+        'grubinstall') archgrubinstallchroot;;
+        'grubbootloaderinstall') archgrubinstallbootloaderchroot ${args};;
+        'grubbootloaderefiinstall') archgrubinstallbootloaderefichroot ${args};;
+        'grubbootloaderefiusbinstall') archgrubinstallbootloaderefiusbchroot ${args};;
+        'syslinuxbootloaderinstall') archsyslinuxinstallbootloaderchrrot ${args};;
+        'syslinuxbootloaderefiinstall') archsyslinuxinstallbootloaderefichrrot ${args};;
+        'systemdbootloaderinstall') archsystemdinstallchrrot ${args};;
+        'refindbootloaderinstall') archrefindinstallchroot ${args};;
+        #'');;
+        #'');;
+        #'');;
+        #'');;
+        #'');;
+        #'');;
+        #'');;
+        #'');;
+    esac
+else
     loadconfigs
     checkefi
     setkeymap
@@ -815,9 +840,4 @@ if [[ `whoami` == 'root' ]] ; then
     mountparts
     installmenu
     archmenu
-else
-	tput setaf 1
-    echo "You must be root to do this"
-	tput sgr0
-    exit
 fi
