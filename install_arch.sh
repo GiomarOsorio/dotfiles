@@ -816,6 +816,7 @@ while (( "$#" )); do
             args=${3}
         ;;
     esac
+    shift
 done
 
 if [ "${chroot}" = "1" ]; then
