@@ -4,14 +4,11 @@
 checkefi(){
     dmesg |grep efi: > /dev/null
     if [ "$?" == "1" ]; then
-    	if [ "${eficomputer}" != "1" ]; then
-    		eficomputer=0
-    	fi
+    if [ "${eficomputer}" != "1" ]; then
+        eficomputer=0
+    fi
     else
-    	eficomputer=1
-    	#if [ "${efimode}" == "" ]; then
-    	#	efimode=1
-    	#fi
+        eficomputer=1
     fi
 }
 # --------------------------------------------------------
@@ -103,6 +100,12 @@ diskpart(){
             diskpartautogptefi
         ;;
     esac
+    if [ "bootdev::" == "/dev/nvm"]; then
+	    isnvme=1
+    fi
+    if [ "bootdev::" == "/dev/nvm"]; then
+	    isnvme=1
+    fi
 }
 # --------------------------------------------------------
 diskpartautodos(){
@@ -553,6 +556,77 @@ installbase(){
     pressanykey
 }
 # --------------------------------------------------------
+archmenu(){
+   hostname
+   archsetkeymap
+   #archsetfont
+   archsetlocale
+   archsettime
+   archsetrootpassword
+   archgentfstabmenu
+   archgencrypttab
+   if [ "${isnvme}" = "1" ]; then
+       archgenmkinitcpionvme
+   fi
+   edit "/mnt/etc/fstab/"
+   edit "/mnt/etc/crypttab/"
+   archeditmkinitcpio
+   edit "/mnt/etc/pacman.d/mirrorList/"
+   archbootloadermenu
+   archextrasmenu
+   archdi
+}
+# --------------------------------------------------------
+archchroot(){
+    echo ">arch-chroot /mnt /root"
+    cp ${0} /mnt/root
+    chmod 775 /mnt/root/$(basename "${0}")
+    arch-chroot /mnt /root/$(basename "${0}") --chroot ${1} ${2}
+    rm /mnt/root/$(basename "${0}")
+    echo "exit"
+}
+# --------------------------------------------------------
+hostname(){
+    re="^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])\
+	    (\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))$"
+    showtitle "SETTING HOSTNAME"
+    while true;do
+        echo "Enter a hostname: "
+	read hostname
+	if [ ${hostname} =~ ${re} ];then
+		echo -e "Valid characters for hostname are letters from a to z,"
+		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
+		echo -e "may not start with a hyphen. Max 63 characters long."
+	else
+		echo ""
+		break
+	fi
+    done
+    echo -e ">echo \"${hostame}\" > /mnt/etc/hostname"
+    echo "${hostname}" > /mnt/etc/hostname
+    echo ""
+}
+# --------------------------------------------------------
+archsetkeymap(){
+    showtitle "SETTING KEYMAP"
+    echo -e ">echo \"${keymap}\" > /mnt/etc/vconsole.conf"
+    echo "${keymap}" > /mnt/etc/vconsole.conf
+    echo ""
+
+}
+# --------------------------------------------------------
+archsetlocale(){
+    showtitle "SETTING LOCALE"
+    echo -e ">echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
+    echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
+    echo "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
+    echo "LC_COLLATE=C" >> /mnt/etc/locale.conf
+    echo "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
+    sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
+    archroot setlocale
+
+}
+# --------------------------------------------------------
 unmountdevices(){
     showtitle "UNMOUNTING THE FILE SYSTEM"
     echo -e "\n>umount -R /mnt"
@@ -592,12 +666,12 @@ loadconfigs(){
     fspkgs=""
 
     # efi variables ----------------------------------
-	eficomputer=""
-	efimode=""
+    eficomputer=""
+    efimode=""
 
-	# keymap -----------------------------------------
+    # keymap -----------------------------------------
     keymap="us"
-	title_keymap="Loading Keymap"
+    title_keymap="Loading Keymap"
     menu_keymap="loadkeys ${keymap}"
 
     # editor -----------------------------------------
@@ -610,17 +684,18 @@ loadconfigs(){
     title_device="Choose your hard drive"
     menu_device="Where do you want to install your new system?\n\nWARNING: Everything will be DESTROYED on the hard disk!"
 
-   	#Swap --------------------------------------------
+    #Swap --------------------------------------------
     default_swapsize=$(cat /proc/meminfo | grep MemTotal | awk '{ print $2 }')
     default_swapsize=$((${default_swapsize}/1000))
-   	title_swap="Choose your swap size"
-   	txt_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you don't enter anything: \nswap -> Same size of the ram installed\n\n"
-   	menu_swap="Enter the size of swap partition in MB (only numbers)"
+    title_swap="Choose your swap size"
+    txt_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you don't enter anything: \nswap -> Same size of the ram installed\n\n"
+    menu_swap="Enter the size of swap partition in MB (only numbers)"
 
     # diskpart ---------------------------------------
     bootdev=""
     swapdev=""
     rootdev=""
+    isnvme=0
     txt_diskpart="Now you must select the type of partition for your device\n"
     txtautopartclear="Clear all partition data"
     txtautopartcreate="Create %1 partition"
@@ -638,9 +713,17 @@ loadconfigs(){
     txtinstallarchlinuxkernel="Kernel"
     txtinstallarchlinuxfirmwares="Firmwares"
     txtinstallarchlinuxfilesystems="File Systems"
+    
+    # hostname ---------------------------------------
+    hostname=""
 
-   	# messages ---------------------------------------
-	txtpressanykey="Press any key to continue..."
+    # locale -----------------------------------------
+    locale="es_VE"
+
+    # rootpassword -----------------------------------
+    # messages ---------------------------------------
+    # messages ---------------------------------------
+    txtpressanykey="Press any key to continue..."
 }
 
 if [[ `whoami` == 'root' ]] ; then
