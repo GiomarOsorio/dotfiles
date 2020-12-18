@@ -579,6 +579,7 @@ archmenu(){
        archgenmkinitcpionvme
    fi
    archbootloadermenu
+   rebootpc
    #archextrasmenu
    #archdi
 }
@@ -789,14 +790,10 @@ archbootloadermenu(){
         ;;
         "4")
             #"Exit & Reboot")
-            unmountdevices
-            reboot now
         ;;
     esac
     if ! [[ ${sel} = 4 ]]; then
         archbootloadermenu
-    else
-        archbootloadermenu "1"
     fi
     echo "" 
 }
@@ -952,6 +949,12 @@ archgrubinstallbootloaderefiusbchroot(){
         fi
     fi
     exit
+}
+# --------------------------------------------------------
+rebootpc(){
+    unmountdevices
+    echo -e ">reboot now"
+    reboot now
 }
 # --------------------------------------------------------
 unmountdevices(){
