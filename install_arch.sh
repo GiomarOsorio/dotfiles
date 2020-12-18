@@ -861,25 +861,25 @@ archgrubinstallbootloader(){
                 if [ "${efimode}" == "1" ]; then
                     case ${sel} in
                         "1")
-                            sel="EFI"
+                            bootloader="EFI"
                         ;;
                         "2")
-                            sel="BIOS"
+                            bootloader="BIOS"
                         ;;
                         "3")
-                            sel="BIOS+EFI"
+                            bootloader="BIOS+EFI"
                         ;;
                     esac
                 elif [ "${efimode}" == "2" ]; then
                     case ${sel} in
                         "1")
-                            sel="BIOS+EFI"
+                            bootloader="BIOS+EFI"
                         ;;
                         "2")
-                            sel="BIOS"
+                            bootloader="BIOS"
                         ;;
                         "3")
-                            sel="EFI"
+                            bootloader="EFI"
                         ;;
                     esac
                 else
@@ -919,7 +919,7 @@ archgrubinstallbootloader(){
 }
 # --------------------------------------------------------
 archgrubinstallbootloaderchroot(){
-    if [! "${1}" = "none" ]; then
+    if [ ! "${1}" = "none" ]; then
         echo ">grub-install --target=i386-pc --recheck ${1}"
         grub-install --target=i386-pc --recheck ${1}
     fi
@@ -927,7 +927,7 @@ archgrubinstallbootloaderchroot(){
 }
 # --------------------------------------------------------
 archgrubinstallbootloaderefichroot(){
-    if [! "${1}" = "none" ]; then
+    if [ ! "${1}" = "none" ]; then
         echo ">grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
         grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}
         isvbox=$(lspci | grep "VirtualBox G")
@@ -940,7 +940,7 @@ archgrubinstallbootloaderefichroot(){
 }
 # --------------------------------------------------------
 archgrubinstallbootloaderefiusbchroot(){
-    if [! "${1}" = "none" ]; then
+    if [ ! "${1}" = "none" ]; then
         echo ">grub-install --target=i386-pc --recheck ${1}"
         grub-install --target=i386-pc --recheck ${1}
         echo ">grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
@@ -1103,10 +1103,10 @@ if [ "${chroot}" = "1" ]; then
         'grubbootloaderinstall') archgrubinstallbootloaderchroot ${args};;
         'grubbootloaderefiinstall') archgrubinstallbootloaderefichroot ${args};;
         'grubbootloaderefiusbinstall') archgrubinstallbootloaderefiusbchroot ${args};;
-        'syslinuxbootloaderinstall') archsyslinuxinstallbootloaderchrrot ${args};;
-        'syslinuxbootloaderefiinstall') archsyslinuxinstallbootloaderefichrrot ${args};;
-        'systemdbootloaderinstall') archsystemdinstallchrrot ${args};;
-        'refindbootloaderinstall') archrefindinstallchroot ${args};;
+        #'syslinuxbootloaderinstall') archsyslinuxinstallbootloaderchrrot ${args};;
+        #'syslinuxbootloaderefiinstall') archsyslinuxinstallbootloaderefichrrot ${args};;
+        #'systemdbootloaderinstall') archsystemdinstallchrrot ${args};;
+        #'refindbootloaderinstall') archrefindinstallchroot ${args};;
         #'');;
         #'');;
         #'');;
