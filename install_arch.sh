@@ -597,21 +597,22 @@ archchroot(){
 }
 # --------------------------------------------------------
 hostname(){
-    re="^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])\
-	    (\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))$"
+    re="^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))$"
     showtitle "SETTING HOSTNAME"
-    while true;do
-        echo "Enter a hostname: "
-        read hostname
-	    if ! [[ ${hostname} =~ ${re} ]];then
-		    echo -e "Valid characters for hostname are letters from a to z,"
-    		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
-    		echo -e "may not start with a hyphen. Max 63 characters long."
-	    else
-		    echo ""
-    		break
-    	fi
-    done
+    #while true;do
+    #    echo "Enter a hostname: "
+    #    read hostname
+	#    if ! [[ ${hostname} =~ ${re} ]]; then
+	#	    echo -e "Valid characters for hostname are letters from a to z,"
+    #		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
+    #		echo -e "may not start with a hyphen. Max 63 characters long."
+	#    else
+	#	    echo ""
+    #		break
+    #	fi
+    #done
+    echo "Enter a hostname: "
+    read hostname
     echo -e "\n${txtsethostname}\n"
     echo -e ">echo \"${hostame}\" > /mnt/etc/hostname"
     echo "${hostname}" > /mnt/etc/hostname
