@@ -573,7 +573,7 @@ archmenu(){
    archsettime
    hostname
    archsetrootpassword
-   archgentfstabmenu
+   archgenfstabmenu
    archgencrypttab
    if [ "${isnvme}" = "1" ]; then
        archgenmkinitcpionvme
