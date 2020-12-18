@@ -11,6 +11,11 @@ checkefi(){
     fi
 }
 # --------------------------------------------------------
+installdependencies(){
+    pacman -S --needed arch-install-scripts wget libnewt -y
+    clear
+}
+# --------------------------------------------------------
 setkeymap(){
 	showtitle "LOADING KEYMAP"
 	echo ">loadkeys ${keymap}"
@@ -597,7 +602,7 @@ hostname(){
     while true;do
         echo "Enter a hostname: "
         read hostname
-	    if [ ${hostname} =~ ${re} ];then
+	    if ! [[ ${hostname} =~ ${re} ]];then
 		    echo -e "Valid characters for hostname are letters from a to z,"
     		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
     		echo -e "may not start with a hyphen. Max 63 characters long."
@@ -649,12 +654,12 @@ archsettime(){
     echo ">ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime"
     ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime
     
-    echo -e ">\n${txthwclock}"
+    echo -e "\n${txthwclock}"
     echo -e "${options}"
     while true;do
         echo "Select a option: "
         read sel 
-	    if [ ${sel} =~ ${re} ];then
+	    if ! [[ ${sel} =~ ${re} ]]; then
             echo -e "Invalid option, try again\n"
     	else
 	    	case ${sel} in
@@ -845,7 +850,7 @@ if [ "${chroot}" = "1" ]; then
         #'');;
     esac
 else
-    pacman -S --needed arch-install-scripts wget libnewt
+    installdependencies
     loadconfigs
     checkefi
     setkeymap
