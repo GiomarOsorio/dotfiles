@@ -598,7 +598,7 @@ hostname(){
     echo "Enter a hostname: "
     read hostname
     echo -e "\n${txtsethostname}\n"
-    echo -e ">echo \"${hostame}\" > /mnt/etc/hostname"
+    echo -e ">echo \"${hostname}\" > /mnt/etc/hostname"
     echo "${hostname}" > /mnt/etc/hostname
     echo ""
 }
@@ -660,6 +660,7 @@ archsettime(){
             archchroot settimelocal
         ;;
     esac
+    echo ""
 }
 # --------------------------------------------------------
 archsettimeutcchroot(){
@@ -752,6 +753,10 @@ archbootloadermenu(){
     options+="[1] ${txtinstall//%1/grub}\n"
     options+="[2] ${txtedit//%1/grub}\n"
     options+="[3] ${txtinstall//%1/bootloader}\n"
+    if [[ $1 == "1" ]]; then 
+        re="^[1-4]$"
+        options+="[4] Exit & Reboot}\n"
+    fi
     showtitle "INSTALLING BOOTLOADER"
 
     echo -e "${txtbootloadergrubmenu}\n"
@@ -781,9 +786,17 @@ archbootloadermenu(){
         "3")
             #"${txtinstall//%1/bootloader}")
             archgrubinstallbootloader
+        ;;
+        "4")
+            #"Exit & Reboot")
+            unmountdevices
+            reboot now
+        ;;
     esac
-    if [[ ${sel} = 2 ]]; then
+    if ! [[ ${sel} = 4 ]]; then
         archbootloadermenu
+    else
+        archbootloadermenu "1"
     fi
     echo "" 
 }
@@ -819,7 +832,7 @@ archgrubinstallchroot(){
      exit
 }
 # --------------------------------------------------------
-archgrubinstallbootoloader(){
+archgrubinstallbootloader(){
     re="^[1-3]$"
     if [ "${eficomputer}" == "1" ]; then
         options=""
@@ -872,13 +885,13 @@ archgrubinstallbootoloader(){
                 else
                     case ${sel} in
                         "1")
-                            sel="BIOS"
+                            bootloader="BIOS"
                         ;;
                         "2")
-                            sel="EFI"
+                            bootloader="EFI"
                         ;;
                         "3")
-                            sel="BIOS+EFI"
+                            bootloader="BIOS+EFI"
                         ;;
                     esac
                 fi
@@ -886,7 +899,7 @@ archgrubinstallbootoloader(){
                 break
             fi
         done
-        case ${sel} in
+        case ${bootloader} in
             "BIOS")
                 archchroot grubbootloaderinstall ${device}
             ;;
@@ -902,6 +915,7 @@ archgrubinstallbootoloader(){
         archchroot grubbootloaderinstall ${device}
         pressanykey
     fi
+    echo ""
 }
 # --------------------------------------------------------
 archgrubinstallbootloaderchroot(){
