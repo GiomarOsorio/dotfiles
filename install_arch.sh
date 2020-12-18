@@ -573,16 +573,12 @@ archmenu(){
    archsettime
    hostname
    archsetrootpassword
-   #archgentfstabmenu
-   #archgencrypttab
-   #if [ "${isnvme}" = "1" ]; then
-   #    archgenmkinitcpionvme
-   #fi
-   #edit "/mnt/etc/fstab/"
-   #edit "/mnt/etc/crypttab/"
-   #archeditmkinitcpio
-   #edit "/mnt/etc/pacman.d/mirrorList/"
-   #archbootloadermenu
+   archgentfstabmenu
+   archgencrypttab
+   if [ "${isnvme}" = "1" ]; then
+       archgenmkinitcpionvme
+   fi
+   archbootloadermenu
    #archextrasmenu
    #archdi
 }
@@ -599,18 +595,6 @@ archchroot(){
 hostname(){
     re="^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))$"
     showtitle "SETTING HOSTNAME"
-    #while true;do
-    #    echo "Enter a hostname: "
-    #    read hostname
-	#    if ! [[ ${hostname} =~ ${re} ]]; then
-	#	    echo -e "Valid characters for hostname are letters from a to z,"
-    #		echo -e "the digits from 0 to 9, and the hyphen (-). A hostname"
-    #		echo -e "may not start with a hyphen. Max 63 characters long."
-	#    else
-	#	    echo ""
-    #		break
-    #	fi
-    #done
     echo "Enter a hostname: "
     read hostname
     echo -e "\n${txtsethostname}\n"
@@ -664,18 +648,18 @@ archsettime(){
 	    if ! [[ ${sel} =~ ${re} ]]; then
             echo -e "Invalid option, try again\n"
     	else
-	    	case ${sel} in
-		    	"1")
-			    	archchroot settimeutc
-			    ;;
-    			"2")
-	    			archchroot settimelocal
-				;;
-	    	esac
 		    echo ""
     		break
 	    fi
     done
+    case ${sel} in
+        "1")
+            archchroot settimeutc
+        ;;
+        "2")
+            archchroot settimelocal
+        ;;
+    esac
 }
 # --------------------------------------------------------
 archsettimeutcchroot(){
@@ -701,6 +685,258 @@ archsetrootpasswordchroot(){
 	    passwd root
 	    passed=$?
     done
+    exit
+}
+# --------------------------------------------------------
+archgenfstabmenu(){
+    re="^[1-4]$"
+    options=""
+    options+="[1] \"UUID\" genfstab -U\n"
+    options+="[2] \"LABEL\" genfstab -L\n"
+    options+="[3] \"PARTUUID\" genfstab -t PARTUUID\n"
+    options+="[4] \"PARTLABEL\" genfstab -t PARTLABEL\n"
+    showtitle "${txtgenerate//%1/fstab}"
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            echo "Invalid option, try again"
+        else
+            echo ""
+            break
+        fi
+    done
+    case ${sel} in
+        "1")
+            #"UUID")
+            echo ">genfstab -U -p /mnt > /mnt/etc/fstab"
+            genfstab -U -p /mnt > /mnt/etc/fstab
+        ;;
+        "2")
+            #"LABEL")
+            echo "genfstab -L -p /mnt > /mnt/etc/fstab"
+            genfstab -L -p /mnt > /mnt/etc/fstab
+        ;;
+        "3")
+            #"PARTUUID")
+            echo "genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab"
+            genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab
+        ;;
+        "4")
+            #"PARTLABEL")
+            echo "genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab"
+            genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab
+        ;;
+    esac
+    echo ""
+}
+# --------------------------------------------------------
+archgencrypttab(){
+    showtitle "${txtgenerate//%1/crypttab}"
+    echo "echo -e \"${crypttab}\" >> /mnt/etc/crypttab"
+    echo -e "${crypttab}" >> /mnt/etc/crypttab
+    echo ""
+}
+# --------------------------------------------------------
+archgenmkinitcpionvme(){
+    showtitle "${txtgenerate//%1/MkinitcpioNVME}"
+    echo "sed -i \"s/MODULES=()/MODULES=(nvme)/g\" /mnt/etc/mkinitcpio.conf"
+    sed -i "s/MODULES=()/MODULES=(nvme)/g" /mnt/etc/mkinitcpio.conf
+    archchroot genmkinitcpio
+    echo ""
+}
+# --------------------------------------------------------
+archbootloadermenu(){
+    re="^[1-3]$"
+    options=""
+    options+="[1] ${txtinstall//%1/grub}\n"
+    options+="[2] ${txtedit//%1/grub}\n"
+    options+="[3] ${txtinstall//%1/bootloader}\n"
+    showtitle "INSTALLING BOOTLOADER"
+
+    echo -e "${txtbootloadergrubmenu}\n"
+    echo -e "${options}"
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            echo "Invalid option, try again"
+        else
+            echo ""
+            break
+        fi
+    done
+    case ${sel} in
+        "1")
+            #"${txtinstall//%1/grub}")
+            archgrubinstall
+            clear
+        ;;
+        "2")
+            #"${txtedit//%1/grub}")
+            ${editor} /mnt/etc/default/grub
+            clear
+            archchroot grubinstall
+        ;;
+        "3")
+            #"${txtinstall//%1/bootloader}")
+            archgrubinstallbootloader
+    esac
+    if [[ ${sel} = 2 ]]; then
+        archbootloadermenu
+    fi
+    echo "" 
+}
+# --------------------------------------------------------
+archgrubinstall(){
+    clear
+    echo ">pacstrap /mnt grub"
+    pacstrap /mnt grub
+    pressanykey
+
+    if [ "${eficomputer}" == "1" ]; then
+        if [ "${efimode}" == "1" ]||[ "${efimode}" == "2" ]; then
+            clear
+            echo ">pacstrap /mnt efibootmgr"
+            pacstrap /mnt efibootmgr
+            pressanykey
+        else
+            clear
+            echo ">pacstrap /mnt efibootmgr"
+            pacstrap /mnt efibootmgr
+            pressanykey
+        fi
+    fi
+    clear
+    archchroot grubinstall
+}
+# --------------------------------------------------------
+archgrubinstallchroot(){
+     echo ">mkdir /boot/grub"
+     echo ">grub-mkconfig -o /boot/grub/grub.cfg"
+     mkdir /boot/grub
+     grub-mkconfig -o /boot/grub/grub.cfg
+     exit
+}
+# --------------------------------------------------------
+archgrubinstallbootoloader(){
+    re="^[1-3]$"
+    if [ "${eficomputer}" == "1" ]; then
+        options=""
+        if [ "${efimode}" == "1" ]; then
+            options+="[1] EFI\n"
+            options+="[2] BIOS\n"
+            options+="[3] BIOS+EFI\n"
+        elif [ "${efimode}" == "2" ]; then
+            options+="[1] BIOS+EFI\n"
+            options+="[2] BIOS\n"
+            options+="[3] EFI\n"
+        else
+            options+="[1] BIOS\n"
+            options+="[2] EFI\n"
+            options+="[3] BIOS+EFI\n"
+        fi
+        
+        echo "${txtinstall//%1/bootloader}\n"
+        echo -e "${options}"
+        while true;do
+            echo "Select a option: "
+            read sel
+            if ! [[ $sel =~ $re ]]; then
+                echo "Invalid option, try again"
+            else
+                if [ "${efimode}" == "1" ]; then
+                    case ${sel} in
+                        "1")
+                            sel="EFI"
+                        ;;
+                        "2")
+                            sel="BIOS"
+                        ;;
+                        "3")
+                            sel="BIOS+EFI"
+                        ;;
+                    esac
+                elif [ "${efimode}" == "2" ]; then
+                    case ${sel} in
+                        "1")
+                            sel="BIOS+EFI"
+                        ;;
+                        "2")
+                            sel="BIOS"
+                        ;;
+                        "3")
+                            sel="EFI"
+                        ;;
+                    esac
+                else
+                    case ${sel} in
+                        "1")
+                            sel="BIOS"
+                        ;;
+                        "2")
+                            sel="EFI"
+                        ;;
+                        "3")
+                            sel="BIOS+EFI"
+                        ;;
+                    esac
+                fi
+                echo ""
+                break
+            fi
+        done
+        case ${sel} in
+            "BIOS")
+                archchroot grubbootloaderinstall ${device}
+            ;;
+            "EFI")
+                archchroot grubbootloaderefiinstall ${device}
+            ;;
+            "BIOS+EFI")
+                archchroot grubbootloaderefiusbinstall ${device}
+            ;;
+        esac
+    else
+        clear
+        archchroot grubbootloaderinstall ${device}
+        pressanykey
+    fi
+}
+# --------------------------------------------------------
+archgrubinstallbootloaderchroot(){
+    if [! "${1}" = "none" ]; then
+        echo ">grub-install --target=i386-pc --recheck ${1}"
+        grub-install --target=i386-pc --recheck ${1}
+    fi
+    exit
+}
+# --------------------------------------------------------
+archgrubinstallbootloaderefichroot(){
+    if [! "${1}" = "none" ]; then
+        echo ">grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
+        grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}
+        isvbox=$(lspci | grep "VirtualBox G")
+        if [ "${isvbox}" ]; then
+            echo "VirtualBox detected, creating startup.nsh..."
+            echo "\EFI\arch\grubx64.efi" > /boot/startup.nsh
+        fi
+    fi
+    exit
+}
+# --------------------------------------------------------
+archgrubinstallbootloaderefiusbchroot(){
+    if [! "${1}" = "none" ]; then
+        echo ">grub-install --target=i386-pc --recheck ${1}"
+        grub-install --target=i386-pc --recheck ${1}
+        echo ">grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
+        grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}
+        isvbox=$(lspci | grep "VirtualBox G")
+        if [ "${isvbox}" ]; then
+            echo "VirtualBox detected, creating startup.nsh..."
+            echo "\EFI\arch\grubx64.efi" > /boot/startup.nsh
+        fi
+    fi
     exit
 }
 # --------------------------------------------------------
@@ -812,11 +1048,26 @@ loadconfigs(){
 
     # messages ---------------------------------------
     txtpressanykey="Press any key to continue..."
+    txtgenerate="Generate %1"
+    txtinstall="Install %1"
+    txtedit="Edit %1"
+    #txtenable="Enable %1"
 }
 
 # --------------------------------------------------------
 while (( "$#" )); do
     case ${1} in
+        -efi0)
+            efimode=0
+        ;;
+        -efi1)
+            eficomputer=1
+            efimode=1
+        ;;
+        -efi2)
+            eficomputer=1
+            efimode=2
+        ;;
         --chroot)
             chroot=1
             command=${2}
