@@ -574,7 +574,7 @@ archmenu(){
    hostname
    archsetrootpassword
    archgenfstabmenu
-   archgencrypttab
+   #archgencrypttab
    if [ "${isnvme}" = "1" ]; then
        archgenmkinitcpionvme
    fi
@@ -698,6 +698,9 @@ archgenfstabmenu(){
     options+="[3] \"PARTUUID\" genfstab -t PARTUUID\n"
     options+="[4] \"PARTLABEL\" genfstab -t PARTLABEL\n"
     showtitle "${txtgenerate//%1/fstab}"
+    
+    echo -e "${txtgenerate//%1/fstab}\n"
+    echo -e "${options}"
     while true; do
         echo "Select a option: "
         read sel
