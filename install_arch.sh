@@ -12,7 +12,8 @@ checkefi(){
 }
 # --------------------------------------------------------
 installdependencies(){
-    pacman -S --needed arch-install-scripts wget libnewt -y
+    clear
+    pacman -S --noconfirm --needed arch-install-scripts wget libnewt
     clear
 }
 # --------------------------------------------------------
