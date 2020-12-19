@@ -25,11 +25,11 @@ installdependencies(){
 checkefi(){
     dmesg |grep efi: > /dev/null
     if [ "$?" == "1" ]; then
-    if [ "${eficomputer}" != "1" ]; then
-        eficomputer=0
-    fi
-    else
-        eficomputer=1
+        if [ "${eficomputer}" != "1" ]; then
+            eficomputer=0
+        else
+            eficomputer=1
+        fi
     fi
 }
 # --------------------------------------------------------
@@ -151,13 +151,13 @@ diskpartautodos(){
 diskpartautogpt(){
     showmessage "${txtautopartclear}"
     parted ${device} mklabel gpt
-    shomessage "${txtautopartcreate//%1/BIOS boot}"
+    showmessage "${txtautopartcreate//%1/BIOS boot}"
     sgdisk ${device} -n=1:0:+31M -t=1:ef02
     showmessage "${txtautopartcreate//%1/boot}"
     sgdisk ${device} -n=2:0:+512M
     showmessage "${txtautopartcreate//%1/swap}"
     sgdisk ${device} -n=3:0:+${swap_size}"M" -t=3:8200
-    showmessage"${txtautopartcreate//%1/root}"
+    showmessage "${txtautopartcreate//%1/root}"
     sgdisk ${device} -n=4:0:0
     echo ""
     if [ "${device::8}" == "/dev/nvm" ]; then
@@ -1054,7 +1054,7 @@ loadconfigs(){
     default_swapsize=$(cat /proc/meminfo | grep MemTotal | awk '{ print $2 }')
     default_swapsize=$((${default_swapsize}/1000))
     title_swap="Choose your swap size"
-    txt_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you don't enter anything: \nswap -> Same size of the ram installed\n\n"
+    txt_swap="The boot will be 512M\nThe root will be the rest of the hard disk\nEnter partitionsize in gb for the Swap. \n\nIf you don't enter anything: \nswap -> Same size of the ram installed"
     menu_swap="Enter the size of swap partition in MB (only numbers)"
 
     # diskpart ---------------------------------------
@@ -1107,7 +1107,7 @@ loadconfigs(){
     txtedit="Edit %1"
     #txtenable="Enable %1"
     txtcommand="> %1 \n"
-    txtmessage="MESSAGE: %1\n"
+    txtmessage="%1\n"
     txtinvalid="Invalid option, try again."
 }
 
