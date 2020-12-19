@@ -756,15 +756,12 @@ archgenmkinitcpionvme(){
 }
 # --------------------------------------------------------
 archbootloadermenu(){
-    re="^[1-3]$"
+    re="^[1-4]$"
     options=""
     options+="[1] ${txtinstall//%1/grub}\n"
     options+="[2] ${txtedit//%1/grub}\n"
     options+="[3] ${txtinstall//%1/bootloader}\n"
-    if [[ $1 == "1" ]]; then 
-        re="^[1-4]$"
-        options+="[4] Exit & Reboot}\n"
-    fi
+    options+="[4] Exit & Reboot}\n"
     showtitle "INSTALLING BOOTLOADER"
 
     echo -e "${txtbootloadergrubmenu}\n"
