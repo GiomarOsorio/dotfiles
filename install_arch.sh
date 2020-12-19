@@ -600,8 +600,10 @@ hostname(){
     read hostname
     echo -e "\n${txtsethostname}\n"
     echo -e ">echo \"${hostname}\" > /mnt/etc/hostname"
+    echo -e ">echo \"${txthost//%1/${hostname}}\" > /mnt/etc/hosts"
     echo "${hostname}" > /mnt/etc/hostname
-    echo ""
+    echo "${txthost//%1/${hostname}}" > /mnt/etc/hosts
+    echo -e "\n"
 }
 # --------------------------------------------------------
 archsetkeymap(){
@@ -681,6 +683,7 @@ archsetrootpassword(){
 }
 # --------------------------------------------------------
 archsetrootpasswordchroot(){
+    showtitle "SETTING ROOT PASSWORD"
     echo ">passwd root"
     passed=1
     while [[ ${passed} != 0 ]]; do
@@ -1051,7 +1054,7 @@ loadconfigs(){
     # hostname ---------------------------------------
     hostname=""
     txtsethostname="Set Computer Name"
-
+    txthost="127.0.0.1    localhost\n::1          localhost\n127.0.1.1    %1.localdomain    %1"
     # locale -----------------------------------------
     locale="es_VE"
     txtsetlocale="Set Locale"
