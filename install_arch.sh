@@ -13,6 +13,7 @@ run(){
     mountparts
     installmenu
     archmenu
+    exit
 }
 # --------------------------------------------------------
 installdependencies(){
@@ -446,6 +447,7 @@ installbase(){
     options+="[2] linux-lts\n"
     options+="[3] linux-zen\n"
     options+="[4] linux-hardened\n"
+
     echo -e "${txtinstallarchlinuxkernel}"
     echo -e "${options}"
     while true;do
@@ -556,6 +558,7 @@ archmenu(){
    archbootloadermenu
    archextraspkg
    rebootpc
+   exit
 }
 # --------------------------------------------------------
 archchroot(){
