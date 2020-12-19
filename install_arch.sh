@@ -624,6 +624,7 @@ archsetlocale(){
     echo ">sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
     sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
     archchroot setlocale
+    echo ""
 }
 # --------------------------------------------------------
 archsetlocalechroot(){
