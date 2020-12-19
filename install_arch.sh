@@ -1,5 +1,26 @@
 #!/bin/bash
 # --------------------------------------------------------
+run(){
+    installdependencies
+    loadconfigs
+    checkefi
+    setkeymap
+    chooseeditor
+    selectdisk
+    selectswapsize
+    diskpart
+    formatdevice
+    mountparts
+    installmenu
+    archmenu
+}
+# --------------------------------------------------------
+installdependencies(){
+    clear
+    pacman -S --noconfirm --needed arch-install-scripts wget libnewt
+    clear
+}
+# --------------------------------------------------------
 checkefi(){
     dmesg |grep efi: > /dev/null
     if [ "$?" == "1" ]; then
@@ -11,24 +32,16 @@ checkefi(){
     fi
 }
 # --------------------------------------------------------
-installdependencies(){
-    clear
-    pacman -S --noconfirm --needed arch-install-scripts wget libnewt
-    clear
-}
-# --------------------------------------------------------
 setkeymap(){
 	showtitle "LOADING KEYMAP"
-	echo ">loadkeys ${keymap}"
-	echo ""
+    showcommand "loadkeys ${keymap}"
 	loadkeys $keymap
 }
 
 # --------------------------------------------------------
 chooseeditor(){
     showtitle "SETTING EDITOR"
-	echo ">export EDITOR=${editor}"
-	echo ""
+    showcommand "export EDITOR=${editor}"
 	export EDITOR=${editor}
 	EDITOR=${editor}
 }
@@ -36,9 +49,7 @@ chooseeditor(){
 # --------------------------------------------------------
 selectdisk(){
 	showtitle "SELECTING HARD DISK"
-    tput setaf 3
-    echo "Select the installation hard drive on the next screen"	
-    tput setaf 2
+    showmessage "${txtnextscreen//%1/hard drive}"
     pressanykey
     items=$(lsblk -d -p -n -l -o NAME,SIZE -e 7,11)
     options=()
@@ -54,23 +65,18 @@ selectdisk(){
     done
     clear
     device=${device%%\ *}
-    echo ">select "${device}
-    echo ""
+    showcommand "select ${device}"
 }
 # --------------------------------------------------------
 selectswapsize(){
     showtitle "SELECTING SWAP SIZE"
-    tput setaf 6
-    echo -e "${txt_swap}"
-    tput setaf 3
-	echo -e "Select the size of the swap partition on the next screen"	
-    tput setaf 2
+    showmessage "${txt_swap}"
+    showmessage "${txtnextscreen//%1/swap}"
 	pressanykey
     swap_size=$(whiptail --backtitle "Arch Install Script" --inputbox "${menu_swap}" 8 39 ${default_swapsize} --title "${title_swap}" 3>&1 1>&2 2>&3)
     clear
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_swapsize
-	echo ">have selected "${swap_size%%\ *}"MB in swap size"
-	echo ""
+    showcommand "have selected "${swap_size%%\ *}"MB in swap size"
 }
 # --------------------------------------------------------
 diskpart(){
@@ -87,7 +93,7 @@ diskpart(){
         echo -e "Select one option: "
         read partitiontable
         if ! [[ $partitiontable =~ $re ]] ; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
         else
             echo ""
             break 
@@ -116,24 +122,16 @@ diskpart(){
 }
 # --------------------------------------------------------
 diskpartautodos(){
-    tput setaf 6
-    echo "${txtautopartclear}"
-    tput setaf 2
+    showmessage "${txtautopartclear}"
     parted ${device} mklabel msdos
     sleep 1
-    tput setaf 6
-    echo "${txtautopartcreate//%1/boot}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/boot}"
     echo -e "n\np\n\n\n+512M\na\nw" | fdisk ${device}
     sleep 1
-    tput setaf 6
-    echo "${txtautopartcreate//%1/swap}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/swap}"
     echo -e "n\np\n\n\n+${swap_size}"M"\nt\n\n82\nw" | fdisk ${device}
     sleep 1
-    tput setaf 6
-    echo "${txtautopartcreate//%1/root}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/root}"
     echo -e "n\np\n\n\n\nw" | fdisk ${device}
     sleep 1
     echo ""
@@ -150,25 +148,15 @@ diskpartautodos(){
 }
 # --------------------------------------------------------
 diskpartautogpt(){
-    tput setaf 6
-    echo "${txtautopartclear}"
-    tput setaf 2
+    showmessage "${txtautopartclear}"
     parted ${device} mklabel gpt
-    tput setaf 6
-    echo "${txtautopartcreate//%1/BIOS boot}"
-    tput setaf 2
+    shomessage "${txtautopartcreate//%1/BIOS boot}"
     sgdisk ${device} -n=1:0:+31M -t=1:ef02
-    tput setaf 6
-    echo "${txtautopartcreate//%1/boot}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/boot}"
     sgdisk ${device} -n=2:0:+512M
-    tput setaf 6
-    echo "${txtautopartcreate//%1/swap}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/swap}"
     sgdisk ${device} -n=3:0:+${swap_size}"M" -t=3:8200
-    tput setaf 6
-    echo "${txtautopartcreate//%1/root}"
-    tput setaf 2
+    showmessage"${txtautopartcreate//%1/root}"
     sgdisk ${device} -n=4:0:0
     echo ""
     if [ "${device::8}" == "/dev/nvm" ]; then
@@ -184,21 +172,13 @@ diskpartautogpt(){
 }
 # --------------------------------------------------------
 diskpartautogptefi(){
-    tput setaf 6
-    echo "${txtautopartclear}"
-    tput setaf 2
+    showmessage "${txtautopartclear}"
     parted ${device} mklabel gpt
-    tput setaf 6
-    echo "${txtautopartcreate//%1/EFI boot}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/EFI boot}"
     sgdisk ${device} -n=1:0:+1024M -t=1:ef00
-    tput setaf 6
-    echo "${txtautopartcreate//%1/swap}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/swap}"
     sgdisk ${device} -n=2:0:+${swap_size}"M" -t=2:8200
-    tput setaf 6
-    echo "${txtautopartcreate//%1/root}"
-    tput setaf 2
+    showmessage "${txtautopartcreate//%1/root}"
     sgdisk ${device} -n=3:0:0
     echo ""
     if [ "${device::8}" == "/dev/nvm" ]; then
@@ -243,7 +223,7 @@ formatbootdevice(){
         echo -e "Select one option: "
         read sel 
         if ! [[ $sel =~ $re ]] ; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
         else
             case ${sel} in
                 "0")
@@ -263,26 +243,24 @@ formatbootdevice(){
             break 
         fi
     done
-    tput setaf 6
-    echo -e "\n${txtformatingpart//%1/${2}} ${formatboot}"
-    echo -e "----------------------------------------------"
-    tput setaf 2
+    showmessage "\n${txtformatingpart//%1/${2}} ${formatboot}"
+    showmessage "----------------------------------------------"
     case ${formatboot} in
         "ext2")
-            echo ">mkfs.ext2 ${2}"
+            showcommand "mkfs.ext2 ${2}"
             mkfs.ext2 ${2}
         ;;
         "ext3")
-            echo ">mkfs.ext3 ${2}"
+            showcommand "mkfs.ext3 ${2}"
             mkfs.ext3 ${2}
         ;;
         "ext4")
-            echo ">mkfs.ext4 ${2}"
+            showcommand "mkfs.ext4 ${2}"
             mkfs.ext4 ${2}
         ;;
         "fat32")
             fspkgs="${fspkgs[@]} dosfstools"
-            echo ">mkfs.fat ${2}"
+            showcommand "mkfs.fat ${2}"
             mkfs.fat ${2}
         ;;
     esac
@@ -290,11 +268,9 @@ formatbootdevice(){
 }
 # --------------------------------------------------------
 formatswapdevice(){
-    tput setaf 6
-    echo "${txtformatingpart//%1/${swapdev}} swap"
-    echo "----------------------------------------------------"
-    tput setaf 2
-    echo ">mkswap ${swapdev}"
+    showmessage "${txtformatingpart//%1/${swapdev}} swap"
+    showmessage "----------------------------------------------------"
+    showcommand "mkswap ${swapdev}"
     mkswap ${swapdev}
     echo ""
     }
@@ -316,7 +292,7 @@ formatrootdevice(){
         echo -e "Select one option: "
         read sel 
         if ! [[ $sel =~ $re ]] ; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
         else
             case ${sel} in
                 "1")
@@ -349,19 +325,19 @@ formatrootdevice(){
         fi
     done
     tput setaf 6
-    echo "${txtformatingpart//%1/${2}} ${formatroot}"
-    echo "----------------------------------------------"
+    showmessage "${txtformatingpart//%1/${2}} ${formatroot}"
+    showmesssage "----------------------------------------------"
     tput setaf 2
     case ${formatroot} in
         "btrfs")
             fspkgs="${fspkgs[@]} btrfs-progs"
-            echo "mkfs.btrfs -f ${2}"
+            showcommand "mkfs.btrfs -f ${2}"
             mkfs.btrfs -f ${2}
             if [ "${1}" = "root" ]; then
-                echo "mount ${2} /mnt"
-                echo "btrfs subvolume create /mnt/root"
-                echo "btrfs subvolume set-default /mnt/root"
-                echo "umount /mnt"
+                showcommand "mount ${2} /mnt"
+                showcommand "btrfs subvolume create /mnt/root"
+                showcommand "btrfs subvolume set-default /mnt/root"
+                showcommand "umount /mnt"
                 mount ${2} /mnt
                 btrfs subvolume create /mnt/root
                 btrfs subvolume set-default /mnt/root
@@ -369,35 +345,35 @@ formatrootdevice(){
             fi
         ;;
         "ext4")
-            echo ">mkfs.ext4 ${2}"
+            showcommand "mkfs.ext4 ${2}"
             mkfs.ext4 ${2}
         ;;
         "ext3")
-            echo ">mkfs.ext3 ${2}"
+            showcommand "mkfs.ext3 ${2}"
             mkfs.ext3 ${2}
         ;;
         "ext2")
-            echo ">mkfs.ext2 ${2}"
+            showcommand "mkfs.ext2 ${2}"
             mkfs.ext2 ${2}
         ;;
         "xfs")
             fspkgs="${fspkgs[@]} xfsprogs"
-            echo ">mkfs.xfs -f ${2}"
+            showcommand "mkfs.xfs -f ${2}"
             mkfs.xfs -f ${2}
         ;;
         "f2fs")
             fspkgs="${fspkgs[@]} f2fs-tools"
-            echo ">mkfs.f2fs -f $2"
+            showcommand "mkfs.f2fs -f $2"
             mkfs.f2fs -f $2
         ;;
         "jfs")
             fspkgs="${fspkgs[@]} jfsutils"
-            echo ">mkfs.jfs -f ${2}"
+            showcommand "mkfs.jfs -f ${2}"
             mkfs.jfs -f ${2}
         ;;
         "reiserfs")
             fspkgs="${fspkgs[@]} reiserfsprogs"
-            echo ">mkfs.reiserfs -f ${2}"
+            showcommand "mkfs.reiserfs -f ${2}"
             mkfs.reiserfs -f ${2}
         ;;
     esac
@@ -406,20 +382,20 @@ formatrootdevice(){
 # --------------------------------------------------------
 mountparts(){
     showtitle "MOUNTING THE FILE SYSTEM"
-    echo ">mount ${rootdev} /mnt"
+    showcommand "mount ${rootdev} /mnt"
     mount ${rootdev} /mnt
-        echo ">mkdir /mnt/{boot,home}"
-        mkdir /mnt/{boot,home} 2>/dev/null
+    showcommand "mkdir /mnt/{boot,home}"
+    mkdir /mnt/{boot,home} 2>/dev/null
     if [ ! "${bootdev}" = "" ]; then
-        echo ">mount ${bootdev} /mnt/boot"
+        showcommand "mount ${bootdev} /mnt/boot"
         mount ${bootdev} /mnt/boot
     fi
     if [ ! "${swapdev}" = "" ]; then
-        echo ">swapon ${swapdev}"
+        showcommand "swapon ${swapdev}"
         swapon ${swapdev}
     fi
     if [ ! "${homedev}" = "" ]; then
-        echo ">mount ${homedev} /mnt/home"
+        showcommand "mount ${homedev} /mnt/home"
         mount ${homedev} /mnt/home
     fi
     echo ""
@@ -437,7 +413,7 @@ installmenu(){
         echo -e "Select one option: "
         read sel 
         if ! [[ $sel =~ $re ]] ; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
         else
             echo ""
             break 
@@ -476,7 +452,7 @@ installbase(){
         echo -e "Select one option: "
         read sel 
         if ! [[ $sel =~ $re ]] ; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
         else
             case ${sel} in
                 "1")
@@ -506,7 +482,7 @@ installbase(){
         echo -e "Select one option: "
         read sel 
         if ! [[ $sel =~ $re ]] ; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
         else
             case ${sel} in
                 "1")
@@ -558,11 +534,11 @@ installbase(){
     options+="[7] ( )lvm2\n"
     options+="[8] ( )dmraid\n"
     
-    echo -e "${txtinstallarchlinuxfilesystems}""\n"
-    echo -e "Additionally, the following packages will be installed for the file system. If you want to add more you will have to install the packages manually"
+    showmessage "${txtinstallarchlinuxfilesystems}"
+    showmessage "Additionally, the following packages will be installed for the file system. If you want to add more you will have to install the packages manually"
     echo -e "${options}""\n"
 
-    echo ">pacstrap /mnt ${pkgs}"
+    showcommand "pacstrap /mnt ${pkgs}"
     pacstrap /mnt ${pkgs}
     pressanykey
 }
@@ -574,34 +550,34 @@ archmenu(){
    hostname
    archsetrootpassword
    archgenfstabmenu
-   #archgencrypttab
    if [ "${isnvme}" = "1" ]; then
        archgenmkinitcpionvme
    fi
    archbootloadermenu
    archextraspkg
    rebootpc
-   #archextrasmenu
-   #archdi
 }
 # --------------------------------------------------------
 archchroot(){
-    echo ">arch-chroot /mnt /root"
+    showcommand "arch-chroot /mnt /root"
     cp ${0} /mnt/root
     chmod 775 /mnt/root/$(basename "${0}")
     arch-chroot /mnt /root/$(basename "${0}") --chroot ${1} ${2}
     rm /mnt/root/$(basename "${0}")
-    echo "exit"
+    showmessage "exit"
 }
 # --------------------------------------------------------
 hostname(){
-    re="^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9])(\.([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\-]{0,61}[a-zA-Z0-9]))$"
     showtitle "SETTING HOSTNAME"
-    echo "Enter a hostname: "
+    echo "Enter a hostname, (archlinux as default): "
     read hostname
-    echo -e "\n${txtsethostname}\n"
-    echo -e ">echo \"${hostname}\" > /mnt/etc/hostname"
-    echo -e ">echo \"${txthost//%1/${hostname}}\" > /mnt/etc/hosts"
+    echo ""
+    if [ ! "${hostname}" = "none" ]; then
+        hostname="archlinux"
+    fi
+    showmessage "${txtsethostname}"
+    showcommand "echo \"${hostname}\" > /mnt/etc/hostname"
+    showcommand "echo \"${txthost//%1/${hostname}}\" > /mnt/etc/hosts"
     echo "${hostname}" > /mnt/etc/hostname
     echo "${txthost//%1/${hostname}}" > /mnt/etc/hosts
     echo -e "\n"
@@ -610,7 +586,7 @@ hostname(){
 archsetkeymap(){
     showtitle "SETTING KEYMAP"
     echo ""
-    echo -e ">echo \"${keymap}\" > /mnt/etc/vconsole.conf"
+    showcommand "echo \"${keymap}\" > /mnt/etc/vconsole.conf"
     echo "${keymap}" > /mnt/etc/vconsole.conf
     echo ""
 }
@@ -618,18 +594,18 @@ archsetkeymap(){
 archsetlocale(){
     showtitle "SETTING LOCALE"
     echo -e "\n${txtsetlocale}\n"
-    echo ">echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
+    showcommand "echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
     echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
-    echo ">echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
+    showcommand "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
     echo "LC_COLLATE=C" >> /mnt/etc/locale.conf
-    echo ">sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
+    showcommand "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
     sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
     archchroot setlocale
     echo ""
 }
 # --------------------------------------------------------
 archsetlocalechroot(){
-    echo ">locale-gen"
+    showcommand "locale-gen"
     locale-gen
     exit
 }
@@ -642,7 +618,7 @@ archsettime(){
     options+="[2] LOCAL\n"
 
     echo -e "${txtsettime}\n"
-    echo ">ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime"
+    showcommand "ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime"
     ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime
     
     echo -e "\n${txthwclock}"
@@ -651,7 +627,7 @@ archsettime(){
         echo "Select a option: "
         read sel 
 	    if ! [[ ${sel} =~ ${re} ]]; then
-            echo -e "Invalid option, try again\n"
+            showmessage "${txtinvalid}"
     	else
 		    echo ""
     		break
@@ -669,13 +645,13 @@ archsettime(){
 }
 # --------------------------------------------------------
 archsettimeutcchroot(){
-    echo ">hwclock --systohc --utc"
+    showcommand "hwclock --systohc --utc"
     hwclock --systohc --utc
     exit
 }
 # --------------------------------------------------------
 archsettimelocalchroot(){
-    echo ">hwclock --systohc --localtime"
+    showcommand "hwclock --systohc --localtime"
     hwclock --systohc --localtime
     exit
 }
@@ -687,7 +663,7 @@ archsetrootpassword(){
 }
 # --------------------------------------------------------
 archsetrootpasswordchroot(){
-    echo ">passwd root"
+    showcommand "passwd root"
     passed=1
     while [[ ${passed} != 0 ]]; do
 	    passwd root
@@ -711,7 +687,7 @@ archgenfstabmenu(){
         echo "Select a option: "
         read sel
         if ! [[ $sel =~ $re ]]; then
-            echo "Invalid option, try again"
+            showmessage "${txtinvalid}"
         else
             echo ""
             break
@@ -720,22 +696,22 @@ archgenfstabmenu(){
     case ${sel} in
         "1")
             #"UUID")
-            echo ">genfstab -U -p /mnt > /mnt/etc/fstab"
+            showmessage "genfstab -U -p /mnt > /mnt/etc/fstab"
             genfstab -U -p /mnt > /mnt/etc/fstab
         ;;
         "2")
             #"LABEL")
-            echo "genfstab -L -p /mnt > /mnt/etc/fstab"
+            showmessage "genfstab -L -p /mnt > /mnt/etc/fstab"
             genfstab -L -p /mnt > /mnt/etc/fstab
         ;;
         "3")
             #"PARTUUID")
-            echo "genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab"
+            showmessage "genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab"
             genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab
         ;;
         "4")
             #"PARTLABEL")
-            echo "genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab"
+            showmessage "genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab"
             genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab
         ;;
     esac
@@ -744,14 +720,14 @@ archgenfstabmenu(){
 # --------------------------------------------------------
 archgencrypttab(){
     showtitle "${txtgenerate//%1/crypttab}"
-    echo "echo -e \"${crypttab}\" >> /mnt/etc/crypttab"
+    showcommand "echo -e \"${crypttab}\" >> /mnt/etc/crypttab"
     echo -e "${crypttab}" >> /mnt/etc/crypttab
     echo ""
 }
 # --------------------------------------------------------
 archgenmkinitcpionvme(){
     showtitle "${txtgenerate//%1/MkinitcpioNVME}"
-    echo "sed -i \"s/MODULES=()/MODULES=(nvme)/g\" /mnt/etc/mkinitcpio.conf"
+    showcommand "sed -i \"s/MODULES=()/MODULES=(nvme)/g\" /mnt/etc/mkinitcpio.conf"
     sed -i "s/MODULES=()/MODULES=(nvme)/g" /mnt/etc/mkinitcpio.conf
     archchroot genmkinitcpio
     echo ""
@@ -763,7 +739,7 @@ archbootloadermenu(){
     options+="[1] ${txtinstall//%1/grub}\n"
     options+="[2] ${txtedit//%1/grub}\n"
     options+="[3] ${txtinstall//%1/bootloader}\n"
-    options+="[4] Exit & Reboot}\n"
+    options+="[4] Continue\n"
     showtitle "INSTALLING BOOTLOADER"
 
     echo -e "${txtbootloadergrubmenu}\n"
@@ -772,7 +748,7 @@ archbootloadermenu(){
         echo "Select a option: "
         read sel
         if ! [[ $sel =~ $re ]]; then
-            echo "Invalid option, try again"
+            showmessage "${txtinvalid}"
         else
             echo ""
             break
@@ -795,7 +771,7 @@ archbootloadermenu(){
             archgrubinstallbootloader
         ;;
         "4")
-            #"Exit & Reboot")
+            #"Continue")
         ;;
     esac
     if ! [[ ${sel} = 4 ]]; then
@@ -806,19 +782,19 @@ archbootloadermenu(){
 # --------------------------------------------------------
 archgrubinstall(){
     clear
-    echo ">pacstrap /mnt grub"
+    showmessage "pacstrap /mnt grub"
     pacstrap /mnt grub
     pressanykey
 
     if [ "${eficomputer}" == "1" ]; then
         if [ "${efimode}" == "1" ]||[ "${efimode}" == "2" ]; then
             clear
-            echo ">pacstrap /mnt efibootmgr"
+            showmessage "pacstrap /mnt efibootmgr"
             pacstrap /mnt efibootmgr
             pressanykey
         else
             clear
-            echo ">pacstrap /mnt efibootmgr"
+            showmessage "pacstrap /mnt efibootmgr"
             pacstrap /mnt efibootmgr
             pressanykey
         fi
@@ -828,8 +804,8 @@ archgrubinstall(){
 }
 # --------------------------------------------------------
 archgrubinstallchroot(){
-     echo ">mkdir /boot/grub"
-     echo ">grub-mkconfig -o /boot/grub/grub.cfg"
+     showmessage "mkdir /boot/grub"
+     showmessage "grub-mkconfig -o /boot/grub/grub.cfg"
      mkdir /boot/grub
      grub-mkconfig -o /boot/grub/grub.cfg
      exit
@@ -859,7 +835,7 @@ archgrubinstallbootloader(){
             echo "Select a option: "
             read sel
             if ! [[ $sel =~ $re ]]; then
-                echo "Invalid option, try again"
+                showmessage "${txtinvalid}"
             else
                 if [ "${efimode}" == "1" ]; then
                     case ${sel} in
@@ -923,7 +899,7 @@ archgrubinstallbootloader(){
 # --------------------------------------------------------
 archgrubinstallbootloaderchroot(){
     if [ ! "${1}" = "none" ]; then
-        echo ">grub-install --target=i386-pc --recheck ${1}"
+        showcommand "grub-install --target=i386-pc --recheck ${1}"
         grub-install --target=i386-pc --recheck ${1}
     fi
     exit
@@ -931,7 +907,7 @@ archgrubinstallbootloaderchroot(){
 # --------------------------------------------------------
 archgrubinstallbootloaderefichroot(){
     if [ ! "${1}" = "none" ]; then
-        echo ">grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
+        showcommand "grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
         grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}
         isvbox=$(lspci | grep "VirtualBox G")
         if [ "${isvbox}" ]; then
@@ -944,9 +920,9 @@ archgrubinstallbootloaderefichroot(){
 # --------------------------------------------------------
 archgrubinstallbootloaderefiusbchroot(){
     if [ ! "${1}" = "none" ]; then
-        echo ">grub-install --target=i386-pc --recheck ${1}"
+        showcommand "grub-install --target=i386-pc --recheck ${1}"
         grub-install --target=i386-pc --recheck ${1}
-        echo ">grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
+        showcommand "grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}"
         grub-install --target=x86_64-efi --efi-directory=/boot --recheck ${1}
         isvbox=$(lspci | grep "VirtualBox G")
         if [ "${isvbox}" ]; then
@@ -964,14 +940,14 @@ archextraspkg(){
     pkgs+="vim "
     pkgs+="dhcpcd "
 
-    echo -e ">pacstrap /mnt ${pkgs}"
+    showcommand "pacstrap /mnt ${pkgs}"
     pacstrap /mnt ${pkgs}
     archchroot enabledhcpcd
     echo ""
 }
 # --------------------------------------------------------
 archenabledhcpcdchroot(){
-    echo -e ">systemctl enable dhcpcd"
+    showcommand "systemctl enable dhcpcd"
     systemctl enable dhcpcd
     exit
 }
@@ -989,7 +965,7 @@ rebootpc(){
         echo "Select a option: "
         read sel
         if ! [[ $sel =~ $re ]]; then
-            echo "Invalid option, try again"
+            showmessage "${txtinvalid}"
         else
             echo ""
             break
@@ -997,27 +973,42 @@ rebootpc(){
     done
     if [[ $sel == 1 ]]; then
         unmountdevices
-        echo -e ">reboot now"
+        showcommand "reboot now"
         reboot now
     fi
 }
 # --------------------------------------------------------
 unmountdevices(){
     #showtitle "UNMOUNTING THE FILE SYSTEM"
-    echo -e "\n>umount -R /mnt"
+    showcommand "umount -R /mnt"
     umount -R /mnt
     if [ ! "${swapdev}" = "" ]; then
-        echo -e "\n>swapoff ${swapdev}"
+        showcommand ">swapoff ${swapdev}"
         swapoff ${swapdev}
     fi
     pressanykey
 }
 # --------------------------------------------------------
 pressanykey(){
-	tput sgr0
+    tput setaf 3
 	read -n1 -p "${txtpressanykey}"
 	echo ""
+	tput sgr0
+}
+
+showcommand(){
     tput setaf 2
+    if [ ! "${1}" = "none" ]; then
+        echo -e "${txtcommand//%1/${1}}"
+    fi
+	tput sgr0
+}
+showmessage(){
+    tput setaf 6
+    if [ ! "${1}" = "none" ]; then
+        echo -e "${txtmesasge//%1/${1}}"
+    fi
+	tput sgr0
 }
 
 showtitle(){
@@ -1026,12 +1017,9 @@ showtitle(){
 	echo "${1}"
 	echo "##############################################"
 	echo ""
-	tput setaf 2 
+	tput sgr0
 }
 
-showmessage(){
-	whiptail --title "$1" --msgbox "$2" 8 78
-}
 
 loadconfigs(){
     # init variables ---------------------------------
@@ -1109,11 +1097,15 @@ loadconfigs(){
     txtsetrootpassword="Set root password"
 
     # messages ---------------------------------------
+    txtnextscreen="Select the installation %1 on the next screen"	
     txtpressanykey="Press any key to continue..."
     txtgenerate="Generate %1"
     txtinstall="Install %1"
     txtedit="Edit %1"
     #txtenable="Enable %1"
+    txtcommand="> %1 \n"
+    txtmessage="MESSAGE: %1\n"
+    txtinvalid="Invalid option, try again."
 }
 
 # --------------------------------------------------------
@@ -1151,30 +1143,7 @@ if [ "${chroot}" = "1" ]; then
         'grubbootloaderinstall') archgrubinstallbootloaderchroot ${args};;
         'grubbootloaderefiinstall') archgrubinstallbootloaderefichroot ${args};;
         'grubbootloaderefiusbinstall') archgrubinstallbootloaderefiusbchroot ${args};;
-        #'syslinuxbootloaderinstall') archsyslinuxinstallbootloaderchrrot ${args};;
-        #'syslinuxbootloaderefiinstall') archsyslinuxinstallbootloaderefichrrot ${args};;
-        #'systemdbootloaderinstall') archsystemdinstallchrrot ${args};;
-        #'refindbootloaderinstall') archrefindinstallchroot ${args};;
-        #'');;
-        #'');;
-        #'');;
-        #'');;
-        #'');;
-        #'');;
-        #'');;
-        #'');;
     esac
 else
-    installdependencies
-    loadconfigs
-    checkefi
-    setkeymap
-    chooseeditor
-    selectdisk
-    selectswapsize
-    diskpart
-    formatdevice
-    mountparts
-    installmenu
-    archmenu
+    run
 fi
