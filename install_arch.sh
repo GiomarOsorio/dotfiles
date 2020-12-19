@@ -579,6 +579,7 @@ archmenu(){
        archgenmkinitcpionvme
    fi
    archbootloadermenu
+   archextraspkg
    rebootpc
    #archextrasmenu
    #archdi
@@ -682,6 +683,7 @@ archsettimelocalchroot(){
 archsetrootpassword(){
     showtitle "SETTING ROOT PASSWORD"
     archchroot setrootpassword
+    echo ""
 }
 # --------------------------------------------------------
 archsetrootpasswordchroot(){
@@ -955,14 +957,53 @@ archgrubinstallbootloaderefiusbchroot(){
     exit
 }
 # --------------------------------------------------------
+archextraspkg(){
+    showtitle "INSTALLING EXTRAS PACKAGES"
+    pkgs=""
+    pkgs+="nano "
+    pkgs+="vim "
+    pkgs+="dhcpcd "
+
+    echo -e ">pacstrap /mnt ${pkgs}"
+    pacstrap /mnt ${pkgs}
+    archchroot enabledhcpcd
+    echo ""
+}
+# --------------------------------------------------------
+archenabledhcpcdchroot(){
+    echo -e ">systemctl enable dhcpcd"
+    systemctl enable dhcpcd
+    exit
+}
+# --------------------------------------------------------
 rebootpc(){
-    unmountdevices
-    echo -e ">reboot now"
-    reboot now
+    showtitle "REBOOTING PC"
+    re="^[1-2]"
+    options=""
+    options+="[1] Yes\n"
+    options+="[2] No\n"
+
+    echo -e "Do you want reboot?"
+    echo -e "${options}"
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            echo "Invalid option, try again"
+        else
+            echo ""
+            break
+        fi
+    done
+    if [[ $sel == 1 ]]; then
+        unmountdevices
+        echo -e ">reboot now"
+        reboot now
+    fi
 }
 # --------------------------------------------------------
 unmountdevices(){
-    showtitle "UNMOUNTING THE FILE SYSTEM"
+    #showtitle "UNMOUNTING THE FILE SYSTEM"
     echo -e "\n>umount -R /mnt"
     umount -R /mnt
     if [ ! "${swapdev}" = "" ]; then
