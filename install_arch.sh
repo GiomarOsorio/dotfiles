@@ -1006,7 +1006,7 @@ showcommand(){
 showmessage(){
     tput setaf 6
     if [ ! "${1}" = "none" ]; then
-        echo -e "${txtmesasge//%1/${1}}"
+        echo -e "${txtmessage//%1/${1}}"
     fi
 	tput sgr0
 }
