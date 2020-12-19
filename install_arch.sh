@@ -680,11 +680,11 @@ archsettimelocalchroot(){
 }
 # --------------------------------------------------------
 archsetrootpassword(){
+    showtitle "SETTING ROOT PASSWORD"
     archchroot setrootpassword
 }
 # --------------------------------------------------------
 archsetrootpasswordchroot(){
-    showtitle "SETTING ROOT PASSWORD"
     echo ">passwd root"
     passed=1
     while [[ ${passed} != 0 ]]; do
