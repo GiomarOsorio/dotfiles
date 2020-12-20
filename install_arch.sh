@@ -576,6 +576,7 @@ archmenu(){
    fi
    archextraspkg
    archbootloadermenu
+   installdotfiles
    rebootpc
    exit
 }
@@ -977,6 +978,42 @@ archenabledhcpcdchroot(){
     exit
 }
 # --------------------------------------------------------
+installdotfiles(){
+    options=""
+    options+="[1] Yes\n"
+    options+="[2] No\n"
+
+    showmessage "${txtdotfiles}"
+    echo -e "${options}"
+	
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            showmessage "${txtinvalid}"
+        else
+            echo ""
+            break
+        fi
+    done
+    if [[ $sel == 1 ]]; then
+		archchroot dotfilesinstall
+    fi
+}
+# --------------------------------------------------------
+installdotfilesdownload(){
+	showcommand "curl -L ${installdotfilesurl} > installdotfiles"
+	curl -L ${installdotfilesurl} > installdotfiles
+}
+# --------------------------------------------------------
+installdotfileslaunchchroot(){
+	cd
+	installdotfilesdownload
+	sh installdotfiles --chroot
+	rm installdotfiles
+	exit
+}
+# --------------------------------------------------------
 rebootpc(){
     showtitle "REBOOTING PC"
     re="^[1-2]"
@@ -1106,6 +1143,7 @@ loadconfigs(){
     hostname=""
     txtsethostname="Set Computer Name"
     txthost="127.0.0.1    localhost\n::1          localhost\n127.0.1.1    %1.localdomain    %1"
+   
     # locale -----------------------------------------
     locale="es_VE"
     txtsetlocale="Set Locale"
@@ -1120,6 +1158,10 @@ loadconfigs(){
     # rootpassword -----------------------------------
     txtsetrootpassword="Set root password"
 
+    # dotfiles ---------------------------------------
+    txtdotfiles="Do you want to install my personal configuration?"
+    installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/master/install.sh
+    
     # messages ---------------------------------------
     txtnextscreen="Select the installation %1 on the next screen"	
     txtpressanykey="Press any key to continue..."
@@ -1167,6 +1209,7 @@ if [ "${chroot}" = "1" ]; then
         'grubbootloaderinstall') archgrubinstallbootloaderchroot ${args};;
         'grubbootloaderefiinstall') archgrubinstallbootloaderefichroot ${args};;
         'grubbootloaderefiusbinstall') archgrubinstallbootloaderefiusbchroot ${args};;
+	'dotfilesinstall') installdotfileslaunchchroot;;
     esac
 else
     run
