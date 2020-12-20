@@ -17,6 +17,7 @@ run(){
 }
 # --------------------------------------------------------
 installdependencies(){
+    clear
 	showtitle "INSTALLING DEPENDENCIES"
     showcommand "pacman -S --noconfirm --needed arch-install-scripts wget libnewt"
     pacman -S --noconfirm --needed arch-install-scripts wget libnewt
@@ -992,7 +993,6 @@ unmountdevices(){
         showcommand ">swapoff ${swapdev}"
         swapoff ${swapdev}
     fi
-    pressanykey
 }
 # --------------------------------------------------------
 pressanykey(){
