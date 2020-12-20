@@ -25,8 +25,8 @@ installdependencies(){
 # --------------------------------------------------------
 checkefi(){
 	showtitle "CHECKING EFI"
-    show command "dmesg |grep efi: > /dev/null"
-    dmesg |grep efi: > /dev/null
+    showcommand "dmesg | grep efi: > /dev/null"
+    dmesg | grep efi: > /dev/null
     if [ "$?" == "1" ]; then
         if [ "${eficomputer}" != "1" ]; then
             eficomputer=0
