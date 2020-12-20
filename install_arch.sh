@@ -6,7 +6,8 @@ run(){
     checkefi
     setkeymap
     chooseeditor
-    selectdisk
+    selectdisk "${title_device}" "${menu_device}"
+    device="${sel_device}"
     selectswapsize
     diskpart
     formatdevice
@@ -54,9 +55,16 @@ chooseeditor(){
 # --------------------------------------------------------
 selectdisk(){
 	showtitle "SELECTING HARD DISK"
+    if  [ ! "${1}" = "none"  ]; then
+        showmessage "${1}"
+    fi
+    if  [ ! "${2}" = "none"  ]; then
+        showmessage "${2}"
+    fi
     showmessage "${txtnextscreen//%1/hard drive}"
-    pressanykey
+
     items=$(lsblk -d -p -n -l -o NAME,SIZE -e 7,11)
+    sel_device=""
     options=()
     IFS_ORIG=$IFS
     IFS=$'\n'
@@ -65,12 +73,19 @@ selectdisk(){
         options+=("${item}" "")
     done
     IFS=$IFS_ORIG
-    while [ -z "$device" ]; do
-        device=$(whiptail --backtitle "Arch Install Script" --title "${title_hd}" --menu "${menu_hd}" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3);
-    done
+
+	pressanykey
+    sel_device=$(whiptail --backtitle "" --title "${1}" --menu "" 0 0 0 "${options[@]}" 3>&1 1>&2 2>&3);
+    if [ "${sel_device}" == "" ]; then
+        clear
+        showmessage "you did not select any hard drive, exiting the installer..."
+        pressanykey
+        unmountdevices
+        exit
+    fi
     clear
-    device=${device%%\ *}
-    showmessage "have selected ${device}"
+    sel_device=${sel_device%%\ *}
+    showmessage "have selected ${sel_device}"
 }
 # --------------------------------------------------------
 selectswapsize(){
@@ -78,7 +93,7 @@ selectswapsize(){
     showmessage "${txt_swap}"
     showmessage "${txtnextscreen//%1/swap}"
 	pressanykey
-    swap_size=$(whiptail --backtitle "Arch Install Script" --inputbox "${menu_swap}" 8 39 ${default_swapsize} --title "${title_swap}" 3>&1 1>&2 2>&3)
+    swap_size=$(whiptail --backtitle "" --inputbox "${menu_swap}" 8 39 ${default_swapsize} --title "${title_swap}" 3>&1 1>&2 2>&3)
     clear
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_swapsize
     showcommand "have selected "${swap_size%%\ *}"MB in swap size"
@@ -789,7 +804,7 @@ archbootloadermenu(){
 archgrubinstall(){
     clear
     showcommand "pacstrap /mnt grub os-prober"
-    pacstrap /mnt grub
+    pacstrap /mnt grub os-prober
     pressanykey
 
     if [ "${eficomputer}" == "1" ]; then
@@ -818,6 +833,9 @@ archgrubinstallchroot(){
 }
 # --------------------------------------------------------
 archgrubinstallbootloader(){
+    selectdisk "${title_device}" "${txtinstall//%1/bootloader}"
+    device_bootloader="${sel_device}"
+
     re="^[1-3]$"
     if [ "${eficomputer}" == "1" ]; then
         options=""
@@ -886,18 +904,18 @@ archgrubinstallbootloader(){
         done
         case ${bootloader} in
             "BIOS")
-                archchroot grubbootloaderinstall ${device}
+                archchroot grubbootloaderinstall ${device_bootloader}
             ;;
             "EFI")
-                archchroot grubbootloaderefiinstall ${device}
+                archchroot grubbootloaderefiinstall ${device_bootloader}
             ;;
             "BIOS+EFI")
-                archchroot grubbootloaderefiusbinstall ${device}
+                archchroot grubbootloaderefiusbinstall ${device_bootloader}
             ;;
         esac
     else
         clear
-        archchroot grubbootloaderinstall ${device}
+        archchroot grubbootloaderinstall ${device_bootloader}
         pressanykey
     fi
 }
@@ -978,8 +996,8 @@ rebootpc(){
             break
         fi
     done
+    unmountdevices
     if [[ $sel == 1 ]]; then
-        unmountdevices
         showcommand "reboot now"
         reboot now
     fi
