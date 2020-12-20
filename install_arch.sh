@@ -1008,7 +1008,7 @@ unmountdevices(){
     showcommand "umount -R /mnt"
     umount -R /mnt
     if [ ! "${swapdev}" = "" ]; then
-        showcommand ">swapoff ${swapdev}"
+        showcommand "swapoff ${swapdev}"
         swapoff ${swapdev}
     fi
 }
