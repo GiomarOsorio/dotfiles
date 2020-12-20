@@ -17,12 +17,15 @@ run(){
 }
 # --------------------------------------------------------
 installdependencies(){
-    clear
+	showtitle "INSTALLING DEPENDENCIES"
+    showcommand "pacman -S --noconfirm --needed arch-install-scripts wget libnewt"
     pacman -S --noconfirm --needed arch-install-scripts wget libnewt
     clear
 }
 # --------------------------------------------------------
 checkefi(){
+	showtitle "CHECKING EFI"
+    show command "dmesg |grep efi: > /dev/null"
     dmesg |grep efi: > /dev/null
     if [ "$?" == "1" ]; then
         if [ "${eficomputer}" != "1" ]; then
@@ -66,7 +69,7 @@ selectdisk(){
     done
     clear
     device=${device%%\ *}
-    showcommand "select ${device}"
+    showmessage "have selected ${device}"
 }
 # --------------------------------------------------------
 selectswapsize(){
@@ -114,10 +117,10 @@ diskpart(){
             diskpartautogptefi
         ;;
     esac
-    if [ "bootdev::" == "/dev/nvm" ]; then
+    if [ "${bootdev::8}" == "/dev/nvm" ]; then
 	    isnvme=1
     fi
-    if [ "bootdev::" == "/dev/nvm" ]; then
+    if [ "${bootdev::8}" == "/dev/nvm" ]; then
 	    isnvme=1
     fi
 }
@@ -244,7 +247,7 @@ formatbootdevice(){
             break 
         fi
     done
-    showmessage "\n${txtformatingpart//%1/${2}} ${formatboot}"
+    showmessage "${txtformatingpart//%1/${2}} ${formatboot}"
     showmessage "----------------------------------------------"
     case ${formatboot} in
         "ext2")
@@ -555,8 +558,8 @@ archmenu(){
    if [ "${isnvme}" = "1" ]; then
        archgenmkinitcpionvme
    fi
-   archbootloadermenu
    archextraspkg
+   archbootloadermenu
    rebootpc
    exit
 }
@@ -596,7 +599,7 @@ archsetkeymap(){
 # --------------------------------------------------------
 archsetlocale(){
     showtitle "SETTING LOCALE"
-    echo -e "\n${txtsetlocale}\n"
+    showmessage "${txtsetlocale}"
     showcommand "echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
     echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
     showcommand "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
@@ -620,7 +623,7 @@ archsettime(){
     options+="[1] UTC\n"
     options+="[2] LOCAL\n"
 
-    echo -e "${txtsettime}\n"
+    showmessage "${txtsettime}"
     showcommand "ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime"
     ln -sf /mnt/usr/share/zoneinfo/${timezone} /mnt/etc/localtime
     
@@ -699,22 +702,22 @@ archgenfstabmenu(){
     case ${sel} in
         "1")
             #"UUID")
-            showmessage "genfstab -U -p /mnt > /mnt/etc/fstab"
+            showcommand "genfstab -U -p /mnt > /mnt/etc/fstab"
             genfstab -U -p /mnt > /mnt/etc/fstab
         ;;
         "2")
             #"LABEL")
-            showmessage "genfstab -L -p /mnt > /mnt/etc/fstab"
+            showcommand "genfstab -L -p /mnt > /mnt/etc/fstab"
             genfstab -L -p /mnt > /mnt/etc/fstab
         ;;
         "3")
             #"PARTUUID")
-            showmessage "genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab"
+            showcommand "genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab"
             genfstab -t PARTUUID -p /mnt > /mnt/etc/fstab
         ;;
         "4")
             #"PARTLABEL")
-            showmessage "genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab"
+            showcommand "genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab"
             genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab
         ;;
     esac
@@ -780,24 +783,23 @@ archbootloadermenu(){
     if ! [[ ${sel} = 4 ]]; then
         archbootloadermenu
     fi
-    echo "" 
 }
 # --------------------------------------------------------
 archgrubinstall(){
     clear
-    showmessage "pacstrap /mnt grub"
+    showcommand "pacstrap /mnt grub os-prober"
     pacstrap /mnt grub
     pressanykey
 
     if [ "${eficomputer}" == "1" ]; then
         if [ "${efimode}" == "1" ]||[ "${efimode}" == "2" ]; then
             clear
-            showmessage "pacstrap /mnt efibootmgr"
+            showcommand "pacstrap /mnt efibootmgr"
             pacstrap /mnt efibootmgr
             pressanykey
         else
             clear
-            showmessage "pacstrap /mnt efibootmgr"
+            showcommand "pacstrap /mnt efibootmgr"
             pacstrap /mnt efibootmgr
             pressanykey
         fi
@@ -807,8 +809,8 @@ archgrubinstall(){
 }
 # --------------------------------------------------------
 archgrubinstallchroot(){
-     showmessage "mkdir /boot/grub"
-     showmessage "grub-mkconfig -o /boot/grub/grub.cfg"
+     showcommand "mkdir /boot/grub"
+     showcommand "grub-mkconfig -o /boot/grub/grub.cfg"
      mkdir /boot/grub
      grub-mkconfig -o /boot/grub/grub.cfg
      exit
@@ -897,7 +899,6 @@ archgrubinstallbootloader(){
         archchroot grubbootloaderinstall ${device}
         pressanykey
     fi
-    echo ""
 }
 # --------------------------------------------------------
 archgrubinstallbootloaderchroot(){
@@ -915,6 +916,7 @@ archgrubinstallbootloaderefichroot(){
         isvbox=$(lspci | grep "VirtualBox G")
         if [ "${isvbox}" ]; then
             echo "VirtualBox detected, creating startup.nsh..."
+            showcommand "\"\EFI\arch\grubx64.efi\" > /boot/startup.nsh"
             echo "\EFI\arch\grubx64.efi" > /boot/startup.nsh
         fi
     fi
@@ -930,6 +932,7 @@ archgrubinstallbootloaderefiusbchroot(){
         isvbox=$(lspci | grep "VirtualBox G")
         if [ "${isvbox}" ]; then
             echo "VirtualBox detected, creating startup.nsh..."
+            showcommand "\"\EFI\arch\grubx64.efi\" > /boot/startup.nsh"
             echo "\EFI\arch\grubx64.efi" > /boot/startup.nsh
         fi
     fi
@@ -962,7 +965,7 @@ rebootpc(){
     options+="[1] Yes\n"
     options+="[2] No\n"
 
-    echo -e "Do you want reboot?"
+    showmessage "Installation is complete. Do you want to reboot?"
     echo -e "${options}"
     while true; do
         echo "Select a option: "
@@ -982,7 +985,7 @@ rebootpc(){
 }
 # --------------------------------------------------------
 unmountdevices(){
-    #showtitle "UNMOUNTING THE FILE SYSTEM"
+    showmessage "Unmounting devices"
     showcommand "umount -R /mnt"
     umount -R /mnt
     if [ ! "${swapdev}" = "" ]; then
