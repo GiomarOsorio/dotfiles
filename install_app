@@ -2,11 +2,11 @@
 # --------------------------------------------------------
 enabledmultilib(){
     showtitle "ENABLING MULTILIB REPO"
-    showcommand "sudo sed -i '/\\[multilib\\]/s/^#//g' /etc/pacman.conf"
-    showcommand "sudo sed -i '/\\[multilib\\]/{n;s/^#//g}' /etc/pacman.conf"
+    showcommand "su sed -i '/\\[multilib\\]/s/^#//g' /etc/pacman.conf"
+    showcommand "su sed -i '/\\[multilib\\]/{n;s/^#//g}' /etc/pacman.conf"
     su sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
     su sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
-    showcommand "sudo pacman -Sy"
+    showcommand "su pacman -Sy"
     su pacman -Sy
     pressanykey
 }
@@ -47,9 +47,9 @@ checkaurdependencies(){
 installyay(){
     checkaurdependencies
     cd /tmp/aurbuilder
-    sudo -u aurbuilder git clone https://aur.archlinux.org/yay.git
+    su -u aurbuilder git clone https://aur.archlinux.org/yay.git
     cd yay
-    sudo -u aurbuilder makepkgs -si
+    su -u aurbuilder makepkgs -si
     #showtitle "INSTALLING YAY"
     #tmpdir="$(command mktemp -d)"
     #command cd "${tmpdir}" || return 1
@@ -99,8 +99,8 @@ installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
     fi
-    showcommand "sudo -u aurbuilder yay -S --needed $2"
-    sudo -u aurbuilder yay -S --needed $1
+    showcommand "su -u aurbuilder yay -S --needed $2"
+    su -u aurbuilder yay -S --needed $1
     pressanykey
 }
 # --------------------------------------------------------
