@@ -4,10 +4,10 @@ enabledmultilib(){
     showtitle "ENABLING MULTILIB REPO"
     showcommand "su sed -i '/\\[multilib\\]/s/^#//g' /etc/pacman.conf"
     showcommand "su sed -i '/\\[multilib\\]/{n;s/^#//g}' /etc/pacman.conf"
-    su sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
-    su sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
+    sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
+    sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
     showcommand "su pacman -Sy"
-    su pacman -Sy
+    pacman -Sy
     pressanykey
 }
 # --------------------------------------------------------
