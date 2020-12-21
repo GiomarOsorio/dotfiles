@@ -15,24 +15,56 @@ installdependencies(){
     installyay
     cloningrepo
 }
+checkaurdependencies(){
+    if [ ! -f /usr/bin/automake ]; then
+        installpkgs "base-devel"
+    fi
+    if [ ! -f /usr/bin/git ]; then
+        installpkgs "git"
+    fi
+    if [ ! $(id -u "aurbuilder") ]; then
+        newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
+        useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder
+        echo -e "$newpass\n$newpass\n"|passwd aurbuilder
+        newpass=""
+        mkdir /tmp/aurbuilder 1&>/dev/null
+        chmod 777 /tmp/aurbuilder
+    else
+        mkdir /tmp/aurbuilder 1&>/dev/null
+        chmod 777 /tmp/aurbuilder
+        usermod -d /tmp/aurbuilder aurbuilder
+    fi
+    if [ ! -f /etc/sudoers.d/aurbuilder ]; then
+        echo "aurbuilder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/aurbuilder
+        echo "root ALL=(aurbuilder) NOPASSWD: ALL" >> /etc/sudoers.d/aurbuilder
+    fi
+}
 installyay(){
-    showtitle "INSTALLING YAY"
-    tmpdir="$(command mktemp -d)"
-    command cd "${tmpdir}" || return 1
-    dl_url="$(
-        command curl -sfLS 'https://api.github.com/repos/Jguer/yay/releases/latest' |
-        command grep 'browser_wnload_url' |
-        command tail -1 |
-        command cut -d '"' -f 4
-    )"
-    command wget "${dl_url}"
-    command tar xzvf yay_*_x86_64.tar.gz
-    command cd yay_*_x86_64 || return 1
-    ./yay -Sy --nocleanmenu --nodiffmenu yay-bin
-    rm -rf "${tmpdir}"
+    checkaurdependencies
+    cd /tmp/aurbuilder
+    sudo -u aurbuilder git clone https://aur.archlinux.org/yay.git
+    cd yay
+    sudo -u aurbuilder makepkgs -si
+    #showtitle "INSTALLING YAY"
+    #tmpdir="$(command mktemp -d)"
+    #command cd "${tmpdir}" || return 1
+    #dl_url="$(
+    #    command curl -sfLS 'https://api.github.com/repos/Jguer/yay/releases/latest' |
+    #    command grep 'browser_wnload_url' |
+    #    command tail -1 |
+    #    command cut -d '"' -f 4
+    #)"
+    #command wget "${dl_url}"
+    #command tar xzvf yay_*_x86_64.tar.gz
+    #command cd yay_*_x86_64 || return 1
+    #./yay -Sy --nocleanmenu --nodiffmenu yay-bin
+    #rm -rf "${tmpdir}"
 }
 cloningrepo(){
     showtitle "CLONING DOTFILES REPO"
+    if [ ! -f /usr/bin/git ]; then
+        installpkgs "git"
+    fi
     if [ ! -d "~/dotfiles" ] ; then
         cd
         git clone ${txturlrepo}
@@ -57,7 +89,7 @@ installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
     fi
-    #showcommand "sudo -u aurbuilder yay -S --needed $2"
+    showcommand "sudo -u aurbuilder yay -S --needed $2"
     sudo -u aurbuilder yay -S --needed $1
     pressanykey
 }
