@@ -88,6 +88,10 @@ installpkgs() {
     if  [ ! "${3}" = ""  ]; then
         showcommand "${3} ${1}"
     else
+        if [ -f /var/lib/pacman/db.lck ]; then
+            showcommand "rm /var/lib/pacman/db.lck"
+            rm /var/lib/pacman/db.lck
+        fi
         showcommand "pacman -S --noconfirm --needed $1"
         pacman -S --noconfirm --needed $1
     fi
