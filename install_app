@@ -20,10 +20,10 @@ installdependencies(){
 # --------------------------------------------------------
 checkaurdependencies(){
     if [ ! -f /usr/bin/automake ]; then
-        installpkgs "base-devel"
+        pacman -S --needed base-devel
     fi
     if [ ! -f /usr/bin/git ]; then
-        installpkgs "git"
+        pacman -S --needed git
     fi
     if [ ! $(id -u "aurbuilder") ]; then
         newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
@@ -41,7 +41,6 @@ checkaurdependencies(){
         echo "aurbuilder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/aurbuilder
         echo "root ALL=(aurbuilder) NOPASSWD: ALL" >> /etc/sudoers.d/aurbuilder
     fi
-    pressanykey
 }
 # --------------------------------------------------------
 installyay(){
@@ -189,9 +188,9 @@ run(){
 # --------------------------------------------------------
 pressanykey(){
     tput setaf 3
-	read -n1 -p "${txtpressanykey}"
-	echo ""
-	tput sgr0
+    read -n1 -p "${txtpressanykey}"
+    echo ""
+    tput sgr0
 }
 
 showcommand(){
@@ -199,22 +198,22 @@ showcommand(){
     if [ ! "${1}" = "none" ]; then
         echo -e "${txtcommand//%1/${1}}"
     fi
-	tput sgr0
+    tput sgr0
 }
 showmessage(){
     tput setaf 6
     if [ ! "${1}" = "none" ]; then
         echo -e "${txtmessage//%1/${1}}"
     fi
-	tput sgr0
+    tput sgr0
 }
 showtitle(){
-	tput setaf 5
-	echo "##############################################"
-	echo "${1}"
-	echo "##############################################"
-	echo ""
-	tput sgr0
+    tput setaf 5
+    echo "##############################################"
+    echo "${1}"
+    echo "##############################################"
+    echo ""
+    tput sgr0
 }
 # --------------------------------------------------------
 loadstrings(){
@@ -222,14 +221,14 @@ loadstrings(){
     txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
 
     # dependencias ---------------------------------
-    dependencies="neovim git curl wget base base-devel"
+    dependencies="neovim git curl wget base base-devel pacman-contrib"
 	
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
     pkgs_xfce="lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4 xfce4-goodies xdg-user-dirs xdg-user-dirs-gtk"
     services_xfce=("lightdm.service")
 	
-	# sound ----------------------------------------
+    # sound ----------------------------------------
     titlesound="INSTALLING SOUND"
     pkgs_sound="pulseaudio pulseaudio-alsa pavucontrol alsa-utils alsa-plugins alsa-lib alsa-firmware gstreamer gst-plugins-good gst-plugins-bad gst-plugins-base gst-plugins-ugly volumeicon playerctl"
 	
@@ -263,14 +262,14 @@ loadstrings(){
     titleaurpackages="INSTALLING AUR PACKAGES"
     pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jwnloader2 megasync minecraft-launcher nerd-fonts-ubuntu-mono nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
 
-	# setup vim ------------------------------------
+    # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
     command_pip_vim="pip install"
     pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
     command_npm_vim="npm install"
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
      
-	# messages -------------------------------------
+    # messages -------------------------------------
     txtpressanykey="Press any key to continue..."
     txtcommand="> %1 \n"
     txtmessage="%1\n"
