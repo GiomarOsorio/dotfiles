@@ -229,7 +229,7 @@ loadstrings(){
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
     pkgs_xfce="lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4 xfce4-goodies xdg-user-dirs xdg-user-dirs-gtk"
-    services_xfce=("lightdm.service")
+    services_xfce=("lightdm")
 	
     # sound ----------------------------------------
     titlesound="INSTALLING SOUND"
