@@ -113,11 +113,13 @@ systemctlenable(){
         showcommand "su systemctl enalbe ${service} -f"
         su systemctl enalbe ${service} -f
     done
+    pressanykey
 }
 # --------------------------------------------------------
 helpersystemctl(){
 	showcommand "su systemctl ${1} ${2}"
 	su systemctl "${1}" "${2}"
+    pressanykey
 }
 # --------------------------------------------------------
 updatedir(){
@@ -129,10 +131,11 @@ updatedir(){
 }
 # --------------------------------------------------------
 copy(){
-    if  [  \( ! "${1}" = "none" \)  -a [  \( ! "${2}" = "none" \) ]; then
+    if  [  \( ! "${1}" = "none" \)  -a  \( ! "${2}" = "none" \) ]; then
         cd ~
         cp -vf "${1}" "${2}"
-    fi
+    fi 
+    pressanykey
 }
 # --------------------------------------------------------
 run(){
