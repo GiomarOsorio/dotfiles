@@ -2,19 +2,21 @@
 # --------------------------------------------------------
 enabledmultilib(){
     showtitle "ENABLING MULTILIB REPO"
-	showcommand "sudo sed -i '/\\[multilib\\]/s/^#//g' /etc/pacman.conf"
-	showcommand "sudo sed -i '/\\[multilib\\]/{n;s/^#//g}' /etc/pacman.conf"
+    showcommand "sudo sed -i '/\\[multilib\\]/s/^#//g' /etc/pacman.conf"
+    showcommand "sudo sed -i '/\\[multilib\\]/{n;s/^#//g}' /etc/pacman.conf"
     sudo sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
-	sudo sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
+    sudo sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
     showcommand "sudo pacman -Sy"
     sudo pacman -Sy
 }
+# --------------------------------------------------------
 installdependencies(){
     showtitle "INSTALLING DEPENDENCIES"
     installpkgs "${dependencies}"
     installyay
     cloningrepo
 }
+# --------------------------------------------------------
 checkaurdependencies(){
     if [ ! -f /usr/bin/automake ]; then
         installpkgs "base-devel"
@@ -39,6 +41,7 @@ checkaurdependencies(){
         echo "root ALL=(aurbuilder) NOPASSWD: ALL" >> /etc/sudoers.d/aurbuilder
     fi
 }
+# --------------------------------------------------------
 installyay(){
     checkaurdependencies
     cd /tmp/aurbuilder
@@ -60,6 +63,7 @@ installyay(){
     #./yay -Sy --nocleanmenu --nodiffmenu yay-bin
     #rm -rf "${tmpdir}"
 }
+# --------------------------------------------------------
 cloningrepo(){
     showtitle "CLONING DOTFILES REPO"
     if [ ! -f /usr/bin/git ]; then
@@ -73,6 +77,7 @@ cloningrepo(){
         git pull origin master
     fi
 }
+# --------------------------------------------------------
 installpkgs() {
     if  [ ! "${2}" = ""  ]; then
         showtitle "${2}"
@@ -85,6 +90,7 @@ installpkgs() {
     fi
     pressanykey
 }
+# --------------------------------------------------------
 installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
@@ -93,16 +99,18 @@ installaurpkgs() {
     sudo -u aurbuilder yay -S --needed $1
     pressanykey
 }
+# --------------------------------------------------------
 helpersystemctl(){
     if [ "${1}" = "enable" ]; then
         for i in "${$2[@]}"; do   # The quotes are necessary here
-            #showcommand "systemctl enable ${i} -f"
+            showcommand "su systemctl enable ${i} -f"
             su systemctl "${1}" "${i}" -f
         done
 	else
 	    su systemctl "${1}" "${2}"
 	fi
 }
+# --------------------------------------------------------
 updatedir(){
     xdg-user-dirs-update
     xdg-user-dirs-update --force
@@ -110,12 +118,14 @@ updatedir(){
     [ -d $HOME"/.themes" ] || mkdir -p $HOME"/.themes"
     [ -d $HOME"/.fonts" ] || mkdir -p $HOME"/.fonts"
 }
+# --------------------------------------------------------
 copy(){
     if  [  \( ! "${1}" = "none" \)  -a [  \( ! "${2}" = "none" \) ]; then
         cd ~
         cp -vf "${1}" "${2}"
     fi
 }
+# --------------------------------------------------------
 run(){
     loadstrings
     enabledmultilib
@@ -260,6 +270,7 @@ loadstrings(){
     txtcommand="> %1 \n"
     txtmessage="%1\n"
 }
+# --------------------------------------------------------
 while (( "$#" )); do
   case $1 in
     -i|--install) install
