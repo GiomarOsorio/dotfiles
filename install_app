@@ -14,7 +14,7 @@ enabledmultilib(){
 installdependencies(){
     showtitle "INSTALLING DEPENDENCIES"
     installpkgs "${dependencies}"
-    installyay
+    #installyay
     cloningrepo
 }
 # --------------------------------------------------------
@@ -107,15 +107,15 @@ installaurpkgs() {
     pressanykey
 }
 # --------------------------------------------------------
+systemctlenable(){
+    arr=("$@")
+    for service in "${arr[@]}"; do   # The quotes are necessary here
+        echo -e "su systemctl enalbe ${service} -f"
+    done
+}
+# --------------------------------------------------------
 helpersystemctl(){
-    if [ "${1}" = "enable" ]; then
-        for i in "${$2[@]}"; do   # The quotes are necessary here
-            showcommand "su systemctl enable ${i} -f"
-            su systemctl "${1}" "${i}" -f
-        done
-	else
-	    su systemctl "${1}" "${2}"
-	fi
+	su systemctl "${1}" "${2}"
 }
 # --------------------------------------------------------
 updatedir(){
@@ -140,7 +140,7 @@ run(){
 	
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
-    helpersystemctl "enable" "${services_xfce}"
+    systemctlenable "${services_xfce}"
     helpersystemctl "set-default" "graphical.target"
     updatedir
 	
@@ -150,7 +150,7 @@ run(){
     # printer --------------------------------------
     installpkgs "${pkgs_printer}" "${titleprinter}"
     helpersystemctl "start" "${services_printer}"
-    helpersystemctl "enable" "${services_printer}"
+    systemctlenable "${services_printer}"
 	
     # console --------------------------------------
     installpkgs "${pkgs_console}" "${titleconsole}"
@@ -166,7 +166,7 @@ run(){
 	
     # services ------------------------------------
     installpkgs "${pkgs_services}" "${titleservices}"
-    helpersystemctl "enable" "${services_services}"
+    systemctlenable "${services_services}"
 	
     # file system extras ---------------------------
     installpkgs "${pkgs_filesystemextras}" "${titlefilesystemextras}"
@@ -175,11 +175,11 @@ run(){
     installpkgs "${pkgs_generalpackages}" "${titlegeneralpackages}"
 	
     # aur packages ---------------------------------
-    installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
+    #installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
     # setup vim ------------------------------------
-    installaurpkgs "${pkgs_pip_vim}" "${titlesvim}" "${command_pip_vim}"
-    installaurpkgs "${pkgs_npm_vim}" "${titlesvim}" "${command_npm_vim}"
+    installpkgs "${pkgs_pip_vim}" "${titlesvim}" "${command_pip_vim}"
+    installpkgs "${pkgs_npm_vim}" "${titlesvim}" "${command_npm_vim}"
     copy "~/dotfiles/.config/nvim" "~/.config/"
     copy "~/dotfiles/.eslintrc.json" "~"
     
