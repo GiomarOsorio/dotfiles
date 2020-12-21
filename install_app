@@ -110,11 +110,13 @@ installaurpkgs() {
 systemctlenable(){
     arr=("$@")
     for service in "${arr[@]}"; do   # The quotes are necessary here
-        echo -e "su systemctl enalbe ${service} -f"
+        showcommand "su systemctl enalbe ${service} -f"
+        su systemctl enalbe ${service} -f
     done
 }
 # --------------------------------------------------------
 helpersystemctl(){
+	showcommand "su systemctl ${1} ${2}"
 	su systemctl "${1}" "${2}"
 }
 # --------------------------------------------------------
