@@ -467,7 +467,7 @@ installbase(){
     options+="[3] linux-zen\n"
     options+="[4] linux-hardened\n"
 
-    echo -e "${txtinstallarchlinuxkernel}"
+    showmessage "${txtinstallarchlinuxkernel}"
     echo -e "${options}"
     while true;do
         echo -e "Select one option: "
@@ -497,7 +497,7 @@ installbase(){
     re='^[1]$'
     options=""
     options+="[1] linux-firmware\n"
-    echo -e "${txtinstallarchlinuxfirmwares}"
+    showmessage "${txtinstallarchlinuxfirmwares}"
     echo -e "${options}"
     while true;do
         echo -e "Select one option: "
@@ -1002,8 +1002,8 @@ installdotfiles(){
 }
 # --------------------------------------------------------
 installdotfilesdownload(){
-	showcommand "curl -L ${installdotfilesurl} > installdotfiles"
-	curl -L ${installdotfilesurl} > installdotfiles
+	showcommand "curl -L ${installdotfilesurl} >installdotfiles"
+    curl -L ${installdotfilesurl} >installdotfiles
 }
 # --------------------------------------------------------
 installdotfileslaunchchroot(){
@@ -1160,8 +1160,8 @@ loadconfigs(){
 
     # dotfiles ---------------------------------------
     txtdotfiles="Do you want to install my personal configuration?"
-    installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/master/install.sh
-    
+    installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/master/install_app
+
     # messages ---------------------------------------
     txtnextscreen="Select the installation %1 on the next screen"	
     txtpressanykey="Press any key to continue..."
@@ -1189,6 +1189,7 @@ while (( "$#" )); do
             efimode=2
         ;;
         --chroot)
+            loadconfigs
             chroot=1
             command=${2}
             args=${3}
