@@ -110,8 +110,8 @@ installaurpkgs() {
 systemctlenable(){
     arr=("$@")
     for service in "${arr[@]}"; do   # The quotes are necessary here
-        showcommand "su systemctl enalbe ${service} -f"
-        su systemctl enalbe ${service} -f
+        showcommand "su systemctl enable ${service} -f"
+        su systemctl enable ${service} -f
     done
     pressanykey
 }
@@ -255,11 +255,11 @@ loadstrings(){
 
     # file system extras ---------------------------
     titlefilesystemextras="INSTALLING FILE SYSTEM EXTRAS"
-    pkgs_filesystemextras="os-prober sfstools ntfs-3g btrfs-progs exfat-utils gptfdisk autofs fuse2 fuse3 fuseiso"
+    pkgs_filesystemextras="dosfstools ntfs-3g btrfs-progs exfat-utils gptfdisk autofs fuse2 fuse3 fuseiso"
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty bashmount ctags dunst firefox flameshot font-bh-ttf gsfonts hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpv mythes-es ncmpcpp nodejs npm picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xorg-fonts-type1 zsh zsh zsh-c zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty ctags dunst firefox flameshot font-bh-ttf gsfonts hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpv mythes-es ncmpcpp nodejs npm picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
