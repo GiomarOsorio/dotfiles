@@ -100,11 +100,12 @@ selectswapsize(){
 }
 # --------------------------------------------------------
 diskpart(){
-    re='^[1-3]$'
+    re='^[1-2]$'
     showtitle "PARTIATING DEVICE"
     options="[1] Auto Partition (dos)\n"
     options+="[2] Auto Partition (gpt)\n"
     if [ "${eficomputer}" == "1" ]; then
+    	re='^[1-3]$'
         options+="[3] Auto Partition (gpt,efi)\n"
     fi
     echo -e "${txt_diskpart}"
