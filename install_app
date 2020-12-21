@@ -8,6 +8,7 @@ enabledmultilib(){
     sudo sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
     showcommand "sudo pacman -Sy"
     sudo pacman -Sy
+    pressanykey
 }
 # --------------------------------------------------------
 installdependencies(){
@@ -40,6 +41,7 @@ checkaurdependencies(){
         echo "aurbuilder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/aurbuilder
         echo "root ALL=(aurbuilder) NOPASSWD: ALL" >> /etc/sudoers.d/aurbuilder
     fi
+    pressanykey
 }
 # --------------------------------------------------------
 installyay(){
@@ -62,6 +64,7 @@ installyay(){
     #command cd yay_*_x86_64 || return 1
     #./yay -Sy --nocleanmenu --nodiffmenu yay-bin
     #rm -rf "${tmpdir}"
+    pressanykey
 }
 # --------------------------------------------------------
 cloningrepo(){
@@ -76,6 +79,7 @@ cloningrepo(){
         cd "~/dotfiles"
         git pull origin master
     fi
+    pressanykey
 }
 # --------------------------------------------------------
 installpkgs() {
