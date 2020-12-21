@@ -163,12 +163,6 @@ run(){
     # compression tools ----------------------------
     installpkgs "${pkgs_compressiontools}" "${titlecompressiontools}"
 	
-    # kernel --------------------------------------
-    installpkgs "${pkgs_kernel}" "${titlekernel}"
-	
-    # kernel --------------------------------------
-    installpkgs "${pkgs_kernel}" "${titlekernel}"
-	
     # services ------------------------------------
     installpkgs "${pkgs_services}" "${titleservices}"
     systemctlenable "${services_services}"
