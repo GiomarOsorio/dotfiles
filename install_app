@@ -128,8 +128,8 @@ copy(){
 # --------------------------------------------------------
 run(){
     loadstrings
-    enabledmultilib
     installdependencies
+    enabledmultilib
 	
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
