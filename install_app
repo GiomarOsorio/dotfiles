@@ -271,6 +271,7 @@ loadstrings(){
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
      
 	# messages -------------------------------------
+    txtpressanykey="Press any key to continue..."
     txtcommand="> %1 \n"
     txtmessage="%1\n"
 }
