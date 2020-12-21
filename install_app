@@ -132,7 +132,6 @@ updatedir(){
 # --------------------------------------------------------
 copy(){
     if  [  \( ! "${1}" = "none" \)  -a  \( ! "${2}" = "none" \) ]; then
-        cd ~
         cp -vf "${1}" "${2}"
     fi 
     pressanykey
@@ -179,14 +178,14 @@ run(){
     # setup vim ------------------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim}" "${command_pip_vim}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim}" "${command_npm_vim}"
-    copy "~/dotfiles/.config/nvim" "~/.config/"
-    copy "~/dotfiles/.eslintrc.json" "~"
+    copy "/dotfiles/.config/nvim" "~/.config/"
+    copy "/dotfiles/.eslintrc.json" "~"
     
     # setup qtile ----------------------------------
-    copy "~/tfiles/.config/qtile" "~/.config/"
+    copy "/dotfiles/.config/qtile" "~/.config/"
 
     # setup ranger ----------------------------------
-    copy "~/tfiles/.config/ranger" "~/.config/"
+    copy "/dotfiles/.config/ranger" "~/.config/"
 }
 # --------------------------------------------------------
 pressanykey(){
