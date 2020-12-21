@@ -32,9 +32,9 @@ checkefi(){
     if [ "$?" == "1" ]; then
         if [ "${eficomputer}" != "1" ]; then
             eficomputer=0
-        else
-            eficomputer=1
         fi
+    else
+        eficomputer=1
     fi
 }
 # --------------------------------------------------------
