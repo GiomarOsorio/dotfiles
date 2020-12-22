@@ -154,6 +154,7 @@ installpkgs() {
         showcommand "pacman -S --noconfirm --needed $1"
         pacman -S --noconfirm --needed $1
     fi
+    echo ""
 }
 # --------------------------------------------------------
 installaurpkgs() {
