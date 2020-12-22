@@ -18,8 +18,9 @@ enabledmultilib(){
 }
 # --------------------------------------------------------
 users(){
-    re=""
-    showtitle "ADD USER"
+    re="^[1-2]$"
+    re2=""
+    showtitle "${titleusers}"
     
     options=""
     options+="[1] Yes\n"
@@ -43,7 +44,7 @@ users(){
         while true;do
             echo -e "Please enter a new username:"
             read username
-            if ! [[ $username =~ $re ]]; then
+            if ! [[ $username =~ $re2 ]]; then
                 showmessage "${txtinvalidusername}"
             else
                 echo ""
@@ -58,7 +59,36 @@ users(){
         passwd $username
         grpck
         echo ""
+        sudousers
         users
+    fi
+
+}
+# --------------------------------------------------------
+sudousers(){
+    re="^[1-2]$"
+    
+    options=""
+    options+="[1] Yes\n"
+    options+="[2] No\n"
+
+
+    showmessage "${txtmsgsudouser}"
+    echo -e "${options}"
+	
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            showmessage "${txtinvalid}"
+        else
+            echo ""
+            break
+        fi
+    done
+    if [[ $sel == 1 ]]; then
+        showcommand "echo \"$username ALL=(ALL) ALL\" > /etc/sudoers.d/$username"
+        echo "$username ALL=(ALL) ALL" > /etc/sudoers.d/$username
     fi
 
 }
@@ -269,11 +299,14 @@ loadstrings(){
     dependencies="neovim git curl wget base base-devel pacman-contrib"
 	
     # users ----------------------------------------
-    titleuser="USER MENU"
+    titleusers="USERS MENU"
     txtmsguser="Do you want add a new user?"
     txtuser="%1 User"
     txtusers="%1 Users"
     txtinvalidusername="Invalid username, try again."
+
+    # sudousers ----------------------------------------
+    txtmsgsudouser="Do you want add the last user create to sudo group?"
 
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
