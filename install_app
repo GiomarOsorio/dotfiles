@@ -1,5 +1,12 @@
 #!/bin/bash
 # --------------------------------------------------------
+installdependencies(){
+    showtitle "INSTALLING DEPENDENCIES"
+    installpkgs "${dependencies}"
+    #installyay
+    cloningrepo
+}
+# --------------------------------------------------------
 enabledmultilib(){
     showtitle "ENABLING MULTILIB REPO"
     showcommand "su sed -i '/\\[multilib\\]/s/^#//g' /etc/pacman.conf"
@@ -10,11 +17,50 @@ enabledmultilib(){
     pacman -Sy
 }
 # --------------------------------------------------------
-installdependencies(){
-    showtitle "INSTALLING DEPENDENCIES"
-    installpkgs "${dependencies}"
-    #installyay
-    cloningrepo
+users(){
+    re=""
+    showtitle "ADD USER"
+    
+    options=""
+    options+="[1] Yes\n"
+    options+="[2] No\n"
+
+
+    showmessage "${txtmsguser}"
+    echo -e "${options}"
+	
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            showmessage "${txtinvalid}"
+        else
+            echo ""
+            break
+        fi
+    done
+    if [[ $sel == 1 ]]; then
+        while true;do
+            echo -e "Please enter a new username:"
+            read username
+            if ! [[ $username =~ $re ]]; then
+                showmessage "${txtinvalidusername}"
+            else
+                echo ""
+                break
+            fi
+        done
+        showcommand "useradd -d /home/$username -s /bin/bash -m -N $username"
+        useradd -d /home/$username -s /bin/bash -m -N $username
+        showmessage "User $username created."
+        showmessage "Choose a password for $username :"
+        showcommand "passwd $username"
+        passwd $username
+        grpck
+        echo ""
+        users
+    fi
+
 }
 # --------------------------------------------------------
 checkaurdependencies(){
@@ -130,14 +176,16 @@ copy(){
     if  [  \( ! "${1}" = "none" \)  -a  \( ! "${2}" = "none" \) ]; then
         cp -vf "${1}" "${2}"
     fi 
-    pressanykey
 }
 # --------------------------------------------------------
 run(){
     loadstrings
     installdependencies
     enabledmultilib
-	
+
+    # users ----------------------------------------
+    users
+
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
     systemctlenable "${services_xfce}"
@@ -220,6 +268,13 @@ loadstrings(){
     # dependencias ---------------------------------
     dependencies="neovim git curl wget base base-devel pacman-contrib"
 	
+    # users ----------------------------------------
+    titleuser="USER MENU"
+    txtmsguser="Do you want add a new user?"
+    txtuser="%1 User"
+    txtusers="%1 Users"
+    txtinvalidusername="Invalid username, try again."
+
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
     pkgs_xfce="lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4 xfce4-goodies xdg-user-dirs xdg-user-dirs-gtk"
@@ -270,6 +325,7 @@ loadstrings(){
     txtpressanykey="Press any key to continue..."
     txtcommand="> %1 \n"
     txtmessage="%1\n"
+    txtinvalid="Invalid option, try again."
 }
 # --------------------------------------------------------
 while (( "$#" )); do
