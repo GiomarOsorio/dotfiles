@@ -171,9 +171,8 @@ run(){
     #installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
     # setup vim ------------------------------------
-    vimdependencies
-    installpkgs "${pkgs_pip_vim}" "${titlesvim}" "${command_pip_vim}"
-    installpkgs "${pkgs_npm_vim}" "${titlesvim}" "${command_npm_vim}"
+    installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim}"
+    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim}"
     copy "~/dotfiles/.config/nvim" "~/.config/"
     copy "~/dotfiles/.eslintrc.json" "~"
     
