@@ -296,7 +296,7 @@ loadstrings(){
     txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
 
     # dependencias ---------------------------------
-    dependencies="neovim git curl wget base base-devel pacman-contrib"
+    dependencies="neovim git curl wget base base-devel pacman-contrib sudo"
 	
     # users ----------------------------------------
     titleusers="USERS MENU"
