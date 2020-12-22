@@ -8,7 +8,6 @@ enabledmultilib(){
     sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
     showcommand "su pacman -Sy"
     pacman -Sy
-    pressanykey
 }
 # --------------------------------------------------------
 installdependencies(){
@@ -78,7 +77,6 @@ cloningrepo(){
         cd "~/dotfiles"
         git pull origin master
     fi
-    pressanykey
 }
 # --------------------------------------------------------
 installpkgs() {
@@ -96,7 +94,6 @@ installpkgs() {
         showcommand "pacman -S --noconfirm --needed $1"
         pacman -S --noconfirm --needed $1
     fi
-    pressanykey
 }
 # --------------------------------------------------------
 installaurpkgs() {
@@ -105,7 +102,6 @@ installaurpkgs() {
     fi
     showcommand "su -u aurbuilder yay -S --needed $2"
     su -u aurbuilder yay -S --needed $1
-    pressanykey
 }
 # --------------------------------------------------------
 systemctlenable(){
@@ -120,7 +116,6 @@ systemctlenable(){
 helpersystemctl(){
 	showcommand "systemctl ${1} ${2}"
 	systemctl "${1}" "${2}"
-    pressanykey
 }
 # --------------------------------------------------------
 updatedir(){
