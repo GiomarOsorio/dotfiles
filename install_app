@@ -159,7 +159,7 @@ run(){
 	
     # services ------------------------------------
     installpkgs "${pkgs_services}" "${titleservices}"
-    systemctlenable "${services_services}"
+    systemctlenable "${services_services[@]}"
 	
     # file system extras ---------------------------
     installpkgs "${pkgs_filesystemextras}" "${titlefilesystemextras}"
