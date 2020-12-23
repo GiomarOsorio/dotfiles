@@ -231,6 +231,7 @@ cloningrepo(){
         cd ${localrepopath//%1/$defaultuser}
         git pull origin
     fi
+    chown -R $defaultuser: ${localrepopath//%1/$defaultuser}
 }
 # --------------------------------------------------------
 copydotfiles(){
@@ -280,7 +281,7 @@ run(){
     installpkgs "${pkgs_generalpackages}" "${titlegeneralpackages}"
 	
     # aur packages ---------------------------------
-    #installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
+    installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
     # dotfiles -----------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim}"
@@ -369,7 +370,7 @@ loadstrings(){
     titleaurpackages="INSTALLING AUR PACKAGES"
     pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jwnloader2 megasync minecraft-launcher nerd-fonts-ubuntu-mono nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
 
-    # dotrfiles -----------------------------------------
+    # dotrfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
     txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
 
