@@ -193,8 +193,8 @@ installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
     fi
-    showcommand "su -u aurbuilder yay -S --needed $2"
-    su -u aurbuilder yay -S --needed $1
+    showcommand "sudo -u aurbuilder yay -S --needed $1"
+    sudo -u aurbuilder yay -S --noconfirm --needed $1
 }
 # --------------------------------------------------------
 systemctlenable(){
@@ -368,7 +368,7 @@ loadstrings(){
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jwnloader2 megasync minecraft-launcher nerd-fonts-ubuntu-mono nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 megasync minecraft-launcher nerd-fonts-ubuntu-mono nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
 
     # dotrfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
