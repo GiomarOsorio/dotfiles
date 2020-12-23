@@ -4,7 +4,6 @@ installdependencies(){
     showtitle "INSTALLING DEPENDENCIES"
     installpkgs "${dependencies}"
     installyay
-    cloningrepo
 }
 # --------------------------------------------------------
 enabledmultilib(){
@@ -15,82 +14,6 @@ enabledmultilib(){
     sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
     showcommand "su pacman -Sy"
     pacman -Sy
-}
-# --------------------------------------------------------
-users(){
-    re="^[1-2]$"
-    re2=""
-    showtitle "${titleusers}"
-    
-    options=""
-    options+="[1] Yes\n"
-    options+="[2] No\n"
-
-
-    showmessage "${txtmsguser}"
-    echo -e "${options}"
-	
-    while true; do
-        echo "Select a option: "
-        read sel
-        if ! [[ $sel =~ $re ]]; then
-            showmessage "${txtinvalid}"
-        else
-            echo ""
-            break
-        fi
-    done
-    if [[ $sel == 1 ]]; then
-        while true;do
-            echo -e "Please enter a new username:"
-            read username
-            if ! [[ $username =~ $re2 ]]; then
-                showmessage "${txtinvalidusername}"
-            else
-                echo ""
-                break
-            fi
-        done
-        showcommand "useradd -d /home/$username -s /bin/bash -m -N $username"
-        useradd -d /home/$username -s /bin/bash -m -N $username
-        showmessage "User $username created."
-        showmessage "Choose a password for $username :"
-        showcommand "passwd $username"
-        passwd $username
-        grpck
-        echo ""
-        sudousers
-        users
-    fi
-
-}
-# --------------------------------------------------------
-sudousers(){
-    re="^[1-2]$"
-    
-    options=""
-    options+="[1] Yes\n"
-    options+="[2] No\n"
-
-
-    showmessage "${txtmsgsudouser}"
-    echo -e "${options}"
-	
-    while true; do
-        echo "Select a option: "
-        read sel
-        if ! [[ $sel =~ $re ]]; then
-            showmessage "${txtinvalid}"
-        else
-            echo ""
-            break
-        fi
-    done
-    if [[ $sel == 1 ]]; then
-        showcommand "echo \"$username ALL=(ALL) ALL\" > /etc/sudoers.d/$username"
-        echo "$username ALL=(ALL) ALL" > /etc/sudoers.d/$username
-    fi
-
 }
 # --------------------------------------------------------
 checkaurdependencies(){
@@ -139,6 +62,115 @@ installyay(){
     sudo -u aurbuilder makepkg -si --noconfirm
 }
 # --------------------------------------------------------
+users(){
+    re="^[1-2]$"
+    re2=""
+    showtitle "${titleusers}"
+    
+    options=""
+    options+="[1] Yes\n"
+    options+="[2] No\n"
+
+
+    showmessage "${txtmsguser}"
+    echo -e "${options}"
+	
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            showmessage "${txtinvalid}"
+        else
+            echo ""
+            break
+        fi
+    done
+    if [[ $sel == 1 ]]; then
+        while true;do
+            echo -e "Please enter a new username:"
+            read username
+            if ! [[ $username =~ $re2 ]]; then
+                showmessage "${txtinvalidusername}"
+            else
+                echo ""
+                break
+            fi
+        done
+        showcommand "useradd -d /home/$username -s /bin/bash -m -N $username"
+        useradd -d /home/$username -s /bin/bash -m -N $username
+        showmessage "User $username created."
+        showmessage "Choose a password for $username :"
+        showcommand "passwd $username"
+        passwd $username
+        grpck
+        echo ""
+        sudousers
+        users
+    fi
+    userdefaultselect
+}
+# --------------------------------------------------------
+sudousers(){
+    re="^[1-2]$"
+    
+    options=""
+    options+="[1] Yes\n"
+    options+="[2] No\n"
+
+
+    showmessage "${txtmsgsudouser}"
+    echo -e "${options}"
+	
+    while true; do
+        echo "Select a option: "
+        read sel
+        if ! [[ $sel =~ $re ]]; then
+            showmessage "${txtinvalid}"
+        else
+            echo ""
+            break
+        fi
+    done
+    if [[ $sel == 1 ]]; then
+        showcommand "echo \"$username ALL=(ALL) ALL\" > /etc/sudoers.d/$username"
+        echo "$username ALL=(ALL) ALL" > /etc/sudoers.d/$username
+    fi
+
+}
+# --------------------------------------------------------
+userdefaultselect(){
+    countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
+    
+    re="^[1-${countusers}]$"
+    users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
+    options=""
+    i=1
+    IFS_ORIG=$IFS
+    IFS=$'\n'
+    for user in ${users}; do
+        options+="[$i] $user\n"
+        i=$((i+1))
+    done
+    IFS=$IFS_ORIG
+
+    echo -e "${txtmsguser2}"
+    echo -e "${options}" 
+    while true;do
+        echo -e "Select one option: "
+        read sel
+        if ! [[ $sel =~ $re ]] ; then
+            showmessage "${txtinvalid}"
+        else
+            codeuser=100$sel
+            codeuser=$((codeuser-1))
+            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
+            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
+            echo ""
+            break 
+        fi
+    done
+}
+# --------------------------------------------------------
 installpkgs() {
     if  [ ! "${2}" = ""  ]; then
         showtitle "${2}"
@@ -181,22 +213,39 @@ helpersystemctl(){
 updatedir(){
     xdg-user-dirs-update
     xdg-user-dirs-update --force
-    [ -d $HOME"/.icons" ] || mkdir -p $HOME"/.icons"
-    [ -d $HOME"/.themes" ] || mkdir -p $HOME"/.themes"
-    [ -d $HOME"/.fonts" ] || mkdir -p $HOME"/.fonts"
+    [ -d "${home//%1/$defaultuser}/.icons" ] || mkdir -p "${home//%1/$defaultuser}/.icons"
+    [ -d "${home//%1/$defaultuser}/.themes" ] || mkdir -p "${home//%1/$defaultuser}/.themes"
+    [ -d "${home//%1/$defaultuser}/.fonts" ] || mkdir -p "${home//%1/$defaultuser}/.fonts"
 }
 # --------------------------------------------------------
-copy(){
-    if  [  \( ! "${1}" = "none" \)  -a  \( ! "${2}" = "none" \) ]; then
-        cp -vf "${1}" "${2}"
-    fi 
+cloningrepo(){
+    showtitle "CLONING REPO"
+    showcommand "cd $homeuserfolder"
+    cd $homeuserfolder
+    if [ ! -f ${localrepopath//%1/$defaultuser} ]; then
+        showcommand "git clone ${txturlrepo}"
+        git clone ${txturlrepo}
+    else
+        showcommand "cd ${localrepopath//%1/$defaultuser}"
+        showcommand "git pull origin"
+        cd ${localrepopath//%1/$defaultuser}
+        git pull origin
+    fi
+}
+# --------------------------------------------------------
+copydotfiles(){
+    showcommand "cd $homeuserfolder"
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/.config\" \"${homeuserfolder}\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/.eslintrc.json\" \"${homeuserfolder}\""
+    cd $homeuserfolder
+    cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
+    cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
 }
 # --------------------------------------------------------
 run(){
     loadstrings
     installdependencies
     enabledmultilib
-    #checkaurdependencies
 
     # users ----------------------------------------
     users
@@ -233,17 +282,11 @@ run(){
     # aur packages ---------------------------------
     #installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
-    # setup vim ------------------------------------
+    # dotfiles -----------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim}"
-    copy "~/dotfiles/.config/nvim" "~/.config/"
-    copy "~/dotfiles/.eslintrc.json" "~"
-    
-    # setup qtile ----------------------------------
-    copy "~/dotfiles/.config/qtile" "~/.config/"
-
-    # setup ranger ----------------------------------
-    copy "~/dotfiles/.config/ranger" "~/.config/"
+    cloningrepo
+    copydotfiles
 }
 # --------------------------------------------------------
 showcommand(){
@@ -270,18 +313,18 @@ showtitle(){
 }
 # --------------------------------------------------------
 loadstrings(){
-    # repo -----------------------------------------
-    txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
-
     # dependencias ---------------------------------
     dependencies="neovim git curl wget base base-devel pacman-contrib sudo"
 	
     # users ----------------------------------------
     titleusers="USERS MENU"
     txtmsguser="Do you want add a new user?"
+    txtmsguser2="Select a default user for the dotfiles installation"
     txtuser="%1 User"
     txtusers="%1 Users"
     txtinvalidusername="Invalid username, try again."
+    defaultuser=""
+    homeuserfolder=""
 
     # sudousers ----------------------------------------
     txtmsgsudouser="Do you want add the last user create to sudo group?"
@@ -289,6 +332,7 @@ loadstrings(){
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
     pkgs_xfce="lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4 xfce4-goodies xdg-user-dirs xdg-user-dirs-gtk"
+    home="/home/%1"
     services_xfce=("lightdm")
 	
     # sound ----------------------------------------
@@ -324,6 +368,10 @@ loadstrings(){
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
     pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jwnloader2 megasync minecraft-launcher nerd-fonts-ubuntu-mono nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+
+    # dotrfiles -----------------------------------------
+    localrepopath="/home/%1/dotfiles"
+    txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
