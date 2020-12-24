@@ -62,6 +62,45 @@ installyay(){
     sudo -u aurbuilder makepkg -si --noconfirm
 }
 # --------------------------------------------------------
+userdefaultselect(){
+    countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
+    
+    re="^[1-${countusers}]$"
+    i=1
+    while true;do
+        users
+        options=""
+        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
+        IFS_ORIG=$IFS
+        IFS=$'\n'
+        for user in ${users}; do
+            options+="[$i] $user\n"
+            i=$((i+1))
+        done
+        if [ ${i} -gt 1 ]; then
+            break
+        fi
+        IFS=$IFS_ORIG
+    done
+
+    echo -e "${txtmsguser2}"
+    echo -e "${options}" 
+    while true;do
+        echo -e "Select one option: "
+        read sel
+        if ! [[ $sel =~ $re ]] ; then
+            showmessage "${txtinvalid}"
+        else
+            codeuser=100$sel
+            codeuser=$((codeuser-1))
+            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
+            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
+            echo ""
+            break 
+        fi
+    done
+}
+# --------------------------------------------------------
 users(){
     re="^[1-2]$"
     re2=""
@@ -135,45 +174,6 @@ sudousers(){
         echo "$username ALL=(ALL) ALL" > /etc/sudoers.d/$username
     fi
 
-}
-# --------------------------------------------------------
-userdefaultselect(){
-    countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
-    
-    re="^[1-${countusers}]$"
-    options=""
-    i=1
-    while true;do
-        users
-        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
-        IFS_ORIG=$IFS
-        IFS=$'\n'
-        for user in ${users}; do
-            options+="[$i] $user\n"
-            i=$((i+1))
-        done
-        if [ ${i} -gt 1 ]; then
-            break
-        fi
-        IFS=$IFS_ORIG
-    done
-
-    echo -e "${txtmsguser2}"
-    echo -e "${options}" 
-    while true;do
-        echo -e "Select one option: "
-        read sel
-        if ! [[ $sel =~ $re ]] ; then
-            showmessage "${txtinvalid}"
-        else
-            codeuser=100$sel
-            codeuser=$((codeuser-1))
-            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
-            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
-            echo ""
-            break 
-        fi
-    done
 }
 # --------------------------------------------------------
 installpkgs() {
