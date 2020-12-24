@@ -246,6 +246,8 @@ copydotfiles(){
     cd $homeuserfolder
     cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
     cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
+    chown -r $defaultuser: "${homeuserfolder}/.config"
+    chown -r $defaultuser: "${homeuserfolder}/.eslintrc.json"
 }
 # --------------------------------------------------------
 run(){
