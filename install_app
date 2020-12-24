@@ -189,13 +189,6 @@ installpkgs() {
         pacman -S --noconfirm --needed $1
     fi
     echo ""
-    pressanykey
-}
-pressanykey(){
-    tput setaf 3
-	read -n1 -p "${txtpressanykey}"
-	echo ""
-	tput sgr0
 }
 # --------------------------------------------------------
 installaurpkgs() {
@@ -204,7 +197,6 @@ installaurpkgs() {
     fi
     showcommand "sudo -u aurbuilder yay -S --needed $1"
     sudo -u aurbuilder yay -S --noconfirm --needed $1
-    pressanykey
 }
 # --------------------------------------------------------
 systemctlenable(){
@@ -302,6 +294,12 @@ run(){
     copydotfiles
 }
 # --------------------------------------------------------
+pressanykey(){
+    tput setaf 3
+	read -n1 -p "${txtpressanykey}"
+	echo ""
+	tput sgr0
+}
 showcommand(){
     tput setaf 2
     if [ ! "${1}" = "none" ]; then
