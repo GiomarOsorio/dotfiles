@@ -13,7 +13,7 @@ enabledmultilib(){
     sed -i '/\[multilib\]/s/^#//g' /etc/pacman.conf
     sed -i '/\[multilib\]/{n;s/^#//g}' /etc/pacman.conf
     showcommand "su pacman -Sy"
-    pacman -Sy
+    pacman -Syu --noconfirm
 }
 # --------------------------------------------------------
 checkaurdependencies(){
@@ -71,8 +71,6 @@ userdefaultselect(){
         users
         options=""
         users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
-        IFS_ORIG=$IFS
-        IFS=$'\n'
         for user in ${users}; do
             options+="[$i] $user\n"
             i=$((i+1))
@@ -80,7 +78,6 @@ userdefaultselect(){
         if [ ${i} -gt 1 ]; then
             break
         fi
-        IFS=$IFS_ORIG
     done
 
     echo -e "${txtmsguser2}"
@@ -192,6 +189,13 @@ installpkgs() {
         pacman -S --noconfirm --needed $1
     fi
     echo ""
+    pressanykey
+}
+pressanykey(){
+    tput setaf 3
+	read -n1 -p "${txtpressanykey}"
+	echo ""
+	tput sgr0
 }
 # --------------------------------------------------------
 installaurpkgs() {
@@ -200,6 +204,7 @@ installaurpkgs() {
     fi
     showcommand "sudo -u aurbuilder yay -S --needed $1"
     sudo -u aurbuilder yay -S --noconfirm --needed $1
+    pressanykey
 }
 # --------------------------------------------------------
 systemctlenable(){
@@ -252,8 +257,8 @@ copydotfiles(){
 # --------------------------------------------------------
 run(){
     loadstrings
-    installdependencies
     enabledmultilib
+    installdependencies
 
     # users ----------------------------------------
     userdefaultselect
