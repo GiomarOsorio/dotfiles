@@ -107,7 +107,6 @@ users(){
         sudousers
         users
     fi
-    userdefaultselect
 }
 # --------------------------------------------------------
 sudousers(){
@@ -142,16 +141,22 @@ userdefaultselect(){
     countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
     
     re="^[1-${countusers}]$"
-    users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
     options=""
     i=1
-    IFS_ORIG=$IFS
-    IFS=$'\n'
-    for user in ${users}; do
-        options+="[$i] $user\n"
-        i=$((i+1))
+    while true;do
+        users
+        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
+        IFS_ORIG=$IFS
+        IFS=$'\n'
+        for user in ${users}; do
+            options+="[$i] $user\n"
+            i=$((i+1))
+        done
+        if [ ${i} -gt 1 ]; then
+            break
+        fi
+        IFS=$IFS_ORIG
     done
-    IFS=$IFS_ORIG
 
     echo -e "${txtmsguser2}"
     echo -e "${options}" 
@@ -249,7 +254,7 @@ run(){
     enabledmultilib
 
     # users ----------------------------------------
-    users
+    userdefaultselect
 
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
