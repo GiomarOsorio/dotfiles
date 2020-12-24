@@ -246,6 +246,7 @@ copydotfiles(){
     cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
+    rm -r "${localrepopath//%1/$defaultuser}"
 }
 # --------------------------------------------------------
 run(){
@@ -375,7 +376,7 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty ctags dunst firefox flameshot font-bh-ttf gsfonts hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpv mythes-es ncmpcpp nodejs npm picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty ctags dmenu dunst firefox flameshot font-bh-ttf gsfonts hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpv mythes-es ncmpcpp nodejs npm picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
@@ -387,9 +388,9 @@ loadstrings(){
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
-    command_pip_vim="su -u %1 pip install"
+    command_pip_vim="sudo -u %1 pip install"
     pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
-    command_npm_vim="su -u %1 npm install"
+    command_npm_vim="sudo -u %1 npm install"
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
      
     # messages -------------------------------------
