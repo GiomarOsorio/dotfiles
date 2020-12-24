@@ -205,6 +205,7 @@ systemctlenable(){
         showcommand "systemctl enable ${service} -f"
         systemctl enable ${service} -f
     done
+    echo ""
 }
 # --------------------------------------------------------
 helpersystemctl(){
