@@ -244,8 +244,8 @@ copydotfiles(){
     cd $homeuserfolder
     cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
     cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
-    chown -r $defaultuser: "${homeuserfolder}/.config"
-    chown -r $defaultuser: "${homeuserfolder}/.eslintrc.json"
+    chown -R $defaultuser: "${homeuserfolder}/.config"
+    chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
 }
 # --------------------------------------------------------
 run(){
@@ -289,8 +289,8 @@ run(){
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
     # dotfiles -----------------------------
-    installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim}"
-    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim}"
+    installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
+    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser}"
     cloningrepo
     copydotfiles
 }
@@ -387,9 +387,9 @@ loadstrings(){
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
-    command_pip_vim="pip install"
+    command_pip_vim="su -u %1 pip install"
     pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
-    command_npm_vim="npm install"
+    command_npm_vim="su -u %1 npm install"
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
      
     # messages -------------------------------------
