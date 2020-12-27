@@ -460,7 +460,7 @@ loadstrings(){
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 megasync minecraft-launcher nerd-fonts-hermit nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 megasync minecraft-launcher nerd-fonts-hermit nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
 
     # dotrfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
