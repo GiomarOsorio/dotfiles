@@ -248,7 +248,55 @@ copydotfiles(){
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
     chown -R $defaultuser: "${homeuserfolder}/wallpaper.jpg"
+    sudo -u $defaultuser nitrogen "${homeuserfolder}/Pictures/wallpaper.jpg"
     rm -r "${localrepopath//%1/$defaultuser}"
+}
+# --------------------------------------------------------
+bashalias(){
+    showtitle "SETTING ALIAS"
+    echo "alias ls='ls --color=auto -l --time-style long-iso'" >> /etc/profile.d/alias.sh
+    echo "alias l='ls --color=auto -lA --time-style long-iso'" >> /etc/profile.d/alias.sh
+    echo "alias ll='ls --color=auto -la --time-style long-iso'" >> /etc/profile.d/alias.sh
+    echo "alias cd..='cd ..'" >> /etc/profile.d/alias.sh
+    echo "alias ..='cd ..'" >> /etc/profile.d/alias.sh
+    echo "alias ...='cd ../../'" >> /etc/profile.d/alias.sh
+    echo "alias ....='cd ../../../'" >> /etc/profile.d/alias.sh
+    echo "alias .....='cd ../../../../'" >> /etc/profile.d/alias.sh
+    echo "alias ff='find / -name'" >> /etc/profile.d/alias.sh
+    echo "alias f='find . -name'" >> /etc/profile.d/alias.sh
+    echo "alias grep='grep --color=auto'" >> /etc/profile.d/alias.sh
+    echo "alias egrep='egrep --color=auto'" >> /etc/profile.d/alias.sh
+    echo "alias fgrep='fgrep --color=auto'" >> /etc/profile.d/alias.sh
+    echo "alias ip='ip -c'" >> /etc/profile.d/alias.sh
+    echo "alias pacman='pacman --color auto'" >> /etc/profile.d/alias.sh
+    echo "alias pactree='pactree --color'" >> /etc/profile.d/alias.sh
+    echo "alias vdir='vdir --color=auto'" >> /etc/profile.d/alias.sh
+    echo "alias watch='watch --color'" >> /etc/profile.d/alias.sh
+    #man
+    echo 'man() {' >> /etc/profile.d/alias.sh
+    echo '	env \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_mb=$(printf "\e[1;31m") \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_md=$(printf "\e[1;31m") \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_me=$(printf "\e[0m") \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_se=$(printf "\e[0m") \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_ue=$(printf "\e[0m") \' >> /etc/profile.d/alias.sh
+    echo '		LESS_TERMCAP_us=$(printf "\e[1;32m") \' >> /etc/profile.d/alias.sh
+    echo '			man "$@"' >> /etc/profile.d/alias.sh
+    echo '}' >> /etc/profile.d/alias.sh
+    #yay
+    echo "alias yay='sudo -u aurbuilder yay'" >> /etc/profile.d/alias.sh
+}
+# --------------------------------------------------------
+editor(){
+    showtitle "SETTING EDITOR"
+    if [ "$editor" = "unset" ]; then
+      rm /etc/profile.d/editor.sh
+    else
+      echo "export EDITOR=$editor" > /etc/profile.d/editor.sh
+      chmod 755 /etc/profile.d/editor.sh
+      export EDITOR=$editor
+    fi
 }
 # --------------------------------------------------------
 run(){
@@ -296,7 +344,9 @@ run(){
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser}"
     cloningrepo
     copydotfiles
-    nitrogen "${homeuserfolder}/Pictures/wallpaper.jpg"
+
+    # bash -----------------------------------------
+    bashalias
 }
 # --------------------------------------------------------
 pressanykey(){
@@ -396,6 +446,9 @@ loadstrings(){
     command_npm_vim="sudo -u %1 npm install"
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
      
+    # editor ---------------------------------------
+    editor="nvim"
+
     # messages -------------------------------------
     txtpressanykey="Press any key to continue..."
     txtcommand="> %1 \n"
