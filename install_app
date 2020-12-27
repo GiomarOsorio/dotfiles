@@ -221,6 +221,16 @@ updatedir(){
     [ -d "${homeuserfolder}/.fonts" ] || mkdir -p "${homeuserfolder}/.fonts"
 }
 # --------------------------------------------------------
+settingohmyzsh(){
+    showcommand "sh -c \"$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
+    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    showcommand "sed -i \"/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"\" ~/.zshrc"
+
+    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    sed -i "/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"" ~/.zshrc
+}
+# --------------------------------------------------------
 checkfolder(){
     if [ ! -f ${1} ]; then
         mkdir $1
@@ -250,7 +260,7 @@ copydotfiles(){
     cd $homeuserfolder
     cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
     cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
-    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.jpg" "${homeuserfolder}/Pictures/wallpaper.jpg"
+    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.jpg" "${homeuserfolder}/Pictures/"
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
     chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.jpg"
@@ -372,7 +382,10 @@ run(){
     # aur packages ---------------------------------
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
-    # dotfiles -----------------------------
+    # oh-my-zsh ------------------------------------
+    settingohmyzsh
+
+    # dotfiles -------------------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
     checkfolder "${npm_install_folder//%1/$defaultuser}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
