@@ -372,7 +372,7 @@ run(){
     # dotfiles -----------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
     checkfolder "${npm_install_folder//%1/$defaultuser}"
-    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser}${prefix//%1/${npm_install_folder//%1/$defaultuser}}"
+    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/${npm_install_folder//%1/$defaultuser}}"
     cloningrepo
     copydotfiles
 
