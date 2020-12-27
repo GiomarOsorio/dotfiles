@@ -56,7 +56,7 @@ K_LAYOUTS = ['us', 'es', 'us dvp']
 TERMINAL = "alacritty"
 
 # UI Config vars
-FONT = 'Hurmit NF Medium'
+FONT = 'Hurmit Nerd Font'
 FOREGROUND = COLOR_SCHEME['foreground']
 ALERT = COLOR_SCHEME['focus']
 FONTSIZE = 15
