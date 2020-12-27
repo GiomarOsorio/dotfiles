@@ -244,16 +244,36 @@ copydotfiles(){
     cd $homeuserfolder
     cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
     cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
-    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.jpg" "${homeuserfolder}/Pictures"
+    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.jpg" "${homeuserfolder}/Pictures/wallpaper.jpg"
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
-    chown -R $defaultuser: "${homeuserfolder}/wallpaper.jpg"
+    chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.jpg"
     sudo -u $defaultuser nitrogen "${homeuserfolder}/Pictures/wallpaper.jpg"
     rm -r "${localrepopath//%1/$defaultuser}"
 }
 # --------------------------------------------------------
 bashalias(){
     showtitle "SETTING ALIAS"
+    showcommand "echo \"alias ls='ls --color=auto -l --time-style long-iso'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias l='ls --color=auto -lA --time-style long-iso'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias ll='ls --color=auto -la --time-style long-iso'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias cd..='cd ..'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias ..='cd ..'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias ...='cd ../../'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias ....='cd ../../../'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias .....='cd ../../../../'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias ff='find / -name'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias f='find . -name'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias grep='grep --color=auto'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias egrep='egrep --color=auto'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias fgrep='fgrep --color=auto'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias ip='ip -c'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias pacman='pacman --color auto'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias pactree='pactree --color'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias vdir='vdir --color=auto'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias watch='watch --color'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias yay='sudo -u aurbuilder yay'\" >> /etc/profile.d/alias.sh"
+
     echo "alias ls='ls --color=auto -l --time-style long-iso'" >> /etc/profile.d/alias.sh
     echo "alias l='ls --color=auto -lA --time-style long-iso'" >> /etc/profile.d/alias.sh
     echo "alias ll='ls --color=auto -la --time-style long-iso'" >> /etc/profile.d/alias.sh
@@ -291,11 +311,15 @@ bashalias(){
 editor(){
     showtitle "SETTING EDITOR"
     if [ "$editor" = "unset" ]; then
-      rm /etc/profile.d/editor.sh
+        showcommand "rm /etc/profile.d/editor.sh"
+        rm /etc/profile.d/editor.sh
     else
-      echo "export EDITOR=$editor" > /etc/profile.d/editor.sh
-      chmod 755 /etc/profile.d/editor.sh
-      export EDITOR=$editor
+        showcommand "echo \"export EDITOR=$editor\" > /etc/profile.d/editor.sh"
+        showcommand "chmod 755 /etc/profile.d/editor.sh"
+        showcommand "export EDITOR=$editor"
+        echo "export EDITOR=$editor" > /etc/profile.d/editor.sh
+        chmod 755 /etc/profile.d/editor.sh
+        export EDITOR=$editor
     fi
 }
 # --------------------------------------------------------
