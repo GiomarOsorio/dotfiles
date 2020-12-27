@@ -221,6 +221,12 @@ updatedir(){
     [ -d "${home//%1/$defaultuser}/.fonts" ] || mkdir -p "${home//%1/$defaultuser}/.fonts"
 }
 # --------------------------------------------------------
+checkfolder(){
+    if [ ! -f ${1} ]; then
+        mkdir $1
+    fi
+}
+# --------------------------------------------------------
 cloningrepo(){
     showtitle "CLONING REPO"
     showcommand "cd $homeuserfolder"
@@ -365,7 +371,8 @@ run(){
     
     # dotfiles -----------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
-    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser}"
+    checkfolder "${npm_install_folder//%1/$defaultuser}"
+    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser}${prefix//%1/${npm_install_folder//%1/$defaultuser}}"
     cloningrepo
     copydotfiles
 
@@ -470,6 +477,8 @@ loadstrings(){
     titlesvim="SETTING UP VIM"
     command_pip_vim="sudo -u %1 pip install"
     pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
+    npm_install_folder="/home/%1/node_modules"
+    prefix="-- prefix %1"
     command_npm_vim="sudo -u %1 npm install"
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
      
