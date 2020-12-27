@@ -180,7 +180,7 @@ keys = [Key(k[0], k[1], k[2]) for k in [
     ([MOD, "shift"], "r", lazy.restart()),
     # Shut down qtile.
     ([MOD, "shift"], "Escape", lazy.shutdown()),
-    ([MOD, "shift"], "l", lazy.spawn("dm-tool switch-to-greeter")),
+    ([MOD, "control"], "l", lazy.spawn("dm-tool switch-to-greeter")),
     ([MOD], "space", lazy.function(toggle_klayout))
     #([MOD,"shift"],"Delete", lazy.spawn(script("power-menu.sh"))),
 
