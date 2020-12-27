@@ -254,7 +254,7 @@ copydotfiles(){
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
     chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.jpg"
-    sudo -u $defaultuser nitrogen "${homeuserfolder}/Pictures/wallpaper.jpg"
+    sudo -u $defaultuser nitrogen --set-zoom-fill "${homeuserfolder}/Pictures/wallpaper.jpg"
     rm -r "${localrepopath//%1/$defaultuser}"
 }
 # --------------------------------------------------------
@@ -423,8 +423,8 @@ loadstrings(){
     txtuser="%1 User"
     txtusers="%1 Users"
     txtinvalidusername="Invalid username, try again."
-    defaultuser=""
-    homeuserfolder=""
+    defaultuser="giomar"
+    homeuserfolder="/home/giomar"
 
     # sudousers ----------------------------------------
     txtmsgsudouser="Do you want add the last user create to sudo group?"
