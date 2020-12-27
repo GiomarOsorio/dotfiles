@@ -216,9 +216,9 @@ helpersystemctl(){
 updatedir(){
     xdg-user-dirs-update
     xdg-user-dirs-update --force
-    [ -d "${home//%1/$defaultuser}/.icons" ] || mkdir -p "${home//%1/$defaultuser}/.icons"
-    [ -d "${home//%1/$defaultuser}/.themes" ] || mkdir -p "${home//%1/$defaultuser}/.themes"
-    [ -d "${home//%1/$defaultuser}/.fonts" ] || mkdir -p "${home//%1/$defaultuser}/.fonts"
+    [ -d "${homeuserfolder}/.icons" ] || mkdir -p "${homeuserfolder}/.icons"
+    [ -d "${homeuserfolder}/.themes" ] || mkdir -p "${homeuserfolder}/.themes"
+    [ -d "${homeuserfolder}/.fonts" ] || mkdir -p "${homeuserfolder}/.fonts"
 }
 # --------------------------------------------------------
 checkfolder(){
@@ -349,7 +349,7 @@ run(){
     # printer --------------------------------------
     installpkgs "${pkgs_printer}" "${titleprinter}"
     systemctlenable "${services_printer}"
-	
+
     # console --------------------------------------
     installpkgs "${pkgs_console}" "${titleconsole}"
 	
@@ -372,7 +372,7 @@ run(){
     # dotfiles -----------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
     checkfolder "${npm_install_folder//%1/$defaultuser}"
-    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/${npm_install_folder//%1/$defaultuser}}"
+    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
     cloningrepo
     copydotfiles
 
@@ -432,7 +432,6 @@ loadstrings(){
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
     pkgs_xfce="lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4 xfce4-goodies xdg-user-dirs xdg-user-dirs-gtk"
-    home="/home/%1"
     services_xfce=("lightdm")
 	
     # sound ----------------------------------------
@@ -477,10 +476,9 @@ loadstrings(){
     titlesvim="SETTING UP VIM"
     command_pip_vim="sudo -u %1 pip install"
     pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
-    npm_install_folder="/home/%1/node_modules"
-    prefix="-- prefix %1"
+    prefix="--prefix %1"
     command_npm_vim="sudo -u %1 npm install"
-    pkgs_npm_vim="neovim eslint eslint-config-airbnb-base --save-dev"	
+    pkgs_npm_vim="neovim eslint eslint-config-airbnb-base"
      
     # editor ---------------------------------------
     editor="nvim"
