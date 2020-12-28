@@ -19,11 +19,15 @@ nitrogen --restore &
 # Wait to let the X-Session start up correctly
 sleep 1
 
+# XFCE
+# Power Manager
+[[ $(is_running 'xfce4-power-manager') ]] || xfce4-power-manager &
 # Polkit agent Authentication
-#xfce
 [[ $(is_running 'polkit-gnome') ]] || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
-#daemon
+# Daemon
 [[ $(is_running 'xfsettingsd') ]] || xfsettingsd &
+# ScreenSaver 
+[[ $(is_running 'xfce4-screensaver') ]] || xfce4-screensaver &
 
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
