@@ -385,7 +385,7 @@ run(){
     # oh-my-zsh ------------------------------------
     settingohmyzsh
 
-    # dotfiles -------------------------------------
+    # dotfilea -------------------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
     checkfolder "${npm_install_folder//%1/$defaultuser}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
@@ -478,7 +478,7 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty ctags dmenu dunst firefox flameshot font-bh-ttf gsfonts hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpv mythes-es ncmpcpp nitrogen nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty ctags dmenu dunst firefox flameshot font-bh-ttf gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpv mythes-es ncmpcpp nitrogen nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
