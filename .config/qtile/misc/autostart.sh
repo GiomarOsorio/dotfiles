@@ -20,13 +20,10 @@ nitrogen --restore &
 sleep 1
 
 # Polkit agent Authentication
-[[ $(is_running 'polkit-kde-auth') ]] || /usr/lib/polkit-kde-authentication-agent-1 &
-
-# Central daemon of KDE work spaces
-[[ $(is_running 'kded5') ]] || kded5 &
-
-# Central daemon of KDE work spaces
-[[ $(is_running 'kwalletd5') ]] || kwalletd5 &
+#xfce
+[[ $(is_running 'polkit-gnome') ]] || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+#daemon
+[[ $(is_running 'xfsettingsd') ]] || xfsettingsd &
 
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
