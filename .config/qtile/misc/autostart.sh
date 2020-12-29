@@ -50,7 +50,6 @@ fi;
 # [[ $(is_running 'xautolock') ]] || xautolock -detectsleep -time 3 -locker "lock-screen"  -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds...'" &
 
 # Notification daemon : first kill the default mate daemon if it has spun up
-# [[ $(is_running 'mate-notification-daemon') ]] || killall mate-notification-daemon 
 [[ $(is_running 'dunst') ]] || dunst &
 
 # Megasync
@@ -65,10 +64,5 @@ fi;
 # Discord
 [[ $(is_running 'discord') ]] || discord &
 
-
-#
-# Music server
-#[[ $(is_running 'mopidy') ]] || python2 -m mopidy &
-
-# polybar for i3
-# [[ $(is_running 'polybar') ]] || polybar top
+# Music Player Daemon 
+[[ $(is_running 'mpd') ]] || mpd &
