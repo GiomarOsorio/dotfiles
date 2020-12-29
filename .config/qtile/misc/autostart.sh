@@ -14,7 +14,7 @@ is_running() {
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
 # Set the background image
-nitrogen --restore &
+xwinwrap -g 1280x1024+0+0 -ni -s -nf -b -un -argb -ov -- gifview -w WID ~/Pictures/wallpaper.gif -a
 
 # Wait to let the X-Session start up correctly
 sleep 1

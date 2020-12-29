@@ -260,11 +260,10 @@ copydotfiles(){
     cd $homeuserfolder
     cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
     cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
-    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.jpg" "${homeuserfolder}/Pictures/"
+    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Pictures/"
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
-    chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.jpg"
-    sudo -u $defaultuser nitrogen --set-zoom-fill "${homeuserfolder}/Pictures/wallpaper.jpg"
+    chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.gif"
     rm -r "${localrepopath//%1/$defaultuser}"
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
@@ -478,11 +477,11 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty ctags dmenu dunst firefox flameshot font-bh-ttf gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpv mythes-es ncmpcpp nitrogen nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty ctags dmenu dunst firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpv mythes-es ncmpcpp nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nerd-fonts-hermit nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nerd-fonts-hermit nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware xwinwrap-git zoom"
 
     # dotrfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
