@@ -152,7 +152,7 @@ keys = [Key(k[0], k[1], k[2]) for k in [
     ([MOD], "b", lazy.spawn("google-chrome-stable")),
     ([MOD], "r", lazy.spawn(TERMINAL + ' -e "ranger"')),
     ([MOD], "d", lazy.spawn("thunar")),
-    ([MOD], "m", lazy.spawn("ncmpcpp")),
+    ([MOD], "m", lazy.spawn(TERMINAL + ' -e "ncmpcpp"')),
     ([], "XF86AudioLowerVolume", lazy.spawn("pamixer --decrease 5")),
     ([], "XF86AudioRaiseVolume", lazy.spawn("pamixer --increase 5")),
     ([], "XF86AudioMute", lazy.spawn("pamixer --toggle-mute")),
