@@ -62,117 +62,6 @@ installyay(){
     sudo -u aurbuilder makepkg -si --noconfirm
 }
 # --------------------------------------------------------
-userdefaultselect(){
-    countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
-    
-    re="^[1-${countusers}]$"
-    i=1
-    while true;do
-        users
-        options=""
-        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
-        for user in ${users}; do
-            options+="[$i] $user\n"
-            i=$((i+1))
-        done
-        if [ ${i} -gt 1 ]; then
-            break
-        fi
-    done
-
-    echo -e "${txtmsguser2}"
-    echo -e "${options}" 
-    while true;do
-        echo -e "Select one option: "
-        read sel
-        if ! [[ $sel =~ $re ]] ; then
-            showmessage "${txtinvalid}"
-        else
-            codeuser=100$sel
-            codeuser=$((codeuser-1))
-            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
-            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
-            echo ""
-            break 
-        fi
-    done
-}
-# --------------------------------------------------------
-users(){
-    re="^[1-2]$"
-    re2=""
-    showtitle "${titleusers}"
-    
-    options=""
-    options+="[1] Yes\n"
-    options+="[2] No\n"
-
-
-    showmessage "${txtmsguser}"
-    echo -e "${options}"
-	
-    while true; do
-        echo "Select a option: "
-        read sel
-        if ! [[ $sel =~ $re ]]; then
-            showmessage "${txtinvalid}"
-        else
-            echo ""
-            break
-        fi
-    done
-    if [[ $sel == 1 ]]; then
-        while true;do
-            echo -e "Please enter a new username:"
-            read username
-            if ! [[ $username =~ $re2 ]]; then
-                showmessage "${txtinvalidusername}"
-            else
-                echo ""
-                break
-            fi
-        done
-        showcommand "useradd -d /home/$username -s /bin/bash -m -N $username"
-        useradd -d /home/$username -s /bin/bash -m -N $username
-        showmessage "User $username created."
-        showmessage "Choose a password for $username :"
-        showcommand "passwd $username"
-        passwd $username
-        grpck
-        echo ""
-        sudousers
-        users
-    fi
-}
-# --------------------------------------------------------
-sudousers(){
-    re="^[1-2]$"
-    
-    options=""
-    options+="[1] Yes\n"
-    options+="[2] No\n"
-
-
-    showmessage "${txtmsgsudouser}"
-    echo -e "${options}"
-	
-    while true; do
-        echo "Select a option: "
-        read sel
-        if ! [[ $sel =~ $re ]]; then
-            showmessage "${txtinvalid}"
-        else
-            echo ""
-            break
-        fi
-    done
-    if [[ $sel == 1 ]]; then
-        showcommand "echo \"$username ALL=(ALL) ALL\" > /etc/sudoers.d/$username"
-        echo "$username ALL=(ALL) ALL" > /etc/sudoers.d/$username
-    fi
-
-}
-# --------------------------------------------------------
 installpkgs() {
     if  [ ! "${2}" = ""  ]; then
         showtitle "${2}"
@@ -431,16 +320,6 @@ loadstrings(){
     # dependencias ---------------------------------
     dependencies="neovim git curl wget base base-devel pacman-contrib sudo"
 	
-    # users ----------------------------------------
-    titleusers="USERS MENU"
-    txtmsguser="Do you want add a new user?"
-    txtmsguser2="Select a default user for the dotfiles installation"
-    txtuser="%1 User"
-    txtusers="%1 Users"
-    txtinvalidusername="Invalid username, try again."
-    defaultuser="giomar"
-    homeuserfolder="/home/giomar"
-
     # sudousers ----------------------------------------
     txtmsgsudouser="Do you want add the last user create to sudo group?"
 
