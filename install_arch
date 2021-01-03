@@ -709,7 +709,7 @@ archadduser(){
     while true;do
         archchroot adduser
         options=""
-        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
+        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' mnt/etc/passwd)
         for user in ${users}; do
             options+="[$i] $user\n"
             i=$((i+1))
@@ -729,8 +729,8 @@ archadduser(){
         else
             codeuser=100$sel
             codeuser=$((codeuser-1))
-            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
-            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
+            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' mnt/etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
+            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' mnt/etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
             echo ""
             break 
         fi
@@ -798,8 +798,8 @@ archadduserchroot(){
             fi
         done
         if [[ $sel == 1 ]]; then
-            showcommand "echo \"$username ALL=(ALL) ALL\" > /etc/sudoers.d/$username"
-            echo "$username ALL=(ALL) ALL" > /etc/sudoers.d/$username
+            showcommand "echo \"$username ALL=(ALL) ALL\" > mnt/etc/sudoers.d/$username"
+            echo "$username ALL=(ALL) ALL" > mnt/etc/sudoers.d/$username
         fi
     fi
     exit
