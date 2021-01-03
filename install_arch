@@ -702,6 +702,7 @@ archsetrootpasswordchroot(){
 }
 # --------------------------------------------------------
 archadduser(){
+
     countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
     
     re="^[1-${countusers}]$"
@@ -746,6 +747,7 @@ archadduserchroot(){
     options=""
     options+="[1] Yes\n"
     options+="[2] No\n"
+
 
 
     showmessage "${txtmsguser}"
@@ -798,6 +800,8 @@ archadduserchroot(){
             fi
         done
         if [[ $sel == 1 ]]; then
+            showcommand "pacman -Sy --noconfirm sudo"
+            pacman -Sy --noconfirm sudo
             showcommand "echo \"$username ALL=(ALL) ALL\" > mnt/etc/sudoers.d/$username"
             echo "$username ALL=(ALL) ALL" > mnt/etc/sudoers.d/$username
         fi
