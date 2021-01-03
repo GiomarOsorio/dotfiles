@@ -361,7 +361,7 @@ loadstrings(){
     titleaurpackages="INSTALLING AUR PACKAGES"
     pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nerd-fonts-hermit nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware xwinwrap-git zoom"
 
-    # dotrfiles ------------------------------------
+    # dotfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
     txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
 
