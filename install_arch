@@ -705,7 +705,6 @@ archadduser(){
 
     countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
     
-    re="^[1-${countusers}]$"
     i=1
     while true;do
         archchroot adduser
@@ -720,6 +719,7 @@ archadduser(){
         fi
     done
 
+    re="^[1-${i}]$"
     echo -e "${txtmsguser2}"
     echo -e "${options}" 
     while true;do
