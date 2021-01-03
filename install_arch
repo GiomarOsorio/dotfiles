@@ -716,6 +716,9 @@ archadduser(){
         done
         if [ ${i} -gt 1 ]; then
             break
+        else
+            showmessage "you need at least one user created"
+            sleep 5
         fi
     done
 
