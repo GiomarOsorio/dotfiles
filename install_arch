@@ -1121,7 +1121,7 @@ installdotfilesdownload(){
 installdotfileslaunchchroot(){
 	cd
 	installdotfilesdownload
-	sh installdotfiles --chroot
+	sh installdotfiles --chroot ${defaultuser} ${homeuserfolder}
 	rm installdotfiles
 	exit
 }
@@ -1270,7 +1270,8 @@ loadconfigs(){
     # users ----------------------------------------
     titleusers="USERS MENU"
     txtmsguser="Do you want add a new user?"
-    txtmsguser2="Select a default user for the dotfiles installation"
+    txtmsgsudouser="Do you want add the last user create to sudo group?"
+    txtmsguser2="Select a default user"
     txtuser="%1 User"
     txtusers="%1 Users"
     txtinvalidusername="Invalid username, try again."
@@ -1287,7 +1288,6 @@ loadconfigs(){
     txtgenerate="Generate %1"
     txtinstall="Install %1"
     txtedit="Edit %1"
-    #txtenable="Enable %1"
     txtcommand="> %1 \n"
     txtmessage="%1\n"
     txtinvalid="Invalid option, try again."

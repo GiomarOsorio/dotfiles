@@ -321,7 +321,6 @@ loadstrings(){
     dependencies="neovim git curl wget base base-devel pacman-contrib sudo"
 	
     # sudousers ----------------------------------------
-    txtmsgsudouser="Do you want add the last user create to sudo group?"
 
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
@@ -386,9 +385,11 @@ loadstrings(){
 # --------------------------------------------------------
 while (( "$#" )); do
   case $1 in
-    -i|--install) install
-                  exit 0;;
-    --chroot) chrootoption="true";;
+    -i|--install)   install
+                    exit 0;;
+    --chroot)       chrootoption="true"
+                    defaultuser=${2}
+                    homeuserfolder=${3};;
   esac
   shift
 done
