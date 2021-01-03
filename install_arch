@@ -933,8 +933,10 @@ archgrubinstall(){
 # --------------------------------------------------------
 archgrubinstallchroot(){
      showcommand "mkdir /boot/grub"
+     showcommand "os-prober"
      showcommand "grub-mkconfig -o /boot/grub/grub.cfg"
      mkdir /boot/grub
+     os-prober
      grub-mkconfig -o /boot/grub/grub.cfg
      exit
 }
@@ -1190,9 +1192,6 @@ showtitle(){
 
 loadconfigs(){
     # init variables ---------------------------------
-    #baseurl=https://raw.githubusercontent.com/MatMoul/archfi/master
-    #cpl=0
-    #skipfont="0"
     fspkgs=""
 
     # efi variables ----------------------------------
