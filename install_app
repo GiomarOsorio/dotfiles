@@ -364,7 +364,7 @@ loadstrings(){
 
     # dotfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
-    txturlrepo="https://github.com/GiomarOsorio/dotfiles.git"
+    txturlrepo="-b dev --single-branch https://github.com/GiomarOsorio/dotfiles.git"
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
