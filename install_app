@@ -1,5 +1,40 @@
 #!/bin/bash
 # --------------------------------------------------------
+userdefaultselect(){
+    countusers=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd | wc -l)
+    
+    re="^[1-${countusers}]$"
+    i=1
+    while true;do
+        options=""
+        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
+        for user in ${users}; do
+            options+="[$i] $user\n"
+            i=$((i+1))
+        done
+        if [ ${i} -gt 1 ]; then
+            break
+        fi
+    done
+
+    echo -e "${txtmsguser}"
+    echo -e "${options}" 
+    while true;do
+        echo -e "Select one option: "
+        read sel
+        if ! [[ $sel =~ $re ]] ; then
+            showmessage "${txtinvalid}"
+        else
+            codeuser=100$sel
+            codeuser=$((codeuser-1))
+            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
+            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
+            echo ""
+            break 
+        fi
+    done
+}
+# --------------------------------------------------------
 installdependencies(){
     showtitle "INSTALLING DEPENDENCIES"
     showmessage "${defaultuser}"
@@ -241,6 +276,7 @@ run(){
     loadstrings
     enabledmultilib
     installdependencies
+    userdefaultselect
 
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
@@ -320,6 +356,12 @@ showtitle(){
 }
 # --------------------------------------------------------
 loadstrings(){
+    # users ----------------------------------------
+    titleusers="USERS MENU"
+    txtmsguser="Select a default user"
+    defaultuser=""
+    homeuserfolder=""
+
     # dependencias ---------------------------------
     dependencies="neovim git curl wget base base-devel pacman-contrib sudo"
 	
@@ -387,8 +429,6 @@ loadstrings(){
 while (( "$#" )); do
   case $1 in
     --chroot)       chrootoption="true"
-                    defaultuser="${2}"
-                    homeuserfolder="${3}";;
   esac
   shift
 done
