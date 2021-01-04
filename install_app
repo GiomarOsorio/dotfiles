@@ -28,12 +28,12 @@ userdefaultselect(){
                 echo ""
                 break 
             fi
+        done
     else
         showmessage "there are no users other than the root user, you must first create a user.."
         sleep 5
         exit
     fi
-    done
 }
 # --------------------------------------------------------
 installdependencies(){
