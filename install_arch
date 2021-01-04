@@ -1,7 +1,6 @@
 #!/bin/bash
 # --------------------------------------------------------
 run(){
-    installdotfiles
     installdependencies
     loadconfigs
     checkefi
@@ -622,15 +621,6 @@ archsetlocale(){
     showmessage "${txtsetlocale}"
     showcommand "echo -e ${locales//%1/${locale}} > /mnt/etc/locale.conf"
     echo -e ${locales//%1/${locale}} > /mnt/etc/locale.conf
-    #showcommand "echo \"LANG=${locale}.UTF-8\" >> /mnt/etc/locale.conf"
-    #showcommand "echo \"LANGUAGE=${locale}:en\" >> /mnt/etc/locale.conf"
-    #showcommand "echo \"LC_TIME=${locale}.UTF-8\" >> /mnt/etc/locale.conf"
-    #showcommand "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
-    #showcommand "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
-    #echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
-    #echo "" > /mnt/etc/locale.conf
-    #echo "LC_TIME=${locale}.UTF-8" > /mnt/etc/locale.conf
-    #echo "LC_COLLATE=C" > /mnt/etc/locale.conf
     showcommand "sed -i \"/#${locale}.UTF-8/s/^#//g\" /mnt/etc/locale.gen"
     sed -i "/#${locale}.UTF-8/s/^#//g" /mnt/etc/locale.gen
     archchroot setlocale
