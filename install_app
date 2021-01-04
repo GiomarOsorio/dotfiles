@@ -5,33 +5,34 @@ userdefaultselect(){
     
     re="^[1-${countusers}]$"
     i=1
-    while true;do
-        options=""
-        users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
-        for user in ${users}; do
-            options+="[$i] $user\n"
-            i=$((i+1))
-        done
-        if [ ${i} -gt 1 ]; then
-            break
-        fi
+    options=""
+    users=$(awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 } }' /etc/passwd)
+    for user in ${users}; do
+        options+="[$i] $user\n"
+        i=$((i+1))
     done
-
-    echo -e "${txtmsguser}"
-    echo -e "${options}" 
-    while true;do
-        echo -e "Select one option: "
-        read sel
-        if ! [[ $sel =~ $re ]] ; then
-            showmessage "${txtinvalid}"
-        else
-            codeuser=100$sel
-            codeuser=$((codeuser-1))
-            defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
-            homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
-            echo ""
-            break 
-        fi
+    if [ ${i} -gt 1 ]; then
+        showtitle "SELECTING DEFAULT USER"
+        echo -e "${txtmsguser}"
+        echo -e "${options}" 
+        while true;do
+            echo -e "Select one option: "
+            read sel
+            if ! [[ $sel =~ $re ]] ; then
+                showmessage "${txtinvalid}"
+            else
+                codeuser=100$sel
+                codeuser=$((codeuser-1))
+                defaultuser=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $1 }}')
+                homeuserfolder=$(awk -F: '$3 >= 1000 && $3 <= 5000' /etc/passwd | grep $codeuser | awk -F: '{if ($3 >= 1000 && $3 <= 5000) { print $6 }}')
+                echo ""
+                break 
+            fi
+    else
+        showmessage "there are no users other than the root user, you must first create a user.."
+        sleep 5
+        exit
+    fi
     done
 }
 # --------------------------------------------------------
@@ -274,9 +275,9 @@ editor(){
 # --------------------------------------------------------
 run(){
     loadstrings
+    userdefaultselect
     enabledmultilib
     installdependencies
-    userdefaultselect
 
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
