@@ -13,8 +13,9 @@ is_running() {
 # Set screen resolutions (add additional screens here)
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
-# Set wallpaper
+# Set the wallpaper
 [[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/Pictures/wallpaper.gif -a &
+#xwinwrap -g 1280x1024+0+0 -ni -s -nf -b -un -argb -ov -- gifview -w WID ~/Pictures/wallpaper.gif -a
 
 # Wait to let the X-Session start up correctly
 sleep 1
@@ -50,6 +51,7 @@ fi;
 # [[ $(is_running 'xautolock') ]] || xautolock -detectsleep -time 3 -locker "lock-screen"  -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds...'" &
 
 # Notification daemon : first kill the default mate daemon if it has spun up
+# [[ $(is_running 'mate-notification-daemon') ]] || killall mate-notification-daemon 
 [[ $(is_running 'dunst') ]] || dunst &
 
 # Megasync
@@ -64,5 +66,5 @@ fi;
 # Discord
 [[ $(is_running 'discord') ]] || discord &
 
-# Music Player Daemon 
+#Music Player Daemon
 [[ $(is_running 'mpd') ]] || mpd &

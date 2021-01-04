@@ -16,12 +16,12 @@ from settings import FONT_PARAMS, K_LAYOUTS, TERMINAL, WITH_SYS_TRAY, COLOR_SCHE
 from helpers import run_script
 
 # Import the parts of my config defined in other files
-from layouts import layouts, floating_layout    # NOQA
-from bindings import keys, mouse                # NOQA
-from groups import groups                       # NOQA
+from layouts import layouts, floating_layout  # NOQA
+from bindings import keys, mouse  # NOQA
+from groups import groups  # NOQA
 from widgets import ShellScript
-from custom_checkupdates import Custom_CheckUpdates
-#from widgets_test import Custom_CheckUpdates
+
+# from widgets_test import Custom_CheckUpdates
 
 # ----------------------------------------------------------------------------
 # Hooks
@@ -34,7 +34,7 @@ def autostart():
     state from the rest of the init. This will cause start/restart of qtile
     to hang slightly as the sleep runs.
     """
-    os.environ.setdefault('RUNNING_QTILE', 'True')
+    os.environ.setdefault("RUNNING_QTILE", "True")
     run_script("autostart.sh")
 
 
@@ -57,8 +57,11 @@ def make_screen(systray=False):
     blocks = [
         # Marker for the start of the groups to give a nice bg: ◢■■■■■■■◤
         widget.TextBox(
-            font="Arial", foreground=COLOR_SCHEME["foreground"],
-            text="◢", fontsize=50, padding=-1
+            font="Arial",
+            foreground=COLOR_SCHEME["foreground"],
+            text="◢",
+            fontsize=50,
+            padding=-1,
         ),
         widget.GroupBox(
             other_current_screen_border=COLOR_SCHEME["selected"],
@@ -77,8 +80,11 @@ def make_screen(systray=False):
         ),
         # Marker for the end of the groups to give a nice bg: ◢■■■■■■■◤
         widget.TextBox(
-            font="Arial", foreground=COLOR_SCHEME["foreground"],
-            text="◤ ", fontsize=50, padding=-5
+            font="Arial",
+            foreground=COLOR_SCHEME["foreground"],
+            text="◤ ",
+            fontsize=50,
+            padding=-5,
         ),
         # Show the title for the focused window
         widget.WindowName(**FONT_PARAMS),
@@ -87,9 +93,9 @@ def make_screen(systray=False):
             cursor_color=COLOR_SCHEME["foreground"],
             bell_style="visual",
             prompt="λ : ",
-            **FONT_PARAMS
+            **FONT_PARAMS,
         ),
-        widget.Sep(linewidth=2, foreground=COLOR_SCHEME["background"]),
+        # widget.Sep(linewidth=2, foreground=COLOR_SCHEME["background"]),
         # Resource usage graphs
         # IP information
         # ShellScript(
@@ -123,50 +129,49 @@ def make_screen(systray=False):
         #        **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Check Updates using YAY, every 5min
-        Custom_CheckUpdates(
-            distro='Arch_yay',
-            update_interval=300,
-            display_format='聯',
+        widget.CheckUpdates(
+            distro="Arch_yay",
+            update_interval=3,
+            display_format="聯",
             mouse_callbacks={
                 "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e yay -Syu")
             },
-            #execute=TERMINAL + " -e yay -Syu",
-            colour_no_updates=COLOR_SCHEME['focus'],
-            colour_have_updates=COLOR_SCHEME['focus'],
-            no_update_string='聯',
-            **FONT_PARAMS),
+            colour_no_updates=COLOR_SCHEME["foreground"],
+            colour_have_updates=COLOR_SCHEME["focus"],
+            no_update_string="聯",
+            **FONT_PARAMS,
+        ),
         widget.TextBox("┊", **FONT_PARAMS),
         # Volume % : scroll mouse wheel to change volume
         widget.TextBox("", **FONT_PARAMS),
         widget.Volume(**FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Current time
-        widget.Clock(
-            format="%I:%M %p, %a %d de %b %Y",
-            **FONT_PARAMS
-        ),
+        widget.Clock(format="%I:%M %p, %a %d de %b %Y", **FONT_PARAMS),
         # Keyboard layout
         widget.TextBox("┊", **FONT_PARAMS),
-        widget.KeyboardLayout(
-            configured_keyboards=K_LAYOUTS,
-            **FONT_PARAMS
-        ),
+        widget.KeyboardLayout(configured_keyboards=K_LAYOUTS, **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Visual indicator of the current layout for this workspace.
         widget.CurrentLayoutIcon(
             custom_icon_paths=[os.path.expanduser("~/.config/qtile/icons")],
-            **FONT_PARAMS
+            **FONT_PARAMS,
         ),
     ]
 
     if systray:
         # Add in the systray and additional separator
         blocks.insert(-1, widget.Systray())
-        blocks.insert(-1, widget.Sep(linewidth=2,
-                                     foreground=COLOR_SCHEME["background"]))
+        blocks.insert(
+            -1, widget.Sep(linewidth=2, foreground=COLOR_SCHEME["background"])
+        )
 
     # return Screen(top=bar.Bar(blocks, 25, background=COLS["deus_1"]))
-    return Screen(top=bar.Bar(widgets=blocks, opacity=0.9, size=25, background=COLOR_SCHEME["background"]))
+    return Screen(
+        top=bar.Bar(
+            widgets=blocks, opacity=0.9, size=25, background=COLOR_SCHEME["background"]
+        )
+    )
 
 
 # XXX : When I run qtile inside of mate, I don"t actually want a qtile systray
