@@ -619,8 +619,8 @@ archsetkeymap(){
 archsetlocale(){
     showtitle "SETTING LOCALE"
     showmessage "${txtsetlocale}"
-    showcommand "echo ${locales//%1/${locale}} > /mnt/etc/locale.conf"
-    echo ${locales//%1/${locale}} > /mnt/etc/locale.conf
+    showcommand "echo -e ${locales//%1/${locale}} > /mnt/etc/locale.conf"
+    echo -e ${locales//%1/${locale}} > /mnt/etc/locale.conf
     #showcommand "echo \"LANG=${locale}.UTF-8\" >> /mnt/etc/locale.conf"
     #showcommand "echo \"LANGUAGE=${locale}:en\" >> /mnt/etc/locale.conf"
     #showcommand "echo \"LC_TIME=${locale}.UTF-8\" >> /mnt/etc/locale.conf"
@@ -630,7 +630,8 @@ archsetlocale(){
     #echo "LANGUAGE=${locale}:en" > /mnt/etc/locale.conf
     #echo "LC_TIME=${locale}.UTF-8" > /mnt/etc/locale.conf
     #echo "LC_COLLATE=C" > /mnt/etc/locale.conf
-    sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
+    showcommand "sed -i \"/#${locale}.UTF-8/s/^#//g\" /mnt/etc/locale.gen"
+    sed -i "/#${locale}.UTF-8/s/^#//g" /mnt/etc/locale.gen
     archchroot setlocale
     echo ""
 }
