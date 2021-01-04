@@ -619,15 +619,17 @@ archsetkeymap(){
 archsetlocale(){
     showtitle "SETTING LOCALE"
     showmessage "${txtsetlocale}"
-    showcommand "echo \"LANG=${locale}.UTF-8\" > /mnt/etc/locale.conf"
-    showcommand "echo \"LANGUAGE=${locale}:en\" > /mnt/etc/locale.conf"
-    showcommand "echo \"LC_TIME=${locale}.UTF-8\" > /mnt/etc/locale.conf"
-    showcommand "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
-    showcommand "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
-    echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
-    echo "LANGUAGE=${locale}:en" > /mnt/etc/locale.conf
-    echo "LC_TIME=${locale}.UTF-8" > /mnt/etc/locale.conf
-    echo "LC_COLLATE=C" >> /mnt/etc/locale.conf
+    showcommand "echo ${locales//%1/${locale}} > /mnt/etc/locale.conf"
+    echo ${locales//%1/${locale}} > /mnt/etc/locale.conf
+    #showcommand "echo \"LANG=${locale}.UTF-8\" >> /mnt/etc/locale.conf"
+    #showcommand "echo \"LANGUAGE=${locale}:en\" >> /mnt/etc/locale.conf"
+    #showcommand "echo \"LC_TIME=${locale}.UTF-8\" >> /mnt/etc/locale.conf"
+    #showcommand "echo \"LC_COLLATE=C\" >> /mnt/etc/locale.conf"
+    #showcommand "sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen"
+    #echo "LANG=${locale}.UTF-8" > /mnt/etc/locale.conf
+    #echo "LANGUAGE=${locale}:en" > /mnt/etc/locale.conf
+    #echo "LC_TIME=${locale}.UTF-8" > /mnt/etc/locale.conf
+    #echo "LC_COLLATE=C" > /mnt/etc/locale.conf
     sed -i '/#${locale}.UTF-8/s/^#//g' /mnt/etc/locale.gen
     archchroot setlocale
     echo ""
@@ -1262,6 +1264,7 @@ loadconfigs(){
    
     # locale -----------------------------------------
     locale="es_VE"
+    locales="LANG=%1.UTF-8\nLC_CTYPE=\"%1.UTF-8\"\nLC_NUMERIC=%1.UTF-8\nLC_TIME=%1.UTF-8\nLC_COLLATE=%1.UTF-8\nLC_MONETARY=%1.UTF-8\nLC_MESSAGES=\"%1.UTF-8\"\nLC_PAPER=\"%1.UTF-8\"\nLC_NAME=\"%1.UTF-8\"\nLC_ADDRESS=\"%1.UTF-8\"\nLC_TELEPHONE=\"%1.UTF-8\"\nLC_MEASUREMENT=%1.UTF-8\nLC_IDENTIFICATION=\"%1.UTF-8\"\nLC_ALL="
     txtsetlocale="Set Locale"
 
     # set time ---------------------------------------
