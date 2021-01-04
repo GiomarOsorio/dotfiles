@@ -1,6 +1,7 @@
 #!/bin/bash
 # --------------------------------------------------------
 run(){
+    installdotfiles
     installdependencies
     loadconfigs
     checkefi
@@ -566,21 +567,21 @@ installbase(){
 }
 # --------------------------------------------------------
 archmenu(){
-   archsetkeymap
-   archsetlocale
-   archsettime
-   hostname
-   archsetrootpassword
-   archadduser
-   archgenfstabmenu
-   if [ "${isnvme}" = "1" ]; then
-       archgenmkinitcpionvme
-   fi
-   archextraspkg
-   archbootloadermenu
-   installdotfiles
-   rebootpc
-   exit
+    archsetkeymap
+    archsetlocale
+    archsettime
+    hostname
+    archsetrootpassword
+    archadduser
+    archgenfstabmenu
+    if [ "${isnvme}" = "1" ]; then
+        archgenmkinitcpionvme
+    fi
+    archextraspkg
+    archbootloadermenu
+    installdotfiles
+    rebootpc
+    exit
 }
 # --------------------------------------------------------
 archchroot(){

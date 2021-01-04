@@ -238,36 +238,36 @@ run(){
     userdefaultselect
 
     # xfce -----------------------------------------
-    installpkgs "${pkgs_xfce}" "${titlexfce}"
-    systemctlenable "${services_xfce}"
-    helpersystemctl "set-default" "graphical.target"
-    updatedir
+#    installpkgs "${pkgs_xfce}" "${titlexfce}"
+#    systemctlenable "${services_xfce}"
+#    helpersystemctl "set-default" "graphical.target"
+#    updatedir
 	
-    # sound ----------------------------------------
-    installpkgs "${pkgs_sound}" "${titlesound}"
-	
-    # printer --------------------------------------
-    installpkgs "${pkgs_printer}" "${titleprinter}"
-    systemctlenable "${services_printer}"
-
-    # console --------------------------------------
-    installpkgs "${pkgs_console}" "${titleconsole}"
-	
-    # compression tools ----------------------------
-    installpkgs "${pkgs_compressiontools}" "${titlecompressiontools}"
-	
-    # services ------------------------------------
-    installpkgs "${pkgs_services}" "${titleservices}"
-    systemctlenable "${services_services[@]}"
-	
-    # file system extras ---------------------------
-    installpkgs "${pkgs_filesystemextras}" "${titlefilesystemextras}"
-	
-    # general packages -----------------------------
-    installpkgs "${pkgs_generalpackages}" "${titlegeneralpackages}"
+#    # sound ----------------------------------------
+#    installpkgs "${pkgs_sound}" "${titlesound}"
+#	
+#    # printer --------------------------------------
+#    installpkgs "${pkgs_printer}" "${titleprinter}"
+#    systemctlenable "${services_printer}"
+#
+#    # console --------------------------------------
+#    installpkgs "${pkgs_console}" "${titleconsole}"
+#	
+#    # compression tools ----------------------------
+#    installpkgs "${pkgs_compressiontools}" "${titlecompressiontools}"
+#	
+#    # services ------------------------------------
+#    installpkgs "${pkgs_services}" "${titleservices}"
+#    systemctlenable "${services_services[@]}"
+#	
+#    # file system extras ---------------------------
+#    installpkgs "${pkgs_filesystemextras}" "${titlefilesystemextras}"
+#	
+#    # general packages -----------------------------
+#    installpkgs "${pkgs_generalpackages}" "${titlegeneralpackages}"
 	
     # aur packages ---------------------------------
-    installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
+#    installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
     # oh-my-zsh ------------------------------------
     settingohmyzsh
@@ -387,8 +387,9 @@ while (( "$#" )); do
     -i|--install)   install
                     exit 0;;
     --chroot)       chrootoption="true"
-                    defaultuser=${2}
-                    homeuserfolder=${3};;
+                    defaultuser="${2}"
+                    homeuserfolder="${3}"
+                    echo -e "${defaultuser} ${homeuserfolder}";;
   esac
   shift
 done
