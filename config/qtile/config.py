@@ -131,7 +131,7 @@ def make_screen(systray=False):
         # Check Updates using YAY, every 5min
         widget.CheckUpdates(
             distro="Arch_yay",
-            update_interval=3,
+            update_interval=300,
             display_format="聯",
             mouse_callbacks={
                 "Button1": lambda qtile: qtile.cmd_spawn(TERMINAL + " -e yay -Syu")
