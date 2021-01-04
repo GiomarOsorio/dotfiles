@@ -2,9 +2,6 @@
 # --------------------------------------------------------
 installdependencies(){
     showtitle "INSTALLING DEPENDENCIES"
-    showmessage "${defaultuser}"
-    showmessage "${homeuserfolder}"
-    sleep 5
     installpkgs "${dependencies}"
     installyay
 }
