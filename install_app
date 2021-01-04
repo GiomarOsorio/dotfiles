@@ -149,12 +149,17 @@ copydotfiles(){
     showcommand "cp -r \"${localrepopath//%1/$defaultuser}/.config\" \"${homeuserfolder}\""
     showcommand "cp -r \"${localrepopath//%1/$defaultuser}/.eslintrc.json\" \"${homeuserfolder}\""
     cd $homeuserfolder
-    cp -r "${localrepopath//%1/$defaultuser}/.config" "${homeuserfolder}"
-    cp -r "${localrepopath//%1/$defaultuser}/.eslintrc.json" "${homeuserfolder}"
-    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Pictures/"
+    mv -r "${localrepopath//%1/$defaultuser}/config" "${homeuserfolder}/.config"
+    mv -r "${localrepopath//%1/$defaultuser}/local" "${homeuserfolder}/.local"
+    mv -r "${localrepopath//%1/$defaultuser}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
+    mv -r "${localrepopath//%1/$defaultuser}/zshrc" "${homeuserfolder}/.zshrc"
+    mv -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Pictures/"
     chown -R $defaultuser: "${homeuserfolder}/.config"
+    chown -R $defaultuser: "${homeuserfolder}/.local"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
+    chown -R $defaultuser: "${homeuserfolder}/.zshrc"
     chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.gif"
+    fc-cache -f
     rm -r "${localrepopath//%1/$defaultuser}"
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
@@ -355,7 +360,7 @@ loadstrings(){
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nerd-fonts-hermit nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware xwinwrap-git zoom"
+    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware xwinwrap-git zoom"
 
     # dotfiles ------------------------------------
     localrepopath="/home/%1/dotfiles"
