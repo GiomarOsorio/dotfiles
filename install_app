@@ -182,19 +182,22 @@ cloningrepo(){
 # --------------------------------------------------------
 copydotfiles(){
     showcommand "cd $homeuserfolder"
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/.config\" \"${homeuserfolder}\""
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/.eslintrc.json\" \"${homeuserfolder}\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/config\" \"${homeuserfolder}/.config\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/local\" \"${homeuserfolder}/.local\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/eslintrc.json\" \"${homeuserfolder}/.eslintrc.json\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/zshrc\" \"${homeuserfolder}/.zshrc\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/wallpaper.gif\" \"${homeuserfolder}/Imágenes/\""
     cd $homeuserfolder
-    mv -r "${localrepopath//%1/$defaultuser}/config" "${homeuserfolder}/.config"
-    mv -r "${localrepopath//%1/$defaultuser}/local" "${homeuserfolder}/.local"
-    mv -r "${localrepopath//%1/$defaultuser}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
-    mv -r "${localrepopath//%1/$defaultuser}/zshrc" "${homeuserfolder}/.zshrc"
-    mv -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Pictures/"
+    cp -r "${localrepopath//%1/$defaultuser}/config" "${homeuserfolder}/.config"
+    cp -r "${localrepopath//%1/$defaultuser}/local" "${homeuserfolder}/.local"
+    cp -r "${localrepopath//%1/$defaultuser}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
+    cp -r "${localrepopath//%1/$defaultuser}/zshrc" "${homeuserfolder}/.zshrc"
+    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.local"
     chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
     chown -R $defaultuser: "${homeuserfolder}/.zshrc"
-    chown -R $defaultuser: "${homeuserfolder}/Pictures/wallpaper.gif"
+    chown -R $defaultuser: "${homeuserfolder}/Imágenes/wallpaper.gif"
     fc-cache -f
     rm -r "${localrepopath//%1/$defaultuser}"
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
@@ -291,7 +294,8 @@ run(){
     # printer --------------------------------------
     installpkgs "${pkgs_printer}" "${titleprinter}"
     systemctlenable "${services_printer}"
-      # console --------------------------------------
+
+    # console --------------------------------------
     installpkgs "${pkgs_console}" "${titleconsole}"
  
     # compression tools ----------------------------
