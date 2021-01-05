@@ -179,14 +179,14 @@ cloningrepo(){
 # --------------------------------------------------------
 copydotfiles(){
     showcommand "cd $homeuserfolder"
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/config\" \"${homeuserfolder}/.config\""
+    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/config/*\" \"${homeuserfolder}/.config\""
     showcommand "cp -r \"${localrepopath//%1/$defaultuser}/local\" \"${homeuserfolder}/.local\""
     showcommand "cp -r \"${localrepopath//%1/$defaultuser}/eslintrc.json\" \"${homeuserfolder}/.eslintrc.json\""
     showcommand "cp -r \"${localrepopath//%1/$defaultuser}/zshrc\" \"${homeuserfolder}/.zshrc\""
     showcommand "cp -r \"${localrepopath//%1/$defaultuser}/wallpaper.gif\" \"${homeuserfolder}/Imágenes/\""
     cd $homeuserfolder
-    cp -r "${localrepopath//%1/$defaultuser}/config" "${homeuserfolder}/.config"
-    cp -r "${localrepopath//%1/$defaultuser}/local" "${homeuserfolder}/.local"
+    cp -r "${localrepopath//%1/$defaultuser}/config/*" "${homeuserfolder}/.config/"
+    cp -r "${localrepopath//%1/$defaultuser}/local/*" "${homeuserfolder}/.local/"
     cp -r "${localrepopath//%1/$defaultuser}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
     cp -r "${localrepopath//%1/$defaultuser}/zshrc" "${homeuserfolder}/.zshrc"
     cp -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
