@@ -165,38 +165,38 @@ cloningrepo(){
     showtitle "CLONING REPO"
     showcommand "cd $homeuserfolder"
     cd $homeuserfolder
-    if [ ! -f ${localrepopath//%1/$defaultuser} ]; then
+    if [ ! -d ${localrepopath//%1/$homeuserfolder} ]; then
         showcommand "git clone ${txturlrepo}"
         git clone ${txturlrepo}
     else
-        showcommand "cd ${localrepopath//%1/$defaultuser}"
+        showcommand "cd ${localrepopath//%1/$homeuserfolder}"
         showcommand "git pull origin"
-        cd ${localrepopath//%1/$defaultuser}
+        cd ${localrepopath//%1/$homeuserfolder}
         git pull origin
     fi
-    chown -R $defaultuser: ${localrepopath//%1/$defaultuser}
+    chown -R $defaultuser: ${localrepopath//%1/$homeuserfolder}
 }
 # --------------------------------------------------------
 copydotfiles(){
     showcommand "cd $homeuserfolder"
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/config/*\" \"${homeuserfolder}/.config\""
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/local\" \"${homeuserfolder}/.local\""
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/eslintrc.json\" \"${homeuserfolder}/.eslintrc.json\""
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/zshrc\" \"${homeuserfolder}/.zshrc\""
-    showcommand "cp -r \"${localrepopath//%1/$defaultuser}/wallpaper.gif\" \"${homeuserfolder}/Imágenes/\""
+    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/config/.\" \"${homeuserfolder}/.config\""
+    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/local/.\" \"${homeuserfolder}/.local\""
+    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/eslintrc.json\" \"${homeuserfolder}/.eslintrc.json\""
+    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/zshrc\" \"${homeuserfolder}/.zshrc\""
+    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/wallpaper.gif\" \"${homeuserfolder}/Imágenes/\""
     cd $homeuserfolder
-    cp -r "${localrepopath//%1/$defaultuser}/config/*" "${homeuserfolder}/.config/"
-    cp -r "${localrepopath//%1/$defaultuser}/local/*" "${homeuserfolder}/.local/"
-    cp -r "${localrepopath//%1/$defaultuser}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
-    cp -r "${localrepopath//%1/$defaultuser}/zshrc" "${homeuserfolder}/.zshrc"
-    cp -r "${localrepopath//%1/$defaultuser}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
+    cp -a "${localrepopath//%1/$homeuserfolder}/config/." "${homeuserfolder}/.config/"
+    cp -a "${localrepopath//%1/$homeuserfolder}/local/." "${homeuserfolder}/.local/"
+    cp "${localrepopath//%1/$homeuserfolder}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
+    cp "${localrepopath//%1/$homeuserfolder}/zshrc" "${homeuserfolder}/.zshrc"
+    cp "${localrepopath//%1/$homeuserfolder}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.local"
-    chown -R $defaultuser: "${homeuserfolder}/.eslintrc.json"
-    chown -R $defaultuser: "${homeuserfolder}/.zshrc"
-    chown -R $defaultuser: "${homeuserfolder}/Imágenes/wallpaper.gif"
+    chown $defaultuser: "${homeuserfolder}/.eslintrc.json"
+    chown $defaultuser: "${homeuserfolder}/.zshrc"
+    chown $defaultuser: "${homeuserfolder}/Imágenes/wallpaper.gif"
     fc-cache -f
-    rm -r "${localrepopath//%1/$defaultuser}"
+    rm -r "${localrepopath//%1/$homeuserfolder}"
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
     sed -i "/^debug_mode          = false/ cdebug_mode          = true" /etc/lightdm/lightdm-webkit2-greeter.conf
@@ -407,7 +407,7 @@ loadstrings(){
     pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware xwinwrap-git zoom"
 
     # dotfiles ------------------------------------
-    localrepopath="/home/%1/dotfiles"
+    localrepopath="%1/dotfiles"
     txturlrepo="-b dev --single-branch https://github.com/GiomarOsorio/dotfiles.git"
 
     # setup vim ------------------------------------
