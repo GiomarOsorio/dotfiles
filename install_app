@@ -120,7 +120,7 @@ installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
     fi
-    showcommand "sudo -u aurbuilder yay -S --needed $1"
+    showcommand "sudo -u aurbuilder yay -S --noconfirm --needed $1"
     sudo -u aurbuilder yay -S --noconfirm --needed $1
 }
 # --------------------------------------------------------
@@ -180,21 +180,21 @@ cloningrepo(){
 copydotfiles(){
     showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
     showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
+    showcommand "cp -r \"${localrepopath//%1/$homeuserfolder}/background\" \"${homeuserfolder}/Imágenes/\""
     showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
     showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
-    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/background\" \"${homeuserfolder}/Imágenes/\""
 
     cp -a "${localrepopath//%1/$homeuserfolder}/config/." "${homeuserfolder}/.config/"
     cp -a "${localrepopath//%1/$homeuserfolder}/local/." "${homeuserfolder}/.local/"
+    cp -r "${localrepopath//%1/$homeuserfolder}/background" "${homeuserfolder}/Imágenes/"
     cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
     cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
-    cp "${localrepopath//%1/$homeuserfolder}/background" "${homeuserfolder}/Imágenes/"
 
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.local"
+    chown -R $defaultuser: "${homeuserfolder}/Imágenes/background"
     chown $defaultuser: "${homeuserfolder}/.eslintrc.json"
     chown $defaultuser: "${homeuserfolder}/.zshrc"
-    chown $defaultuser: "${homeuserfolder}/Imágenes/background"
 
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"

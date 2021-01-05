@@ -20,6 +20,7 @@ from layouts import layouts, floating_layout  # NOQA
 from bindings import keys, mouse  # NOQA
 from groups import groups  # NOQA
 from widgets import ShellScript
+from Custom_CheckUpdates import ArchCheckUpdates
 
 # from widgets_test import Custom_CheckUpdates
 
@@ -129,7 +130,7 @@ def make_screen(systray=False):
         #        **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Check Updates using YAY, every 5min
-        widget.CheckUpdates(
+        ArchCheckUpdates(
             distro="Arch_yay",
             update_interval=300,
             display_format="聯",
