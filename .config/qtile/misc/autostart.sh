@@ -14,8 +14,7 @@ is_running() {
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
 # Set the wallpaper
-[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/Pictures/wallpaper.gif -a &
-#xwinwrap -g 1280x1024+0+0 -ni -s -nf -b -un -argb -ov -- gifview -w WID ~/Pictures/wallpaper.gif -a
+[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/Imágenes/background/wallpaper.gif -a &
 
 # Wait to let the X-Session start up correctly
 sleep 1

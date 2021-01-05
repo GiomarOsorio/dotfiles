@@ -178,25 +178,27 @@ cloningrepo(){
 }
 # --------------------------------------------------------
 copydotfiles(){
-    showcommand "cd $homeuserfolder"
-    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/config/.\" \"${homeuserfolder}/.config\""
-    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/local/.\" \"${homeuserfolder}/.local\""
-    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/eslintrc.json\" \"${homeuserfolder}/.eslintrc.json\""
-    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/zshrc\" \"${homeuserfolder}/.zshrc\""
-    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/wallpaper.gif\" \"${homeuserfolder}/Imágenes/\""
-    cd $homeuserfolder
+    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
+    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
+    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
+    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
+    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/background\" \"${homeuserfolder}/Imágenes/\""
+
     cp -a "${localrepopath//%1/$homeuserfolder}/config/." "${homeuserfolder}/.config/"
     cp -a "${localrepopath//%1/$homeuserfolder}/local/." "${homeuserfolder}/.local/"
-    cp "${localrepopath//%1/$homeuserfolder}/eslintrc.json" "${homeuserfolder}/.eslintrc.json"
-    cp "${localrepopath//%1/$homeuserfolder}/zshrc" "${homeuserfolder}/.zshrc"
-    cp "${localrepopath//%1/$homeuserfolder}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
+    cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
+    cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
+    cp "${localrepopath//%1/$homeuserfolder}/background" "${homeuserfolder}/Imágenes/"
+
     chown -R $defaultuser: "${homeuserfolder}/.config"
     chown -R $defaultuser: "${homeuserfolder}/.local"
     chown $defaultuser: "${homeuserfolder}/.eslintrc.json"
     chown $defaultuser: "${homeuserfolder}/.zshrc"
-    chown $defaultuser: "${homeuserfolder}/Imágenes/wallpaper.gif"
+    chown $defaultuser: "${homeuserfolder}/Imágenes/background"
+
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
+
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
     sed -i "/^debug_mode          = false/ cdebug_mode          = true" /etc/lightdm/lightdm-webkit2-greeter.conf
