@@ -202,6 +202,7 @@ copydotfiles(){
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
     sed -i "/^debug_mode          = false/ cdebug_mode          = true" /etc/lightdm/lightdm-webkit2-greeter.conf
+    pressanykey
 }
 # --------------------------------------------------------
 bashalias(){
