@@ -119,14 +119,11 @@ installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
     fi
-    installpkgsyay "${1[@]}"
-    #showcommand "sudo -u aurbuilder yay -S --noconfirm --needed $1"
-    #sudo -u aurbuilder yay -S --noconfirm --needed $1
+    installpkgsyay "${1}"
 }
 # --------------------------------------------------------
 installpkgsyay(){
-    pkgs=("$@")
-    for pkg in "${pkgs[@]}"; do   # The quotes are necessary here
+    for pkg in ${1]}; 
         showcommand "sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}"
         sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}
     done
@@ -134,7 +131,7 @@ installpkgsyay(){
 # --------------------------------------------------------
 systemctlenable(){
     arr=("$@")
-    for service in "${arr[@]}"; do   # The quotes are necessary here
+    for service in "${arr[@]}"; do
         showcommand "systemctl enable ${service} -f"
         systemctl enable ${service} -f
     done
@@ -146,12 +143,17 @@ helpersystemctl(){
 	systemctl "${1}" "${2}"
 }
 # --------------------------------------------------------
+checkfolder(){
+    if [ ! -d ${1} ]; then
+        mkdir $1
+    fi
+}
+# --------------------------------------------------------
 updatedir(){
     xdg-user-dirs-update
     xdg-user-dirs-update --force
-    [ -d "${homeuserfolder}/.icons" ] || mkdir -p "${homeuserfolder}/.icons"
-    [ -d "${homeuserfolder}/.themes" ] || mkdir -p "${homeuserfolder}/.themes"
-    [ -d "${homeuserfolder}/.fonts" ] || mkdir -p "${homeuserfolder}/.fonts"
+    checkfolder "${homeuserfolder}/.icons"
+    checkfolder "${homeuserfolder}/.themes"
 }
 # --------------------------------------------------------
 settingohmyzsh(){
@@ -160,12 +162,6 @@ settingohmyzsh(){
     showcommand "sed -i \"/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"\" ~/.zshrc"
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-}
-# --------------------------------------------------------
-checkfolder(){
-    if [ ! -d ${1} ]; then
-        mkdir $1
-    fi
 }
 # --------------------------------------------------------
 cloningrepo(){
