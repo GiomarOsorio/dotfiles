@@ -119,8 +119,17 @@ installaurpkgs() {
     if  [ ! "${2}" = "none"  ]; then
         showtitle "${2}"
     fi
-    showcommand "sudo -u aurbuilder yay -S --noconfirm --needed $1"
-    sudo -u aurbuilder yay -S --noconfirm --needed $1
+    installpkgsyay "${1[@]}"
+    #showcommand "sudo -u aurbuilder yay -S --noconfirm --needed $1"
+    #sudo -u aurbuilder yay -S --noconfirm --needed $1
+}
+# --------------------------------------------------------
+installpkgsyay(){
+    pkgs=("$@")
+    for pkg in "${pkgs[@]}"; do   # The quotes are necessary here
+        showcommand "sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}"
+        sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}
+    done
 }
 # --------------------------------------------------------
 systemctlenable(){
@@ -309,9 +318,7 @@ run(){
     checkfolder "${npm_install_folder//%1/$defaultuser}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
     cloningrepo
-    pressanykey
     copydotfiles
-    pressanykey
 
     # bash -----------------------------------------
     bashalias
@@ -320,7 +327,7 @@ run(){
     editor 
 
     # oh-my-zsh ------------------------------------
-    settingohmyzsh
+    #settingohmyzsh
 }
 # --------------------------------------------------------
 pressanykey(){
