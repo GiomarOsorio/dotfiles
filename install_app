@@ -178,23 +178,24 @@ cloningrepo(){
 }
 # --------------------------------------------------------
 copydotfiles(){
-    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
-    showcommand "cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
-    showcommand "cp -r \"${localrepopath//%1/$homeuserfolder}/background\" \"${homeuserfolder}/Imágenes/\""
-    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
-    showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
+    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
+    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
+    showcommand "sudo -u ${defaultuser} cp -r \"${localrepopath//%1/$homeuserfolder}/background\" \"${homeuserfolder}/Imágenes/\""
+    showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
+    showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
 
-    cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
-    cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
-    cp -r "${localrepopath//%1/$homeuserfolder}/background" "${homeuserfolder}/Imágenes/"
-    cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
-    cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
+    ls ${homeuserfolder}
+    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
+    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
+    sudo -u ${defaultuser} cp -r "${localrepopath//%1/$homeuserfolder}/background" "${homeuserfolder}/Imágenes/"
+    sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
+    sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
 
-    chown -R $defaultuser: "${homeuserfolder}/.config"
-    chown -R $defaultuser: "${homeuserfolder}/.local"
-    chown -R $defaultuser: "${homeuserfolder}/Imágenes/background"
-    chown $defaultuser: "${homeuserfolder}/.eslintrc.json"
-    chown $defaultuser: "${homeuserfolder}/.zshrc"
+    #chown -R $defaultuser: "${homeuserfolder}/.config/."
+    #chown -R $defaultuser: "${homeuserfolder}/.local"
+    #chown -R $defaultuser: "${homeuserfolder}/Imágenes/background"
+    #chown $defaultuser: "${homeuserfolder}/.eslintrc.json"
+    #chown $defaultuser: "${homeuserfolder}/.zshrc"
 
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
@@ -202,7 +203,6 @@ copydotfiles(){
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
     sed -i "/^debug_mode          = false/ cdebug_mode          = true" /etc/lightdm/lightdm-webkit2-greeter.conf
-    pressanykey
 }
 # --------------------------------------------------------
 bashalias(){
@@ -313,6 +313,7 @@ run(){
 
     # aur packages ---------------------------------
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
+    pressanykey
     
     # oh-my-zsh ------------------------------------
     settingohmyzsh
@@ -322,7 +323,9 @@ run(){
     checkfolder "${npm_install_folder//%1/$defaultuser}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
     cloningrepo
+    pressanykey
     copydotfiles
+    pressanykey
 
     # bash -----------------------------------------
     bashalias
