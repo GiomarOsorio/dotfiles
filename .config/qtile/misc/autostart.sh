@@ -13,8 +13,8 @@ is_running() {
 # Set screen resolutions (add additional screens here)
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
-# Set the wallpaper
-[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/Imágenes/background/wallpaper.gif -a &
+# Set the wallpaperdotfiles\
+[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/.config/qtile/misc/wallpaper.gif -a &
 
 # Wait to let the X-Session start up correctly
 sleep 1

@@ -62,7 +62,6 @@ checkaurdependencies(){
     if [ ! $(id -u "aurbuilder") ]; then
         newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
         showcommand "useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder"
-        showcommand "echo -e \"$newpass\n$newpass\n\"|passwd aurbuilder"
         showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
         showcommand "chmod 777 /tmp/aurbuilder"
         useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder
@@ -150,13 +149,12 @@ settingohmyzsh(){
     showcommand "sh -c \"$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
     showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
     showcommand "sed -i \"/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"\" ~/.zshrc"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-    sed -i "/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"" ~/.zshrc
 }
 # --------------------------------------------------------
 checkfolder(){
-    if [ ! -f ${1} ]; then
+    if [ ! -d ${1} ]; then
         mkdir $1
     fi
 }
@@ -180,13 +178,11 @@ cloningrepo(){
 copydotfiles(){
     showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
     showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
-    showcommand "sudo -u ${defaultuser} cp -r \"${localrepopath//%1/$homeuserfolder}/wallpaper.gif\" \"${homeuserfolder}/Imágenes/\""
     showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
     showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
 
     sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
     sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
-    sudo -u ${defaultuser} cp -r "${localrepopath//%1/$homeuserfolder}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
     sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
     sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
 
@@ -308,10 +304,7 @@ run(){
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     pressanykey
     
-    # oh-my-zsh ------------------------------------
-    settingohmyzsh
-
-    # dotfilea -------------------------------------
+    # dotfiles -------------------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
     checkfolder "${npm_install_folder//%1/$defaultuser}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
@@ -325,6 +318,9 @@ run(){
 
     # editor ---------------------------------------
     editor 
+
+    # oh-my-zsh ------------------------------------
+    settingohmyzsh
 }
 # --------------------------------------------------------
 pressanykey(){
