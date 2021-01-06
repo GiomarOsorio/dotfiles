@@ -184,8 +184,8 @@ copydotfiles(){
     showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
     showcommand "cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
 
-    cp -a "${localrepopath//%1/$homeuserfolder}/config/." "${homeuserfolder}/.config/"
-    cp -a "${localrepopath//%1/$homeuserfolder}/local/." "${homeuserfolder}/.local/"
+    cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
+    cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
     cp -r "${localrepopath//%1/$homeuserfolder}/background" "${homeuserfolder}/Imágenes/"
     cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
     cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
