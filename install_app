@@ -123,7 +123,7 @@ installaurpkgs() {
 }
 # --------------------------------------------------------
 installpkgsyay(){
-    for pkg in ${1]}; 
+    for pkg in ${1]}; do
         showcommand "sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}"
         sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}
     done
