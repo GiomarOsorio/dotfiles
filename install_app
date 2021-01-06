@@ -185,7 +185,6 @@ copydotfiles(){
     showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
 
     sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
-    sudo -u ${defaultuser} chmod "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
     sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
     sudo -u ${defaultuser} cp -r "${localrepopath//%1/$homeuserfolder}/wallpaper.gif" "${homeuserfolder}/Imágenes/"
     sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
