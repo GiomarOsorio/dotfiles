@@ -123,10 +123,11 @@ installaurpkgs() {
 }
 # --------------------------------------------------------
 installpkgsyay(){
-    for pkg in ${1]}; do
+    for pkg in ${1}; do
         showcommand "sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}"
         sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}
     done
+    echo ""
 }
 # --------------------------------------------------------
 systemctlenable(){
