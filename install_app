@@ -175,7 +175,7 @@ installyay(){
     showtitle "INSTALLING YAY"
     checkaurdependencies
     cd ${homeuserfolder}
-    if [ ! -f "${homeuserfolder}/.cache/yay/" ]; then
+    if [ -d "${homeuserfolder}/.cache/yay/" ]; then
         rm -r ${homeuserfolder}/.cache/yay/
     fi
     sudo -u ${defaultuser} git clone https://aur.archlinux.org/yay.git
@@ -210,8 +210,8 @@ installaurpkgs() {
 # --------------------------------------------------------
 installpkgsyay(){
     for pkg in ${1}; do
-        showcommand "sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}"
-        sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}
+        showcommand "sudo -u ${defaultuser} yay -S --noconfirm --needed ${pkg}"
+        sudo -u ${defaultuser} yay -S --noconfirm --needed ${pkg}
     done
 
 }
