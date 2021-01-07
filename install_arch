@@ -285,7 +285,6 @@ formatbootdevice(){
             mkfs.fat ${2}
         ;;
     esac
-    echo ""
 }
 # --------------------------------------------------------
 formatswapdevice(){
@@ -293,7 +292,6 @@ formatswapdevice(){
     showmessage "----------------------------------------------------"
     showcommand "mkswap ${swapdev}"
     mkswap ${swapdev}
-    echo ""
     }
 # --------------------------------------------------------
 formatrootdevice(){
@@ -398,8 +396,7 @@ formatrootdevice(){
             mkfs.reiserfs -f ${2}
         ;;
     esac
-    echo ""
-    }
+}
 # --------------------------------------------------------
 mountparts(){
     showtitle "MOUNTING THE FILE SYSTEM"
@@ -419,7 +416,6 @@ mountparts(){
         showcommand "mount ${homedev} /mnt/home"
         mount ${homedev} /mnt/home
     fi
-    echo ""
 }
 # --------------------------------------------------------
 installmenu(){
@@ -596,7 +592,6 @@ hostname(){
     showtitle "SETTING HOSTNAME"
     echo "Enter a hostname, (archlinux as default): "
     read hostname
-    echo ""
     if [ ! "${hostname}" = "none" ]; then
         hostname="archlinux"
     fi
@@ -610,10 +605,8 @@ hostname(){
 # --------------------------------------------------------
 archsetkeymap(){
     showtitle "SETTING KEYMAP"
-    echo ""
     showcommand "echo \"${keymap}\" > /mnt/etc/vconsole.conf"
     echo "${keymap}" > /mnt/etc/vconsole.conf
-    echo ""
 }
 # --------------------------------------------------------
 archsetlocale(){
@@ -624,7 +617,6 @@ archsetlocale(){
     showcommand "sed -i \"/#${locale}.UTF-8/s/^#//g\" /mnt/etc/locale.gen"
     sed -i "/#${locale}.UTF-8/s/^#//g" /mnt/etc/locale.gen
     archchroot setlocale
-    echo ""
 }
 # --------------------------------------------------------
 archsetlocalechroot(){
@@ -664,7 +656,6 @@ archsettime(){
             archchroot settimelocal
         ;;
     esac
-    echo ""
 }
 # --------------------------------------------------------
 archsettimeutcchroot(){
@@ -682,7 +673,6 @@ archsettimelocalchroot(){
 archsetrootpassword(){
     showtitle "SETTING ROOT PASSWORD"
     archchroot setrootpassword
-    echo ""
 }
 # --------------------------------------------------------
 archsetrootpasswordchroot(){
@@ -724,8 +714,6 @@ archadduserchroot(){
     options=""
     options+="[1] Yes\n"
     options+="[2] No\n"
-
-
 
     showmessage "${txtmsguser}"
     echo -e "${options}"
@@ -829,14 +817,12 @@ archgenfstabmenu(){
             genfstab -t PARTLABEL -p /mnt > /mnt/etc/fstab
         ;;
     esac
-    echo ""
 }
 # --------------------------------------------------------
 archgencrypttab(){
     showtitle "${txtgenerate//%1/crypttab}"
     showcommand "echo -e \"${crypttab}\" >> /mnt/etc/crypttab"
     echo -e "${crypttab}" >> /mnt/etc/crypttab
-    echo ""
 }
 # --------------------------------------------------------
 archgenmkinitcpionvme(){
@@ -844,7 +830,6 @@ archgenmkinitcpionvme(){
     showcommand "sed -i \"s/MODULES=()/MODULES=(nvme)/g\" /mnt/etc/mkinitcpio.conf"
     sed -i "s/MODULES=()/MODULES=(nvme)/g" /mnt/etc/mkinitcpio.conf
     archchroot genmkinitcpio
-    echo ""
 }
 # --------------------------------------------------------
 archbootloadermenu(){
@@ -1062,7 +1047,6 @@ archextraspkg(){
     showcommand "pacstrap /mnt ${pkgs}"
     pacstrap /mnt ${pkgs}
     archchroot enabledhcpcd
-    echo ""
 }
 # --------------------------------------------------------
 archenabledhcpcdchroot(){
