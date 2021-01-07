@@ -39,17 +39,17 @@ checkefi(){
 }
 # --------------------------------------------------------
 setkeymap(){
-	showtitle "LOADING KEYMAP"
+    showtitle "LOADING KEYMAP"
     showcommand "loadkeys ${keymap}"
-	loadkeys $keymap
+    loadkeys $keymap
 }
 
 # --------------------------------------------------------
 chooseeditor(){
     showtitle "SETTING EDITOR"
     showcommand "export EDITOR=${editor}"
-	export EDITOR=${editor}
-	EDITOR=${editor}
+    export EDITOR=${editor}
+    EDITOR=${editor}
 }
 
 # --------------------------------------------------------
@@ -92,7 +92,7 @@ selectswapsize(){
     showtitle "SELECTING SWAP SIZE"
     showmessage "${txt_swap}"
     showmessage "${txtnextscreen//%1/swap}"
-	pressanykey
+    pressanykey
     swap_size=$(whiptail --backtitle "" --inputbox "${menu_swap}" 8 39 ${default_swapsize} --title "${title_swap}" 3>&1 1>&2 2>&3)
     clear
     [[ $swap_size =~ ^[0-9]+$ ]] || swap_size=$default_swapsize
@@ -1253,8 +1253,8 @@ loadconfigs(){
     txtgenerate="Generate %1"
     txtinstall="Install %1"
     txtedit="Edit %1"
-    txtcommand="> %1 \n"
-    txtmessage="%1\n"
+    txtcommand="> %1"
+    txtmessage="%1"
     txtinvalid="Invalid option, try again."
 }
 
