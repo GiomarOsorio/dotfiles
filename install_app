@@ -112,7 +112,7 @@ installpkgs() {
         showcommand "pacman -S --noconfirm --needed $1"
         pacman -S --noconfirm --needed $1
     fi
-    echo ""
+
 }
 # --------------------------------------------------------
 installaurpkgs() {
@@ -127,7 +127,7 @@ installpkgsyay(){
         showcommand "sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}"
         sudo -u aurbuilder yay -S --noconfirm --needed ${pkg}
     done
-    echo ""
+
 }
 # --------------------------------------------------------
 systemctlenable(){
@@ -136,7 +136,6 @@ systemctlenable(){
         showcommand "systemctl enable ${service} -f"
         systemctl enable ${service} -f
     done
-    echo ""
 }
 # --------------------------------------------------------
 helpersystemctl(){
@@ -274,8 +273,12 @@ editor(){
 run(){
     loadstrings
     userdefaultselect
+    showcommand "df -h"
+    df -h
     enabledmultilib
     installdependencies
+    showcommand "df -h"
+    df -h
 
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
@@ -348,6 +351,7 @@ showmessage(){
     tput sgr0
 }
 showtitle(){
+    echo ""
     tput setaf 5
     echo "##############################################"
     echo "${1}"
