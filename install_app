@@ -388,7 +388,6 @@ run(){
 
     # aur packages ---------------------------------
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
-    pressanykey
     
     # dotfiles -------------------------------------
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
@@ -428,12 +427,14 @@ showmessage(){
     tput sgr0
 }
 showtitle(){
-    echo ""
     tput setaf 5
+    if [ ! "${1}" = "none" ]; then
+    echo ""
     echo "##############################################"
     echo "${1}"
     echo "##############################################"
     echo ""
+    fi
     tput sgr0
 }
 # --------------------------------------------------------

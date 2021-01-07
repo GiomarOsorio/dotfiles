@@ -795,7 +795,7 @@ archgenfstabmenu(){
     options+="[4] \"PARTLABEL\" genfstab -t PARTLABEL\n"
     showtitle "${txtgenerate//%1/fstab}"
     
-    echo -e "${txtgenerate//%1/fstab}\n"
+    showmesssage "${txtgenerate//%1/fstab}"
     echo -e "${options}"
     while true; do
         echo "Select a option: "
@@ -1166,12 +1166,15 @@ showmessage(){
 }
 
 showtitle(){
-	tput setaf 5
-	echo "##############################################"
-	echo "${1}"
-	echo "##############################################"
-	echo ""
-	tput sgr0
+    tput setaf 5
+    if [ ! "${1}" = "none" ]; then
+    echo ""
+    echo "##############################################"
+    echo "${1}"
+    echo "##############################################"
+    echo ""
+    fi
+    tput sgr0
 }
 
 
