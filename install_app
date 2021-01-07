@@ -131,12 +131,6 @@ enabledmultilib(){
     pacman -Syu --noconfirm
 }
 # --------------------------------------------------------
-checkfolder(){
-    if [ ! -d ${1} ]; then
-        mkdir $1
-    fi
-}
-# --------------------------------------------------------
 checkaurdependencies(){
     if [ ! -f /usr/bin/automake ]; then
         pacman -S --needed base-devel
@@ -144,43 +138,42 @@ checkaurdependencies(){
     if [ ! -f /usr/bin/git ]; then
         pacman -S --needed git
     fi
-    checkfolder "${homeuserfolder}/.cache/"
-#    if [ ! $(id -u "aurbuilder") ]; then
-        #newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
-        #showcommand "useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder"
-        #showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
-        #showcommand "chmod 777 /tmp/aurbuilder"
-        #useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder
-        #echo -e "$newpass\n$newpass\n"|passwd aurbuilder
-        #newpass=""
-        #mkdir /tmp/aurbuilder 1&>/dev/null
-        #chmod 777 /tmp/aurbuilder
-    #else
-        #showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
-        #showcommand "chmod 777 /tmp/aurbuilder"
-        #showcommand "usermod -d /tmp/aurbuilder aurbuilder"
-        #mkdir /tmp/aurbuilder 1&>/dev/null
-        #chmod 777 /tmp/aurbuilder
-        #usermod -d /tmp/aurbuilder aurbuilder
-    #fi
-    #if [ ! -f /etc/sudoers.d/aurbuilder ]; then
-        #showcommand "echo \"aurbuilder ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/aurbuilder"
-#        showcommand "echo \"root ALL=(aurbuilder) NOPASSWD: ALL\" >> /etc/sudoers.d/aurbuilder"
-#        echo "aurbuilder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/aurbuilder
-#        echo "root ALL=(aurbuilder) NOPASSWD: ALL" >> /etc/sudoers.d/aurbuilder
-#    fi
+    if [ ! $(id -u "aurbuilder") ]; then
+        newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
+        showcommand "useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder"
+        showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
+        showcommand "chmod 777 /tmp/aurbuilder"
+        useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder
+        echo -e "$newpass\n$newpass\n"|passwd aurbuilder
+        newpass=""
+        mkdir /tmp/aurbuilder 1&>/dev/null
+        chmod 777 /tmp/aurbuilder
+    else
+        showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
+        showcommand "chmod 777 /tmp/aurbuilder"
+        showcommand "usermod -d /tmp/aurbuilder aurbuilder"
+        mkdir /tmp/aurbuilder 1&>/dev/null
+        chmod 777 /tmp/aurbuilder
+        usermod -d /tmp/aurbuilder aurbuilder
+    fi
+    if [ ! -f /etc/sudoers.d/aurbuilder ]; then
+        showcommand "echo \"aurbuilder ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/aurbuilder"
+        showcommand "echo \"root ALL=(aurbuilder) NOPASSWD: ALL\" >> /etc/sudoers.d/aurbuilder"
+        echo "aurbuilder ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/aurbuilder
+        echo "root ALL=(aurbuilder) NOPASSWD: ALL" >> /etc/sudoers.d/aurbuilder
+    fi
 }
 # --------------------------------------------------------
 installyay(){
     showtitle "INSTALLING YAY"
     checkaurdependencies
-    cd ${homeuserfolder}
-    if [ -d "${homeuserfolder}/.cache/yay/" ]; then
-        rm -r ${homeuserfolder}/.cache/yay/
+    cd /tmp/aurbuilder
+    if [ ! -f /tmp/aurbuilder/yay ]; then
+        rm -r /tmp/aurbuilder/yay
     fi
-    sudo -u ${defaultuser} git clone https://aur.archlinux.org/yay.git
+    sudo -u aurbuilder git clone https://aur.archlinux.org/yay.git
     cd yay
-    sudo -u ${defaultuser} makepkg -si --noconfirm
+    sudo -u aurbuilder makepkg -si --noconfirm
 }
 # --------------------------------------------------------
 installpkgs() {
@@ -210,8 +203,8 @@ installaurpkgs() {
 # --------------------------------------------------------
 installpkgsyay(){
     for pkg in ${1}; do
-        showcommand "sudo -u ${defaultuser} yay -S --noconfirm --needed ${pkg}"
-        sudo -u ${defaultuser} yay -S --noconfirm --needed ${pkg}
+        showcommand "sudo -u aurbuilder yay -S --noconfirm --needed --cleanafter ${pkg}"
+        sudo -u aurbuilder yay -S --noconfirm --needed --cleanafter ${pkg}
     done
 
 }
@@ -227,6 +220,12 @@ systemctlenable(){
 helpersystemctl(){
 	showcommand "systemctl ${1} ${2}"
 	systemctl "${1}" "${2}"
+}
+# --------------------------------------------------------
+checkfolder(){
+    if [ ! -d ${1} ]; then
+        mkdir $1
+    fi
 }
 # --------------------------------------------------------
 updatedir(){
@@ -299,7 +298,7 @@ bashalias(){
     showcommand "echo \"alias pactree='pactree --color'\" >> /etc/profile.d/alias.sh"
     showcommand "echo \"alias vdir='vdir --color=auto'\" >> /etc/profile.d/alias.sh"
     showcommand "echo \"alias watch='watch --color'\" >> /etc/profile.d/alias.sh"
-    showcommand "echo \"alias yay='sudo -u ${defaultuser} yay'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias yay='sudo -u aurbuilder yay'\" >> /etc/profile.d/alias.sh"
 
     echo "alias ls='ls --color=auto -l --time-style long-iso'" >> /etc/profile.d/alias.sh
     echo "alias l='ls --color=auto -lA --time-style long-iso'" >> /etc/profile.d/alias.sh
@@ -332,7 +331,7 @@ bashalias(){
     echo '			man "$@"' >> /etc/profile.d/alias.sh
     echo '}' >> /etc/profile.d/alias.sh
     #yay
-    echo "alias yay='sudo -u ${defaultuser} yay'" >> /etc/profile.d/alias.sh
+    echo "alias yay='sudo -u aurbuilder yay'" >> /etc/profile.d/alias.sh
 }
 # --------------------------------------------------------
 editor(){
