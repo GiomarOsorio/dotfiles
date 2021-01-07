@@ -299,7 +299,7 @@ bashalias(){
     showcommand "echo \"alias pactree='pactree --color'\" >> /etc/profile.d/alias.sh"
     showcommand "echo \"alias vdir='vdir --color=auto'\" >> /etc/profile.d/alias.sh"
     showcommand "echo \"alias watch='watch --color'\" >> /etc/profile.d/alias.sh"
-    showcommand "echo \"alias yay='sudo -u aurbuilder yay'\" >> /etc/profile.d/alias.sh"
+    showcommand "echo \"alias yay='sudo -u ${defaultuser} yay'\" >> /etc/profile.d/alias.sh"
 
     echo "alias ls='ls --color=auto -l --time-style long-iso'" >> /etc/profile.d/alias.sh
     echo "alias l='ls --color=auto -lA --time-style long-iso'" >> /etc/profile.d/alias.sh
@@ -332,7 +332,7 @@ bashalias(){
     echo '			man "$@"' >> /etc/profile.d/alias.sh
     echo '}' >> /etc/profile.d/alias.sh
     #yay
-    echo "alias yay='sudo -u aurbuilder yay'" >> /etc/profile.d/alias.sh
+    echo "alias yay='sudo -u ${defaultuser} yay'" >> /etc/profile.d/alias.sh
 }
 # --------------------------------------------------------
 editor(){
