@@ -416,6 +416,7 @@ showcommand(){
     tput setaf 2
     if [ ! "${1}" = "none" ]; then
         echo -e "${txtcommand//%1/${1}}"
+        echo ""
     fi
     tput sgr0
 }
@@ -423,6 +424,7 @@ showmessage(){
     tput setaf 6
     if [ ! "${1}" = "none" ]; then
         echo -e "${txtmessage//%1/${1}}"
+        echo ""
     fi
     tput sgr0
 }
@@ -508,8 +510,8 @@ loadstrings(){
 
     # messages -------------------------------------
     txtpressanykey="Press any key to continue..."
-    txtcommand="> %1 \n"
-    txtmessage="%1\n"
+    txtcommand="> %1"
+    txtmessage="%1"
     txtinvalid="Invalid option, try again."
 }
 # --------------------------------------------------------
