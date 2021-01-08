@@ -15,7 +15,7 @@ userdefaultselect(){
 
         if [ ${i} -gt 1 ]; then
             showtitle "SELECTING DEFAULT USER"
-            echo -e "${txtmsguser2}"
+            showmessage "${txtmsguser2}"
             echo -e "${options}" 
             while true;do
                 echo -e "Select one option: "
