@@ -9,7 +9,7 @@ import json
 # Colour codes for built-in qtile bar, default custom gruvbox color_scheme
 #
 #
-THEME = 'gruvbox-dark'
+THEME = 'gruvbox/gruvbox-dark'
 
 default_theme = {
     "background": "#282828",
