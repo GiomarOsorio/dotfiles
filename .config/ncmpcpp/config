@@ -31,7 +31,7 @@ mpd_connection_timeout = 5
 #
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = ~/Music
+mpd_music_dir = ~/Música
 #
 #mpd_crossfade_time = 5
 #

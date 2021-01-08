@@ -1,0 +1,72 @@
+sw_volume: 100
+audio_device_state:1:mpd alsamixer-output
+audio_device_state:1:toggle_visualizer
+state: pause
+current: 5
+time: 0.648000
+random: 0
+repeat: 0
+single: 0
+consume: 0
+crossfade: 0
+mixrampdb: 0.000000
+mixrampdelay: -1.000000
+playlist_begin
+0:cleans/[YDS] • SAY SO! MEP (192kbit_AAC).m4a
+1:cleans/505 (152kbit_Opus).ogg
+2:cleans/🎶Minecraft Disco Pigstep AUDIO COMPLETO (192kbit_AAC).m4a
+3:cleans/Aaron Smith - Dancin (KRONO Remix) (Español) (152kbit_Opus).ogg
+4:cleans/Asesina (152kbit_Opus).ogg
+5:cleans/Best of S3RL _ Happy Hardcore Mix (128kbit_AAC).m4a
+6:cleans/Bokura mada Underground(Seguimos bajo tierra) - Eve MV.m4a
+7:cleans/Circa Waves - Sad Happy (Official Video) (128kbit_AAC).m4a
+8:cleans/Daft Punk ft. Julian Casablancas - Instant Crush (Official Video) (152kbit_Opus).ogg
+9:cleans/Dororo Opening Full『Ziyoou-vachi - Kaen』 (152kbit_Opus).ogg
+10:cleans/el devorador de vidas - Eve MV.m4a
+11:cleans/El Paraiso (128kbit_AAC).m4a
+12:cleans/esta canción es tiernamente extraña (152kbit_Opus).ogg
+13:cleans/Foster The People - Imagination (Official Audio) (128kbit_AAC).m4a
+14:cleans/Franz Ferdinand - Take Me Out (Video) (128kbit_AAC).m4a
+15:cleans/In My Head (152kbit_Opus).ogg
+16:cleans/Jósean Log - Chachachá (Lyric Video) (152kbit_Opus).ogg
+17:cleans/La Vida Boheme - Acción (o Decreto de Guerra a Muerte a los Traidores del Rock Latinoamericano) (128kbit_AAC).m4a
+18:cleans/Last Dance (última danza) - Eve MV.m4a
+19:cleans/LEO - Eve MV (152kbit_Opus).ogg
+20:cleans/LOS MESONEROS - CAIGA LA NOCHE (128kbit_AAC).m4a
+21:cleans/LOS MESONEROS - INDELEBLE - [VIDEO OFICIAL] (152kbit_Opus).ogg
+22:cleans/LOS MESONEROS - RETROCEDER - [VIDEO OFICIAL] (128kbit_AAC).m4a
+23:cleans/LOS MESONEROS - SABANA [AUDIO OFICIAL] (152kbit_Opus).ogg
+24:cleans/LOS MESONEROS - TE LO ADVERTÍ - [VIDEO OFICIAL] (128kbit_AAC).m4a
+25:cleans/LOS MESONEROS - ÚLTIMAS PALABRAS [AUDIO OFICIAL] (128kbit_AAC).m4a
+26:cleans/Low Hum - Comatose (152kbit_Opus).ogg
+27:cleans/LP - Lost On You [Live Session] (152kbit_Opus).ogg
+28:cleans/Mariya Takeuchi 竹内 まりや Plastic Love (128kbit_AAC).m4a
+29:cleans/Mrs. GREEN APPLE - インフェルノ（Inferno） (128kbit_AAC).m4a
+30:cleans/Okills - Después (Lyric Video) (128kbit_AAC).m4a
+31:cleans/Okills - Friendzone (128kbit_AAC).m4a
+32:cleans/Oliver Tree - I'm Gone [Music Video] (128kbit_AAC).m4a
+33:cleans/Radio Capital - La Vida Boheme (Official Music Video) (128kbit_AAC).m4a
+34:cleans/Rawayana - HIGH feat. Apache (Video Oficial) (152kbit_Opus).ogg
+35:cleans/Rawayana - Vocabulario Básico _ Video Oficial (128kbit_AAC).m4a
+36:cleans/Re_ Re_ (128kbit_AAC).m4a
+37:cleans/Red Hot Chili Peppers - Dark Necessities [OFFICIAL VIDEO] (128kbit_AAC).m4a
+38:cleans/Sparkle _ Your Name AMV (152kbit_Opus).ogg
+39:cleans/Surf Mesa - ily (i love you baby) (feat. Emilee) (Official Audio) (152kbit_Opus).ogg
+40:cleans/The Strokes - Juicebox (Official Music Video) (128kbit_AAC).m4a
+41:cleans/The Strokes - Reptilia (Official Music Video) (128kbit_AAC).m4a
+42:cleans/The Strokes - The Adults Are Talking (Audio) (128kbit_AAC).m4a
+43:cleans/The Strokes - Under Cover of Darkness (Official Music Video) (152kbit_Opus).ogg
+44:cleans/The Weeknd - Blinding Lights (Official Audio) (128kbit_AAC).m4a
+45:cleans/Weezer - Island In The Sun (Official Music Video) (152kbit_Opus).ogg
+46:cleans/あの娘シークレット - Eve MV (152kbit_Opus).ogg
+47:cleans/アンビバレント - Eve MV (128kbit_AAC).m4a
+48:cleans/お気に召すまま - Eve MV (128kbit_AAC).m4a
+49:cleans/デーモンダンストーキョー - Eve   MV (128kbit_AAC).m4a
+50:cleans/ドラマツルギー - Eve  MV (128kbit_AAC).m4a
+51:cleans/フレデリック「オンリーワンダー」MusicVideo _ frederic“ONLYWONDER” (128kbit_AAC).m4a
+52:cleans/冥路 (128kbit_AAC).m4a
+53:cleans/命ばっかり _ ぬゆり(cover) - Eve (128kbit_AAC).m4a
+54:cleans/須田景凪「veil」MV (128kbit_AAC).m4a
+55:cleans/須田景凪「veil」MV (128kbit_AAC).m4a
+56:cleans/須田景凪「veil」MV (128kbit_AAC).m4a
+playlist_end
