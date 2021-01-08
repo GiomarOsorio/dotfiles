@@ -345,7 +345,7 @@ formatrootdevice(){
     done
     tput setaf 6
     showmessage "${txtformatingpart//%1/${2}} ${formatroot}"
-    showmesssage "----------------------------------------------"
+    showmessage "----------------------------------------------"
     tput setaf 2
     case ${formatroot} in
         "btrfs")
@@ -783,7 +783,7 @@ archgenfstabmenu(){
     options+="[4] \"PARTLABEL\" genfstab -t PARTLABEL\n"
     showtitle "${txtgenerate//%1/fstab}"
     
-    showmesssage "${txtgenerate//%1/fstab}"
+    showmessage "${txtgenerate//%1/fstab}"
     echo -e "${options}"
     while true; do
         echo "Select a option: "
@@ -841,7 +841,7 @@ archbootloadermenu(){
     options+="[4] Continue\n"
     showtitle "INSTALLING BOOTLOADER"
 
-    echo -e "${txtbootloadergrubmenu}\n"
+    showmessage "${txtbootloadergrubmenu}"
     echo -e "${options}"
     while true; do
         echo "Select a option: "
