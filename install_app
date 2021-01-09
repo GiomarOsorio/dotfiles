@@ -489,7 +489,7 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty ctags dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpd mpv mythes-es ncmpcpp nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty ctags dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpc mpd mpv mythes-es ncmpcpp nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
