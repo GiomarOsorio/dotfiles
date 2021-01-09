@@ -55,7 +55,7 @@ fi;
 
 # Notification daemon : first kill the default mate daemon if it has spun up
 # [[ $(is_running 'mate-notification-daemon') ]] || killall mate-notification-daemon 
-[[ $(is_running 'dunst') ]] || dunst &
+[[ $(is_running 'dunst') ]] || dunst -config ~/.config/dunst/dunstrc &
 
 # Megasync
 [[ $(is_running 'megasync') ]] || megasync &

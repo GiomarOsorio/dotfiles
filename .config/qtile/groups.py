@@ -1,4 +1,4 @@
-'''
+"""
 qtile calls i3-style workspaces `groups`.
 
 Groups are a little more powerful as we can specify additional config
@@ -19,7 +19,7 @@ NOTE :: Match is imported from libqtile.config
         # Create this group when qtile starts?
         init=True
     )
-'''
+"""
 from libqtile.config import Group, ScratchPad, DropDown
 
 
