@@ -20,8 +20,7 @@ from layouts import layouts, floating_layout  # NOQA
 from bindings import keys, mouse  # NOQA
 from groups import groups  # NOQA
 from widgets import ShellScript
-
-# from widgets_test import Custom_CheckUpdates
+from custom_widgets import ArchCheckUpdates
 
 # ----------------------------------------------------------------------------
 # Hooks
@@ -129,7 +128,7 @@ def make_screen(systray=False):
         #        **FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Check Updates using YAY, every 5min
-        widget.CheckUpdates(
+        ArchCheckUpdates(
             distro="Arch_yay",
             update_interval=300,
             display_format="聯",
@@ -147,7 +146,7 @@ def make_screen(systray=False):
         widget.Volume(**FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Current time
-        widget.Clock(format="%I:%M%p, %a/%b/%Y", **FONT_PARAMS),
+        widget.Clock(format="%I:%M %p, %a %d de %b %Y", **FONT_PARAMS),
         # Keyboard layout
         widget.TextBox("┊", **FONT_PARAMS),
         widget.KeyboardLayout(configured_keyboards=K_LAYOUTS, **FONT_PARAMS),

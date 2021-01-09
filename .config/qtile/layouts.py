@@ -1,4 +1,4 @@
-"""
+'''
 My group/workspace layouts.
 
 The built in layouts can be found here:
@@ -10,22 +10,21 @@ Look at porting some Xmonad layouts to qtile:
 
 >>  Try cribbing from what the XmonadTall layout does:
         http://qtile.readthedocs.io/en/latest/_modules/libqtile/layout/xmonad.html#MonadTall
-"""
+'''
 from libqtile import layout
 
 from settings import FONT_PARAMS, COLOR_SCHEME
-
-# from themes import COLOR_SCHEME
+#from themes import COLOR_SCHEME
 
 
 # Annoyingly, there isn't a common subset of parameters for all layouts that
 # can be passed as a dict splat. There _are_ some common ones for multiple
 # layouts, so they are defined here and used where possible to give a
 # consistent UI.
-# BORDER_NORMAL = COLS["dark_2"]
+#BORDER_NORMAL = COLS["dark_2"]
 BORDER_NORMAL = COLOR_SCHEME["background"]
 # BORDER_FOCUS = COLS["blue_2"]
-# BORDER_FOCUS = COLS["red_1"]
+#BORDER_FOCUS = COLS["red_1"]
 BORDER_FOCUS = COLOR_SCHEME["focus"]
 BORDER_WIDTH = 3
 MARGIN = 10
@@ -110,23 +109,23 @@ floating_layout = layout.Floating(
     border_focus=BORDER_FOCUS,
     border_width=BORDER_WIDTH,
     float_rules=[
-        {"wmclass": "confirm"},
-        {"wmclass": "dialog"},
-        {"wmclass": "download"},
-        {"wmclass": "error"},
-        {"wmclass": "file_progress"},
-        {"wmclass": "notification"},
-        {"wmclass": "splash"},
-        {"wmclass": "toolbar"},
-        {"wmclass": "gcr-prompter"},
-        {"wmclass": "confirmreset"},
-        {"wmclass": "makebranch"},
-        {"wmclass": "maketag"},
-        {"wmclass": "peek"},
-        {"wname": "branchdialog"},
-        {"wname": "pinentry"},
-        {"wmclass": "ssh-askpass"},
-        {"wmclass": "megasync"},
-        {"wmclass": "JDownloader"},
-    ],
+        {'wmclass': 'confirm'},
+        {'wmclass': 'dialog'},
+        {'wmclass': 'download'},
+        {'wmclass': 'error'},
+        {'wmclass': 'file_progress'},
+        {'wmclass': 'notification'},
+        {'wmclass': 'splash'},
+        {'wmclass': 'toolbar'},
+        {'wmclass': 'gcr-prompter'},
+        {'wmclass': 'confirmreset'},
+        {'wmclass': 'makebranch'},
+        {'wmclass': 'maketag'},
+        {'wmclass': 'peek'},
+        {'wname': 'branchdialog'},
+        {'wname': 'pinentry'},
+        {'wmclass': 'ssh-askpass'},
+        {'wmclass': 'megasync'},
+        {'wmclass': 'JDownloader'},
+    ]
 )
