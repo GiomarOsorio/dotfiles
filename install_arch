@@ -1074,7 +1074,7 @@ installdotfiles(){
         fi
     done
     if [[ $sel == 1 ]]; then
-        if [[ workflow ]]; then
+        if [ $workflow = true ]; then
     		archchroot dotfilesinstall --workflow
         else
     		archchroot dotfilesinstall
@@ -1090,7 +1090,7 @@ installdotfilesdownload(){
 installdotfileslaunchchroot(){
 	cd
 	installdotfilesdownload
-    if [[ workflow ]]; then
+    if [ $workflow = true ]; then
     	sh installdotfiles --chroot --workflow
     else
     	sh installdotfiles --chroot

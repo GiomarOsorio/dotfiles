@@ -287,7 +287,9 @@ copydotfiles(){
 # --------------------------------------------------------
 dotfiles(){
     cloningrepo
-    if [[ workflow ]]; then
+    showmessage "${workflow}"
+    pressanykey
+    if [ $workflow = true ]; then
         installpkgs "${workflow_generalpackages}" "${txtworkflow}"
         installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
         installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
@@ -382,10 +384,8 @@ editor(){
 run(){
     loadstrings
     userdefaultselect
-    showcommand "df -h"
     enabledmultilib
     installdependencies
-    showcommand "df -h"
 
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
