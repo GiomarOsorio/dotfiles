@@ -544,14 +544,14 @@ loadstrings(){
     txtinvalid="Invalid option, try again."
 }
 # --------------------------------------------------------
-workflow="false"
+workflow=false
 while (( "$#" )); do
   case $1 in
         --chroot)
             chrootoption="true"
         ;;
         --workflow)
-            workflow="true"
+            workflow=true
         ;;
   esac
   shift

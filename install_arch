@@ -1270,6 +1270,7 @@ loadconfigs(){
 }
 
 # --------------------------------------------------------
+workflow=false
 while (( "$#" )); do
     case ${1} in
         -efi0)
@@ -1290,7 +1291,7 @@ while (( "$#" )); do
             args=${3}
         ;;
         --workflow)
-            workflow="true"
+            workflow=true
         ;;
     esac
     shift
