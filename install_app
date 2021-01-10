@@ -495,11 +495,11 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty ctags dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpc mpd mpv mythes-es ncmpcpp nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty ctags dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpc mpd mpv mythes-es ncmpcpp nodejs npm pamixer python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx picom-ibhagwan-git runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
 
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"
