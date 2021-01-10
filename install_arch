@@ -1259,7 +1259,6 @@ loadconfigs(){
     # dotfiles ---------------------------------------
     txtdotfiles="Do you want to install my personal configuration?"
     installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/dev/install_app
-    workflow="false"
 
     # messages ---------------------------------------
     txtnextscreen="Select the installation %1 on the next screen"	
