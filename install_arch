@@ -1074,7 +1074,12 @@ installdotfiles(){
         fi
     done
     if [[ $sel == 1 ]]; then
-		archchroot dotfilesinstall
+    showmessage "${workflow}"
+        if [[ workflow ]]; then
+    		archchroot dotfilesinstall --workflow
+        else
+    		archchroot dotfilesinstall
+        fi
     fi
 }
 # --------------------------------------------------------
@@ -1084,9 +1089,14 @@ installdotfilesdownload(){
 }
 # --------------------------------------------------------
 installdotfileslaunchchroot(){
+    showmessage "${workflow}"
 	cd
 	installdotfilesdownload
-	sh installdotfiles --chroot
+    if [[ workflow ]]; then
+    	sh installdotfiles --chroot --workflow
+    else
+    	sh installdotfiles --chroot
+    fi
 	rm installdotfiles
 	exit
 }
@@ -1249,6 +1259,7 @@ loadconfigs(){
     # dotfiles ---------------------------------------
     txtdotfiles="Do you want to install my personal configuration?"
     installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/dev/install_app
+    workflow="false"
 
     # messages ---------------------------------------
     txtnextscreen="Select the installation %1 on the next screen"	
@@ -1280,6 +1291,9 @@ while (( "$#" )); do
             chroot=1
             command=${2}
             args=${3}
+        ;;
+        --workflow)
+            workflow="true"
         ;;
     esac
     shift
