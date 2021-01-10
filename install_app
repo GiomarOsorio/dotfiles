@@ -560,6 +560,4 @@ while (( "$#" )); do
   esac
   shift
 done
-echo -e "${workflow}"
-read -n1
 run
