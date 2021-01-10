@@ -523,6 +523,7 @@ loadstrings(){
     txtinvalid="Invalid option, try again."
 }
 # --------------------------------------------------------
+workflow="false"
 while (( "$#" )); do
   case $1 in
         --chroot)
@@ -534,4 +535,6 @@ while (( "$#" )); do
   esac
   shift
 done
+echo -e "${workflow}"
+read -n1
 run
