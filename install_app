@@ -525,7 +525,12 @@ loadstrings(){
 # --------------------------------------------------------
 while (( "$#" )); do
   case $1 in
-    --chroot)       chrootoption="true"
+        --chroot)
+            chrootoption="true"
+        ;;
+        --workflow)
+            workflow="true"
+        ;;
   esac
   shift
 done
