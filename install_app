@@ -138,6 +138,9 @@ checkaurdependencies(){
     if [ ! -f /usr/bin/git ]; then
         pacman -S --needed git
     fi
+    #if [ ! ${chrootoption} ]; then
+    #else
+    #fi
     if [ ! $(id -u "aurbuilder") ]; then
         newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
         showcommand "useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder"
@@ -156,6 +159,7 @@ checkaurdependencies(){
         chmod 777 /tmp/aurbuilder
         usermod -d /tmp/aurbuilder aurbuilder
     fi
+    pressanykey
     if [ ! -f /etc/sudoers.d/aurbuilder ]; then
         showcommand "echo \"aurbuilder ALL=(ALL) NOPASSWD: ALL\" > /etc/sudoers.d/aurbuilder"
         showcommand "echo \"root ALL=(aurbuilder) NOPASSWD: ALL\" >> /etc/sudoers.d/aurbuilder"
