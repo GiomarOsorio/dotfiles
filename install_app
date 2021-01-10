@@ -247,21 +247,17 @@ cloningrepo(){
     showtitle "CLONING REPO"
     showcommand "cd $homeuserfolder"
     cd $homeuserfolder
-    if [ ! -d ${localrepopath//%1/$homeuserfolder} ]; then
-        showcommand "git clone ${txturlrepo}"
-        git clone ${txturlrepo}
-    else
-        showcommand "cd ${localrepopath//%1/$homeuserfolder}"
-        showcommand "git pull origin"
-        cd ${localrepopath//%1/$homeuserfolder}
-        git pull origin
+    if [ -d ${localrepopath//%1/$homeuserfolder} ]; then
+        rm -r ${localrepopath//%1/$homeuserfolder}
     fi
+    showcommand "git clone ${txturlrepo}"
+    git clone ${txturlrepo}
     chown -R $defaultuser: ${localrepopath//%1/$homeuserfolder}
 }
 # --------------------------------------------------------
 copydotfiles(){
-    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/./.*\" \"${homeuserfolder}\""
-    sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/./.*\" \"${homeuserfolder}\"
+    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
+    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/." "${homeuserfolder}"
 
     #showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
     #showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
@@ -287,8 +283,6 @@ copydotfiles(){
 # --------------------------------------------------------
 dotfiles(){
     cloningrepo
-    showmessage "${workflow}"
-    pressanykey
     if [ $workflow = true ]; then
         installpkgs "${workflow_generalpackages}" "${txtworkflow}"
         installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
@@ -301,12 +295,16 @@ dotfiles(){
         showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/mpd"
         showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
         showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/nvim"
-        rm -r ${localrepopath//%1/$homeuserfolder}/.eslintrc.json
-        rm -r ${localrepopath//%1/$homeuserfolder}/.config/bashmount
-        rm -r ${localrepopath//%1/$homeuserfolder}/.config/mpd
-        rm -r ${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp
-        rm -r ${localrepopath//%1/$homeuserfolder}/.config/nvim
+        rm -r "${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/bashmount"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/mpd"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/nvim"
     fi
+    rm -r "${localrepopath//%1/$homeuserfolder}/.git"
+    rm "${localrepopath//%1/$homeuserfolder}/install_arch"
+    rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/readme.md"
     copydotfiles
 }
 # --------------------------------------------------------
