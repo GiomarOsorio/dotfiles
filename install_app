@@ -172,7 +172,7 @@ installyay(){
     showtitle "INSTALLING YAY"
     checkaurdependencies
     cd /tmp/aurbuilder
-    if [ ! -f /tmp/aurbuilder/yay ]; then
+    if [ ! -d /tmp/aurbuilder/yay ]; then
         rm -r /tmp/aurbuilder/yay
     fi
     sudo -u aurbuilder git clone https://aur.archlinux.org/yay.git
