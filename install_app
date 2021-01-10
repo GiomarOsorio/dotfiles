@@ -257,7 +257,7 @@ cloningrepo(){
 # --------------------------------------------------------
 copydotfiles(){
     showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
-    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/." "${homeuserfolder}"
+    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/." "${homeuserfolder}/"
 
     #showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
     #showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
