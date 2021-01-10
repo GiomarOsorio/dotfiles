@@ -296,16 +296,16 @@ dotfiles(){
         checkfolder "${npm_install_folder//%1/$defaultuser}"
         installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
     else
-        showcommand "rm -r ${localrepopath//%1/homeuserfolder}/.eslintrc.json"
-        showcommand "rm -r ${localrepopath//%1/homeuserfolder}/.config/bashmount"
-        showcommand "rm -r ${localrepopath//%1/homeuserfolder}/.config/mpd"
-        showcommand "rm -r ${localrepopath//%1/homeuserfolder}/.config/ncmpcpp"
-        showcommand "rm -r ${localrepopath//%1/homeuserfolder}/.config/nvim"
-        rm -r ${localrepopath//%1/homeuserfolder}/.eslintrc.json
-        rm -r ${localrepopath//%1/homeuserfolder}/.config/bashmount
-        rm -r ${localrepopath//%1/homeuserfolder}/.config/mpd
-        rm -r ${localrepopath//%1/homeuserfolder}/.config/ncmpcpp
-        rm -r ${localrepopath//%1/homeuserfolder}/.config/nvim
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/bashmount"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/mpd"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/nvim"
+        rm -r ${localrepopath//%1/$homeuserfolder}/.eslintrc.json
+        rm -r ${localrepopath//%1/$homeuserfolder}/.config/bashmount
+        rm -r ${localrepopath//%1/$homeuserfolder}/.config/mpd
+        rm -r ${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp
+        rm -r ${localrepopath//%1/$homeuserfolder}/.config/nvim
     fi
     copydotfiles
 }
