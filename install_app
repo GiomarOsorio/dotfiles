@@ -252,20 +252,6 @@ copydotfiles(){
     showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
     sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/." "${homeuserfolder}/"
 
-    #showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
-    #showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
-    #showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
-    #showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
-    #showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.fehbg\" \"${homeuserfolder}\""
-    #showcommand "sudo -u ${defaultuser} feh --bg-fill \"${localrepopath//%1/$homeuserfolder}/.config/qtile/misc/wallpaper.png"\"
-
-    #sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
-    #sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
-    #sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
-    #sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.fehbg" "${homeuserfolder}"
-    #sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
-    #sudo -u ${defaultuser} feh --bg-fill "${localrepopath//%1/$homeuserfolder}/.config/qtile/misc/wallpaper.png"
-
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
 
