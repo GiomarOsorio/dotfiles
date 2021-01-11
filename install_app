@@ -362,7 +362,7 @@ settingohmyzsh(){
     showmessage "${txtohmyzshnotchroot}"
     showcommand "sudo -u ${defaultuser} sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
     sudo -u ${defaultuser} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${homeuserfolder}/.oh-my-zsh/custom/themes/powerlevel10k"
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${homeuserfolder}/.oh-my-zsh/custom/themes/powerlevel10k
     showcommand "chsh -s /bin/zsh ${defaultuser}"
     chsh -s /bin/zsh ${defaultuser}
