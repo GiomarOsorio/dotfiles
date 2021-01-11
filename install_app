@@ -138,7 +138,8 @@ checkaurdependencies(){
     if [ ! -f /usr/bin/git ]; then
         pacman -S --needed git
     fi
-    if [ ! $(id -u "aurbuilder") ]; then
+    existaurbuilder=$(id -u "aurbuilder")
+    if [ ! $existaurbuilder ]; then
         newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
         showcommand "useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder"
         showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
@@ -168,7 +169,7 @@ installyay(){
     showtitle "INSTALLING YAY"
     checkaurdependencies
     cd /tmp/aurbuilder
-    if [ ! -d /tmp/aurbuilder/yay ]; then
+    if [ -d /tmp/aurbuilder/yay ]; then
         rm -r /tmp/aurbuilder/yay
     fi
     sudo -u aurbuilder git clone https://aur.archlinux.org/yay.git
