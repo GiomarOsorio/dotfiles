@@ -420,18 +420,17 @@ run(){
     # aur packages ---------------------------------
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
-    # oh-my-zsh ------------------------------------
-    settingohmyzsh
-
-    # dotfiles -------------------------------------
-    dotfiles
-
     # bash -----------------------------------------
     bashalias
 
     # editor ---------------------------------------
     editor 
+    
+    # oh-my-zsh ------------------------------------
+    settingohmyzsh
 
+    # dotfiles -------------------------------------
+    dotfiles
 }
 # --------------------------------------------------------
 pressanykey(){
