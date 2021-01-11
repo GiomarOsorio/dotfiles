@@ -235,14 +235,6 @@ updatedir(){
     checkfolder "${homeuserfolder}/.themes"
 }
 # --------------------------------------------------------
-settingohmyzsh(){
-    showcommand "sh -c \"$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
-    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-    showcommand "sed -i \"/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"\" ~/.zshrc"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-}
-# --------------------------------------------------------
 cloningrepo(){
     showtitle "CLONING REPO"
     showcommand "cd $homeuserfolder"
@@ -379,6 +371,16 @@ editor(){
     fi
 }
 # --------------------------------------------------------
+settingohmyzsh(){
+    showmessage "${txtohmyzshnotchroot}"
+    showcommand "sudo -u ${defaultuser} sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
+    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
+    showcommand "chsh -s /bin/zsh ${defaultuser}"
+    sudo -u ${defaultuser} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+    chsh -s /bin/zsh ${defaultuser}
+}
+# --------------------------------------------------------
 run(){
     loadstrings
     userdefaultselect
@@ -417,6 +419,9 @@ run(){
     # aur packages ---------------------------------
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
+    # oh-my-zsh ------------------------------------
+    settingohmyzsh
+
     # dotfiles -------------------------------------
     dotfiles
 
@@ -426,8 +431,6 @@ run(){
     # editor ---------------------------------------
     editor 
 
-    # oh-my-zsh ------------------------------------
-    #settingohmyzsh
 }
 # --------------------------------------------------------
 pressanykey(){
@@ -511,7 +514,7 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb lib32-mesa lightdm-webkit2-greeter mesa pamixer qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xf86-video-intel xorg-server xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb lib32-mesa lightdm-webkit2-greeter mesa pamixer qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xorg-server xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
@@ -535,6 +538,9 @@ loadstrings(){
     # editor ---------------------------------------
     editor="nvim"
 
+    # ohmyzsh --------------------------------------
+    txtohmyzshnotchroot="As the last step, the ohmyzsh installation must be carried out, you must make sure that after installing and changing the shell you must exit it so that the script continues with the configuration"
+
     # messages -------------------------------------
     txtpressanykey="Press any key to continue..."
     txtcommand="> %1"
@@ -542,11 +548,12 @@ loadstrings(){
     txtinvalid="Invalid option, try again."
 }
 # --------------------------------------------------------
+chrootoption=false
 workflow=false
 while (( "$#" )); do
   case $1 in
         --chroot)
-            chrootoption="true"
+            chrootoption=true
         ;;
         --workflow)
             workflow=true
