@@ -660,13 +660,25 @@ archsettime(){
 # --------------------------------------------------------
 archsettimeutcchroot(){
     showcommand "hwclock --systohc --utc"
+    showcommand "timedatectl set-timezone $timezone"
+    showcommand "timedatectl set-ntp 0"
+    showcommand "timedatectl set-local-rtc 0 --adjust-system-clock"
     hwclock --systohc --utc
+    timedatectl set-timezone $timezone
+    timedatectl set-ntp 0
+    timedatectl set-local-rtc 0 --adjust-system-clock
     exit
 }
 # --------------------------------------------------------
 archsettimelocalchroot(){
     showcommand "hwclock --systohc --localtime"
+    showcommand "timedatectl set-timezone $timezone"
+    showcommand "timedatectl set-ntp 1"
+    showcommand "timedatectl set-local-rtc 1 --adjust-system-clock"
     hwclock --systohc --localtime
+    timedatectl set-timezone $timezone
+    timedatectl set-ntp 1
+    timedatectl set-local-rtc 1 --adjust-system-clock
     exit
 }
 # --------------------------------------------------------
