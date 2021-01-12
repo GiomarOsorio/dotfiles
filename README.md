@@ -1,113 +1,112 @@
-# Dotfiles & Configs
+# Configuration Arch / Qtile
 
 ![Qtile](qtile_screenshot.png)
-![Qtile](qtile_screenshot2.png)
+![Qtile2](qtile_screenshot2.png)
 
-**_Idioma_**
+**_Language_**
 
-- 🇪🇸 Español
-- [🇺🇸 English](https://github.com/antoniosarosi/dotfiles)
+- [🇪🇸 Español](https://github.com/GiomarOsorio/dotfiles/blob/master/README.es.md)
+- 🇺🇸 English
 
-# Índice
+# Index
 
-- [Introducción](#introducción)
-- [Instalación de Arch Linux](#instalación-de-arch-linux)
-  - [Antes de usar](#antes-de-usar)
-  - [Como usar el script](#como-usar-el-script)
-- [Instalación de configuración personal](#instalación-de-arch-linux)
-  - [Como usar el script](#como-usar-el-script-1)
-  - [Instalación manual](#instalación-manual)
-    - [Dependencias](#dependencias)
-  - [Archivos y configuración](#archivos-y-configuración)
-    - [Copiando archivos](#copiando-archivos)
-    - [Configurando temas](#configurando-temas)
-  - [Monitores](#monitores)
-- [Configuración básica de Qtile](#configuración-básica-de-qtile)
-  - [Atajos de teclado](#atajos-de-teclado)
+- [Introduction](#introduction)
+- [Arch Linux Installation](#arch-linux-install)
+  - [Before use](#before-use)
+  - [How to use the script](#how-to-use-the-script)
+- [Personal configuration installation](#linux-arch-install)
+  - [How to use the script](#how-to-use-the-script-1)
+  - [Manual installation](#manual-installation)
+    - [Dependencies](#dependencies)
+  - [Files and settings](#files-and-settings)
+    - [Copying files](#copying-files)
+    - [Configuring themes](#configuring-themes)
+  - [Monitors](#monitors)
+- [Qtile basic configuration](#qtile-basic-configuration)
+  - [Keyboard shortcuts](#keyboard-shortcuts)
     - [Apps](#apps)
     - [Audio](#audio)
-    - [Captura de pantalla](#captura-de-pantalla)
-    - [Ventanas](#ventana)
+    - [Screenshot](#screenshot-screenshot)
+    - [Windows](#window)
 
-# Introducción
+# Introduction
 
-Este repositorio contiene mi configuración personal, así como dos scripts que escribí que me ayudan a realizar una instalación limpia de Arch Linux, debo aclarar que dicho script está basado en los scripts [_archfi_](https://github.com/MatMoul/archfi) y [_archdi-pkg_](https://github.com/MatMoul/archdi-pkg) desarrolados por el usuario [_MatMoul_](https://github.com/MatMoul), si eres nuevo en Arch Linux o deseas un script de instalación más púlido te invito a probar el script [_archfi_](https://github.com/MatMoul/archfi).
+This repository contains my personal configuration, as well as two scripts that I wrote that help me to perform a clean installation of Arch Linux, I must clarify that this script is based on the [_archfi_](https://github.com/MatMoul/archfi) and [_archdi-pkg_](https://github.com/MatMoul/archdi-pkg) scripts, developed by user [_MatMoul_] (https://github.com/MatMoul), if you are new to Arch Linux or want a more polished installation script I invite you to try the [_archfi_](https://github.com/MatMoul/archfi) script.
 
-# Instalación de Arch Linux
+# Install Arch Linux
 
-## Antes de usar
+## Before using
 
-Antes de usar el script es necesario modificar algunas variables, lo primero es descargar el script.
+Before using the script it is necessary to modify some variables, the first thing is to download the script (make sure you have internet).
 
 ```bash
 curl -O https://raw.githubusercontent.com/giomarosorio/master/install_arch
 ```
 
-abrimos con el editor de texto de terminal de confianza y nos vamos a la función "loadconfigs" **línea 1184**, a partir de ahi iremos cambiandos las siguientes variables por los de su preferencia.
+Open with the trusted terminal text editor and go to the "loadconfigs" function **line 1184**, from there we will change the following variables for those of your preference.
 
 ### keymap
 
 ```
-keymap="us"
+keymap = "us"
 ```
 
 ### editor
 
 ```
-editor="vim"
+editor = "vim"
 ```
 
 ### locale
 
 ```
-locale="es_VE"
+locale = "es_VE"
 ```
 
 ### set time
 
 ```
-timezone="America/Caracas"
+timezone = "America / Caracas"
+
 ```
 
-## Como usar el script
+## How to use the script
 
-Si no haz realizado la instalación base de Arch Linux puedes hacer uso del script que se encuentra en el repositorio.
-
-Una vez estes en el ambiente de instalación de Arch (asegurate de tener internet)
+Once you are in the Arch installation environment.
 
 ```bash
 sh install_arch
 ```
 
-Si bien este repositorio contiene las configuraciónes de todos los programas que utilizo, los scripts estan diseñados para por defecto instalar los paquetes necesarios para el bien funcionamiento de la configuracion personal, sin tomar aquellos paquetes de preferencia personal, si quieres la configuracion completa puedes ejecutar el script de la siguiente manera:
+Although this repository contains the configuration of all the programs that I use, the scripts are designed by default to install the necessary packages for the proper functioning of the personal configuration, without taking those packages of personal preference, if you want the complete configuration you can execute the script as follows:
 
 ```bash
 sh install_arch --workflow
 ```
 
-# Instalación de configuración personal
+# Installation of personal settings
 
-## Como usar el script
+## How to use the script
 
-Tambien puedes usar el script a partir de una instalación limpia basada en Arch Linux
+You can also use the script from a clean install based on Arch Linux
 
 ```bash
 curl -O https://raw.githubusercontent.com/giomarosorio/master/install_app && sh install_app
 ```
 
-Al igual que el primer script puedes instalar la configuración
+Like the first script you can install the configuration
 
 ```bash
 curl -O https://raw.githubusercontent.com/giomarosorio/master/install_app && sh install_app --workflow
 ```
 
-## Instalación Manual
+## Manual Installation
 
-### Dependencias
+### Dependencies
 
-- Generales
+- General
 
-  - Paquetes
+  - Packages
 
     ```bash
     alacritty base base-devel curl dmenu dunst feh firefox flameshot font-bh-ttf gifsicle git gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb lib32-mesa lightdm-webkit2-greeter mesa pacman-contrib pamixer qtile ranger redshift sdl_ttf sudo tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie wget xorg-server xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers
@@ -115,13 +114,13 @@ curl -O https://raw.githubusercontent.com/giomarosorio/master/install_app && sh 
 
 - XFCE
 
-  - Paquetes
+  - Packages
 
     ```bash
     lightdm lightdm-gtk-greeter lightdm-gtk-greeter-settings xfce4 xfce4-goodies xdg-user-dirs xdg-user-dirs-gtk
     ```
 
-  - Servicios
+  - Services
 
     ```bash
     lightdm
@@ -129,67 +128,67 @@ curl -O https://raw.githubusercontent.com/giomarosorio/master/install_app && sh 
 
 - Audio
 
-  - Paquetes
+  - Packages
 
     ```bash
     pulseaudio pulseaudio-alsa pavucontrol alsa-utils alsa-plugins alsa-lib alsa-firmware gstreamer gst-plugins-good gst-plugins-bad gst-plugins-base gst-plugins-ugly volumeicon playerct
     ```
 
-- Impresora
+- Printer
 
-  - Paquetes
+  - Packages
 
     ```bash
     cups cups-pdf ghostscript gsfonts gutenprint gtk3-print-backends libcups system-config-printer
     ```
 
-  - Servicios
+  - Services
 
     ```bash
     cups
     ```
 
-- Consola
+- Console
 
-  - Paquetes
+  - Packages
 
     ```bash
     pacman-contrib base-devel bash-completion usbutils dmidecode dialog gpm
     ```
 
-- Herramientas de compresión
+- Compression tools
 
-  - Paquetes
+  - Packages
 
     ```bash
     zip unzip unrar p7zip lzop
     ```
 
-- Servicios
+- Services
 
-  - Paquetes
+  - Packages
 
     ```bash
     networkmanager openssh cronie haveged intel-ucode
     ```
 
-  - Servicios
+  - Services
 
     ```bash
     NetworkManager, sshd, cronie, haveged
     ```
 
-- Sistema de archivos
+- File System
 
-  - Paquetes
+  - Packages
 
     ```bash
     dosfstools ntfs-3g btrfs-progs exfat-utils gptfdisk autofs fuse2 fuse3 fuseiso
     ```
 
-- Paquetes AUR
+- AUR Packages
 
-  - Paquetes
+  - Packages
 
     ```bash
     lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts
@@ -197,35 +196,35 @@ curl -O https://raw.githubusercontent.com/giomarosorio/master/install_app && sh 
 
 - Workflow
 
-  - Paquetes Generales
+  - General Packages
 
     ```bash
     ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor
     ```
 
-  - Paquetes AUR
+  - AUR Packages
 
     ```bash
     aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin wd719x-firmware zoom
     ```
 
-  - Paquetes PIP
+  - PIP Packages
 
     ```bash
     virtualenv pynvim python-language-server flake8 pylint black jedi
     ```
 
-  - Paquetes NPM
+  - NPM Packages
 
     ```bash
     neovim eslint eslint-config-airbnb-base
     ```
 
-## Archivos y configuración
+## Files and settings
 
-Primero que nada asegurate de tener las [dependencias](#) instaladas:
+First of all make sure you have the [dependencies](#dependencies) installed.
 
-### Copiando archivos
+### Copying files
 
 ```bash
 git clone https://github.com/GiomarOsorio/dotfiles.git
@@ -236,7 +235,7 @@ cp .eslintrc.json ~
 cp .zshrc ~
 ```
 
-### Configurando temas
+### Setting themes
 
 ```bash
 sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
@@ -244,55 +243,55 @@ sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/
 sed -i "/^debug_mode          = false/ cdebug_mode          = true" /etc/lightdm/lightdm-webkit2-greeter.conf
 ```
 
-## Monitores
+## Monitors
 
-Este configuración esta preparada para correr en un solo monitor, pero puedes modificarla para que corra en 2 o más, parte de esta configuración esta basada en la del usuario [_Sminez_](https://github.com/sminez/qtile-config).
+This configuration is prepared to run on a single monitor, but you can modify it to run on 2 or more, part of this configuration is based on that of the user [_Sminez_](https://github.com/sminez/qtile-config).
 
-# Configuración básica de Qtile
+# Basic Qtile configuration
 
-## Atajos de teclado
+## Keyboard shortcuts
 
-Descripción de los atajos básicos segun mi configuración en Qtile
+Description of the basic shortcuts according to my configuration in Qtile
 
 ### Apps
 
-| Atajo                   | Acción          |
-| ----------------------- | --------------- |
-| **mod + enter**         | abrir alacritty |
-| **mod + shift + enter** | abrir dmenu     |
-| **mod + r**             | abrir ranger    |
-| **mod + d**             | abrir thunar    |
-| **mod + b**             | abrir chrome    |
-| **mod + m**             | abrir ncmpcpp   |
+| Shortcut                | Action         |
+| ----------------------- | -------------- |
+| **mod + enter**         | open alacritty |
+| **mod + shift + enter** | open dmenu     |
+| **mod + r**             | open ranger    |
+| **mod + d**             | open thunar    |
+| **mod + b**             | open chrome    |
+| **mod + m**             | open ncmpcpp   |
 
 ### Audio
 
-| Atajo         | Acción        |
-| ------------- | ------------- |
-| **mod + F11** | subir volumen |
-| **mod + F12** | subir volumen |
+| Shortcut      | Action         |
+| ------------- | -------------- |
+| **mod + F11** | turn up volume |
+| **mod + F12** | turn up volume |
 
-### Captura de Pantalla
+### Screenshot
 
-| Atajo            | Acción          |
-| ---------------- | --------------- |
-| **Print Screen** | abrir flameshot |
+| Shortcut         | Action         |
+| ---------------- | -------------- |
+| **Print Screen** | open flameshot |
 
-### Ventanas
+### Windows
 
-| Atajo                    | Acción                                                                |
-| ------------------------ | --------------------------------------------------------------------- |
-| **mod + [⬅⬇⬆➡]**         | navegación entre ventanas (⬅=izquierda, ⬇=abajo, ⬆=arriba, ➡=derecha) |
-| **mod + shift + [⬅⬇⬆➡]** | mover ventana (⬇=izquierda,⬇=abajo, ⬆=arriba, ➡=derecha)              |
-| **mod + [hjkl]**         | navegación entre ventanas (h=izquierda, j=abajo, k=arriba, l=derecha) |
-| **mod + shift + [hjkl]** | mover ventana (h=izquierda, j=abajo, k=arriba, l=derecha)             |
-| **mod + shift + [1-6]**  | mover ventana al espacio de trabajo N (1-6)                           |
-| **mod + f**              | maximizar ventana                                                     |
-| **mod + [1-6]**          | cambiar al espacio de trabajo N (1-6)                                 |
-| **mod + tab**            | cambiar a siguiente layout                                            |
-| **mod + shift + tab**    | cambiar a anterior layout                                             |
-| **mod + w**              | cerrar ventana                                                        |
-| **mod + ctrl + l**       | bloquear sesión                                                       |
-| **mod + espacio**        | cambiar distribución de teclado                                       |
-| **mod + shift + r**      | reiniciar qtile                                                       |
-| **mod + shift + q**      | cerrar sesión                                                         |
+| Shortcut                 | Action                                                     |
+| ------------------------ | ---------------------------------------------------------- |
+| **mod + [⬅⬇⬆➡]**         | navigation between windows (⬅=left, ⬇=down, ⬆=up, ➡=right) |
+| **mod + shift + [⬅⬇⬆➡]** | move window (⬅=left, ⬇=down, ⬆=up, ➡=right)                |
+| **mod + [hjkl]**         | navigation between windows (h=left, j=down, k=up, l=right) |
+| **mod + shift + [hjkl]** | move window (h=left, j=down, k=up, l=right)                |
+| **mod + shift + [1-6]**  | move window to workspace N (1-6)                           |
+| **mod + f**              | maximize window                                            |
+| **mod + [1-6]**          | switch to workspace N (1-6)                                |
+| **mod + tab**            | change to next layout                                      |
+| **mod + shift + tab**    | change to previous layout                                  |
+| **mod + w**              | close window                                               |
+| **mod + ctrl + l**       | lock session                                               |
+| **mod + space**          | change keyboard layout                                     |
+| **mod + shift + r**      | restart qtile                                              |
+| **mod + shift + q**      | log out                                                    |
