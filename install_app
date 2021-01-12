@@ -15,7 +15,7 @@ userdefaultselect(){
 
         if [ ${i} -gt 1 ]; then
             showtitle "SELECTING DEFAULT USER"
-            echo -e "${txtmsguser2}"
+            showmessage "${txtmsguser2}"
             echo -e "${options}" 
             while true;do
                 echo -e "Select one option: "
@@ -138,7 +138,8 @@ checkaurdependencies(){
     if [ ! -f /usr/bin/git ]; then
         pacman -S --needed git
     fi
-    if [ ! $(id -u "aurbuilder") ]; then
+    existaurbuilder=$(id -u "aurbuilder")
+    if [ ! $existaurbuilder ]; then
         newpass=$(< /dev/urandom tr -dc "@#*%&_A-Z-a-z-0-9" | head -c16)
         showcommand "useradd -r -N -M -d /tmp/aurbuilder -s /usr/bin/nologin aurbuilder"
         showcommand "mkdir /tmp/aurbuilder 1&>/dev/null"
@@ -168,7 +169,7 @@ installyay(){
     showtitle "INSTALLING YAY"
     checkaurdependencies
     cd /tmp/aurbuilder
-    if [ ! -f /tmp/aurbuilder/yay ]; then
+    if [ -d /tmp/aurbuilder/yay ]; then
         rm -r /tmp/aurbuilder/yay
     fi
     sudo -u aurbuilder git clone https://aur.archlinux.org/yay.git
@@ -235,40 +236,21 @@ updatedir(){
     checkfolder "${homeuserfolder}/.themes"
 }
 # --------------------------------------------------------
-settingohmyzsh(){
-    showcommand "sh -c \"$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\""
-    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-    showcommand "sed -i \"/^#ZSH_THEME=\"robbyrussell\"/ cZSH_THEME=\"powerlevel10k/powerlevel10k\"\" ~/.zshrc"
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-}
-# --------------------------------------------------------
 cloningrepo(){
     showtitle "CLONING REPO"
     showcommand "cd $homeuserfolder"
     cd $homeuserfolder
-    if [ ! -d ${localrepopath//%1/$homeuserfolder} ]; then
-        showcommand "git clone ${txturlrepo}"
-        git clone ${txturlrepo}
-    else
-        showcommand "cd ${localrepopath//%1/$homeuserfolder}"
-        showcommand "git pull origin"
-        cd ${localrepopath//%1/$homeuserfolder}
-        git pull origin
+    if [ -d ${localrepopath//%1/$homeuserfolder} ]; then
+        rm -r ${localrepopath//%1/$homeuserfolder}
     fi
+    showcommand "git clone ${txturlrepo}"
+    git clone ${txturlrepo}
     chown -R $defaultuser: ${localrepopath//%1/$homeuserfolder}
 }
 # --------------------------------------------------------
 copydotfiles(){
-    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.config/.\" \"${homeuserfolder}/.config\""
-    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.local/.\" \"${homeuserfolder}/.local\""
-    showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.eslintrc.json\" \"${homeuserfolder}\""
-    showcommand "sudo -u ${defaultuser} cp \"${localrepopath//%1/$homeuserfolder}/.zshrc\" \"${homeuserfolder}\""
-
-    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.config/." "${homeuserfolder}/.config/"
-    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/.local/." "${homeuserfolder}/.local/"
-    sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.eslintrc.json" "${homeuserfolder}"
-    sudo -u ${defaultuser} cp "${localrepopath//%1/$homeuserfolder}/.zshrc" "${homeuserfolder}"
+    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
+    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/." "${homeuserfolder}/"
 
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
@@ -276,6 +258,36 @@ copydotfiles(){
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i "/^webkit_theme        = antergos/ cwebkit_theme        = glorious" /etc/lightdm/lightdm-webkit2-greeter.conf
     sed -i "/^debug_mode          = false/ cdebug_mode          = true" /etc/lightdm/lightdm-webkit2-greeter.conf
+}
+# --------------------------------------------------------
+dotfiles(){
+    cloningrepo
+    if [ $workflow = true ]; then
+        installpkgs "${workflow_generalpackages}" "${txtworkflow}"
+        installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
+        installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
+        checkfolder "${npm_install_folder//%1/$defaultuser}"
+        installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
+    else
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/bashmount"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/mpd"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/nvim"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/bashmount"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/mpd"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/nvim"
+    fi
+    rm -r "${localrepopath//%1/$homeuserfolder}/.git"
+    rm "${localrepopath//%1/$homeuserfolder}/install_arch"
+    rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
+    rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
+    rm "${localrepopath//%1/$homeuserfolder}/readme.md"
+    copydotfiles
 }
 # --------------------------------------------------------
 bashalias(){
@@ -349,13 +361,20 @@ editor(){
     fi
 }
 # --------------------------------------------------------
+settingohmyzsh(){
+    showcommand "sudo -u ${defaultuser} sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
+    sudo -u ${defaultuser} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${homeuserfolder}/.oh-my-zsh/custom/themes/powerlevel10k"
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${homeuserfolder}/.oh-my-zsh/custom/themes/powerlevel10k
+    showcommand "chsh -s /bin/zsh ${defaultuser}"
+    chsh -s /bin/zsh ${defaultuser}
+}
+# --------------------------------------------------------
 run(){
     loadstrings
     userdefaultselect
-    showcommand "df -h"
     enabledmultilib
     installdependencies
-    showcommand "df -h"
 
     # xfce -----------------------------------------
     installpkgs "${pkgs_xfce}" "${titlexfce}"
@@ -389,21 +408,17 @@ run(){
     # aur packages ---------------------------------
     installaurpkgs "${pkgs_aurpackages}" "${titleaurpackages}"
     
-    # dotfiles -------------------------------------
-    installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
-    checkfolder "${npm_install_folder//%1/$defaultuser}"
-    installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
-    cloningrepo
-    copydotfiles
-
     # bash -----------------------------------------
     bashalias
 
     # editor ---------------------------------------
     editor 
-
+    
     # oh-my-zsh ------------------------------------
-    #settingohmyzsh
+    settingohmyzsh
+
+    # dotfiles -------------------------------------
+    dotfiles
 }
 # --------------------------------------------------------
 pressanykey(){
@@ -452,7 +467,7 @@ loadstrings(){
     homeuserfolder=""
 
     # dependencias ---------------------------------
-    dependencies="neovim git curl wget base base-devel pacman-contrib sudo"
+    dependencies="git curl wget base base-devel pacman-contrib sudo"
 	
     # xfce -----------------------------------------
     titlexfce="INSTALLING XFCE4"
@@ -465,7 +480,7 @@ loadstrings(){
 	
     # printer --------------------------------------
     titleprinter="INSTALLING PRINTER"
-    pkgs_printer="cups cups-pdf ghostscript gsfonts gutenprint gtk3-print-backends libcups hplip system-config-printer"
+    pkgs_printer="cups cups-pdf ghostscript gsfonts gutenprint gtk3-print-backends libcups system-config-printer"
     services_printer=("cups")
 	
     # console --------------------------------------
@@ -487,15 +502,18 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty ctags dmenu dunst firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh lightdm-webkit2-greeter mpd mpv mythes-es ncmpcpp nodejs npm pamixer picom python-pip python-neovim qbittorrent qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xcb-util-cursor xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty dmenu dunst feh firefox flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb lib32-mesa lightdm-webkit2-greeter mesa pamixer qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xorg-server xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 lightdm-webkit2-theme-glorious megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ttf-ms-fonts ventoy-bin visual-studio-code-bin wd719x-firmware xwinwrap-git zoom"
+    pkgs_aurpackages="lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts"
 
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"
-    txturlrepo="-b master --single-branch https://github.com/GiomarOsorio/dotfiles.git"
+    txtworkflow="Installing extra packages"
+    workflow_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
+    workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    txturlrepo="-b dev --single-branch https://github.com/GiomarOsorio/dotfiles.git"
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
@@ -515,10 +533,18 @@ loadstrings(){
     txtinvalid="Invalid option, try again."
 }
 # --------------------------------------------------------
+chrootoption=false
+workflow=false
 while (( "$#" )); do
   case $1 in
-    --chroot)       chrootoption="true"
+        --chroot)
+            chrootoption=true
+        ;;
+        --workflow)
+            workflow=true
+        ;;
   esac
   shift
 done
+clear
 run

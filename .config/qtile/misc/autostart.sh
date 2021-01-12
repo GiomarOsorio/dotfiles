@@ -13,8 +13,11 @@ is_running() {
 # Set screen resolutions (add additional screens here)
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
-# Set the wallpaperdotfiles\
-[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/.config/qtile/misc/wallpaper.gif -a &
+# Set the wallpaper
+# Image wallpaper
+[[ $(is_running 'feh') ]] || ~/.fehbg &
+# Gif wallpaper
+#[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/.config/qtile/misc/wallpaper.gif -a &
 
 # Wait to let the X-Session start up correctly
 sleep 1
@@ -33,7 +36,8 @@ sleep 1
 if ! [[ $RUNNING_QTILE ]]; then
   [[ $(is_running 'compton') ]] || compton -CG &
 else
-  [[ $(is_running 'picom') ]] || picom -CG &
+  #[[ $(is_running 'picom') ]] || picom -CG &
+  [[ $(is_running 'picom') ]] || picom &
 fi;
 
 # Network manager
@@ -51,7 +55,7 @@ fi;
 
 # Notification daemon : first kill the default mate daemon if it has spun up
 # [[ $(is_running 'mate-notification-daemon') ]] || killall mate-notification-daemon 
-[[ $(is_running 'dunst') ]] || dunst &
+[[ $(is_running 'dunst') ]] || dunst -config ~/.config/dunst/dunstrc &
 
 # Megasync
 [[ $(is_running 'megasync') ]] || megasync &
