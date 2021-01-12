@@ -282,8 +282,8 @@ Descripción de los atajos básicos segun mi configuración en Qtile
 
 | Atajo                    | Acción                                                                |
 | ------------------------ | --------------------------------------------------------------------- |
-| **mod + []**         | navegación entre ventanas (=izquierda, =abajo, =arriba, =derecha) |
-| **mod + shift + []** | mover ventana (=izquierda, =abajo, =arriba, =derecha)             |
+| **mod + [⬅⬇⬆➡]**         | navegación entre ventanas (⬅=izquierda, ⬇=abajo, ⬆=arriba, ➡=derecha) |
+| **mod + shift + [⬅⬇⬆➡]** | mover ventana (⬇=izquierda,⬇=abajo, ⬆=arriba, ➡=derecha)              |
 | **mod + [hjkl]**         | navegación entre ventanas (h=izquierda, j=abajo, k=arriba, l=derecha) |
 | **mod + shift + [hjkl]** | mover ventana (h=izquierda, j=abajo, k=arriba, l=derecha)             |
 | **mod + shift + [1-6]**  | mover ventana al espacio de trabajo N (1-6)                           |
