@@ -5,7 +5,7 @@
 
 **_Language_**
 
-- [🇪🇸 Español](https://github.com/GiomarOsorio/dotfiles/blob/master/README.es.md)
+- [🇪🇸 Español](https://github.com/GiomarOsorio/dotfiles/blob/dev/README.es.md)
 - 🇺🇸 English
 
 # Index
