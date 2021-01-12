@@ -283,6 +283,9 @@ dotfiles(){
     rm -r "${localrepopath//%1/$homeuserfolder}/.git"
     rm "${localrepopath//%1/$homeuserfolder}/install_arch"
     rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
+    rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
     rm "${localrepopath//%1/$homeuserfolder}/readme.md"
     copydotfiles
 }
@@ -359,7 +362,6 @@ editor(){
 }
 # --------------------------------------------------------
 settingohmyzsh(){
-    showmessage "${txtohmyzshnotchroot}"
     showcommand "sudo -u ${defaultuser} sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended"
     sudo -u ${defaultuser} sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     showcommand "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${homeuserfolder}/.oh-my-zsh/custom/themes/powerlevel10k"
@@ -523,9 +525,6 @@ loadstrings(){
      
     # editor ---------------------------------------
     editor="nvim"
-
-    # ohmyzsh --------------------------------------
-    txtohmyzshnotchroot="As the last step, the ohmyzsh installation must be carried out, you must make sure that after installing and changing the shell you must exit it so that the script continues with the configuration"
 
     # messages -------------------------------------
     txtpressanykey="Press any key to continue..."
