@@ -67,7 +67,6 @@ locale = "es_VE"
 
 ```
 timezone = "America / Caracas"
-
 ```
 
 ## How to use the script
