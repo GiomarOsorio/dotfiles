@@ -9,6 +9,7 @@
 is_running() {
     ps -aux | awk "!/grep/ && /$1/" 
 }
+export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
 
 # Set screen resolutions (add additional screens here)
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
@@ -23,7 +24,7 @@ sleep 1
 
 # XFCE
 # Power Manager
-[[ $(is_running 'xfce4-power-manager') ]] || xfce4-power-manager &
+#[[ $(is_running 'xfce4-power-manager') ]] || xfce4-power-manager &
 # Polkit agent Authentication
 [[ $(is_running 'polkit-gnome') ]] || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # Daemon
@@ -50,8 +51,10 @@ fi;
 
 # Start xidlehook using betterlockscreen
 [[ ! $(is_running 'xidlehook') ]] killall xidlehook &
-xidlehook --timer 300 "brightnessctl set 600" "brightnessctl set 1500" &
-xidlehook --not-when-fullscreen --not-when-audio --timer 360 "betterlockscreen --off 15 -t 'LOCKED' -l" '' &
+#with suspend after 60 minuts
+#xidlehook  --not-when-fullscreen --not-when-audio --timer 300 'betterlockscreen --off 15 -t "LOCKED" -l' '' --timer 3600 'betterlockscreen -s blur' '' &&
+#without suspend
+xidlehook  --not-when-fullscreen --not-when-audio --timer 300 'betterlockscreen --off 15 -t "LOCKED" -l' '' &
 
 # Notification daemon : first kill the default mate daemon if it has spun up
 [[ $(is_running 'dunst') ]] || dunst -config ~/.config/dunst/dunstrc &
