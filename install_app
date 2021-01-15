@@ -288,10 +288,10 @@ dotfiles(){
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
     rm "${localrepopath//%1/$homeuserfolder}/readme.md"
     copydotfiles
-    showcommand "betterlockscreen -u ${homeuserfolder}/.config/qtile/misc/wallpaper.png"
-    betterlockscreen -u ${homeuserfolder}/.config/qtile/misc/wallpaper.png
-    showcommand "betterlockscreen -w"
-    betterlockscreen -w
+    showcommand "sudo -u ${defaultuser} betterlockscreen -u ${homeuserfolder}/.config/qtile/misc/wallpaper.png"
+    sudo -u ${defaultuser} betterlockscreen -u ${homeuserfolder}/.config/qtile/misc/wallpaper.png
+    showcommand "sudo -u ${defaultuser} betterlockscreen -w"
+    sudo -u ${defaultuser} betterlockscreen -w
 }
 # --------------------------------------------------------
 bashalias(){
