@@ -288,9 +288,9 @@ dotfiles(){
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
     rm "${localrepopath//%1/$homeuserfolder}/readme.md"
     copydotfiles
-    showcommand "betterlockscreen -u ~/.config/qtile/misc/wallpaper.png"
-    betterlockscreen -u ~/.config/qtile/misc/wallpaper.png
-    showcommand "betterlockscreen -u"
+    showcommand "betterlockscreen -u ${homeuserfolder}/.config/qtile/misc/wallpaper.png"
+    betterlockscreen -u ${homeuserfolder}/.config/qtile/misc/wallpaper.png
+    showcommand "betterlockscreen -w"
     betterlockscreen -w
 }
 # --------------------------------------------------------
@@ -510,7 +510,7 @@ loadstrings(){
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="i3lock betterlockscreen-git lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts xidlehook"
+    pkgs_aurpackages="i3lock-color betterlockscreen-git lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts xidlehook"
 
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"
