@@ -14,8 +14,7 @@ is_running() {
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
 # Set the wallpaper
-# Image wallpaper
-[[ $(is_running 'feh') ]] || ~/.fehbg &
+~/.fehbg &
 # Gif wallpaper
 #[[ $(is_running 'xwinwrap') ]] || nice xwinwrap -b -s -fs -st -sp -nf -ov -fdt -- gifview -w WID ~/.config/qtile/misc/wallpaper.gif -a &
 
@@ -30,7 +29,7 @@ sleep 1
 # Daemon
 [[ $(is_running 'xfsettingsd') ]] || xfsettingsd &
 # ScreenSaver 
-[[ $(is_running 'xfce4-screensaver') ]] || xfce4-screensaver &
+#[[ $(is_running 'xfce4-screensaver') ]] || xfce4-screensaver &
 
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
@@ -49,12 +48,12 @@ fi;
 # Start the keyring daemon for managing ssh keys
 [[ $(is_running 'gnome-keyring-daemon') ]] || gnome-keyring-daemon -s &
 
-# Start xautolock using my wrapper around i3lock
-# NOTE :: lock-screen is my custom screen lock script in ~/bin
-# [[ $(is_running 'xautolock') ]] || xautolock -detectsleep -time 3 -locker "lock-screen"  -notify 30 -notifier "notify-send -u critical -t 10000 -- 'LOCKING screen in 30 seconds...'" &
+# Start xidlehook using betterlockscreen
+[[ ! $(is_running 'xidlehook') ]] killall xidlehook &
+xidlehook --timer 300 "brightnessctl set 600" "brightnessctl set 1500" &
+xidlehook --not-when-fullscreen --not-when-audio --timer 360 "betterlockscreen --off 15 -t 'LOCKED' -l" '' &
 
 # Notification daemon : first kill the default mate daemon if it has spun up
-# [[ $(is_running 'mate-notification-daemon') ]] || killall mate-notification-daemon 
 [[ $(is_running 'dunst') ]] || dunst -config ~/.config/dunst/dunstrc &
 
 # Megasync
