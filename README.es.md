@@ -259,7 +259,7 @@ Descripción de los atajos básicos segun mi configuración en Qtile
 | **mod + enter**         | abrir alacritty |
 | **mod + shift + enter** | abrir dmenu     |
 | **mod + r**             | abrir ranger    |
-| **mod + d**             | abrir thunar    |
+| **mod + e**             | abrir thunar    |
 | **mod + b**             | abrir chrome    |
 | **mod + m**             | abrir ncmpcpp   |
 
@@ -292,5 +292,6 @@ Descripción de los atajos básicos segun mi configuración en Qtile
 | **mod + w**              | cerrar ventana                                                        |
 | **mod + ctrl + l**       | bloquear sesión                                                       |
 | **mod + espacio**        | cambiar distribución de teclado                                       |
-| **mod + shift + r**      | reiniciar qtile                                                       |
-| **mod + shift + q**      | cerrar sesión                                                         |
+| **mod + control + r**    | reiniciar qtile                                                       |
+| **mod + control + l**    | abrir pantalla de bloqueo                                             |
+| **mod + control + q**    | cerrar sesión                                                         |
