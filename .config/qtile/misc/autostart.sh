@@ -54,7 +54,7 @@ fi;
 #with suspend after 60 minuts
 #[[ $(is_running 'xidlehook') ]] || xidlehook  --not-when-fullscreen --not-when-audio --timer 300 'betterlockscreen --off 15 -t "LOCKED" -l' '' --timer 3600 'betterlockscreen -s blur' '' &
 #without suspend
-[[ $(is_running 'xidlehook') ]] || xidlehook  --not-when-fullscreen --not-when-audio --timer 300 'betterlockscreen --off 15 -t "LOCKED" -l' '' &
+[[ $(is_running 'xidlehook') ]] || xidlehook --not-when-fullscreen --timer 300 'betterlockscreen --off 15 -t "LOCKED" -l' '' &
 
 # Notification daemon : first kill the default mate daemon if it has spun up
 [[ $(is_running 'dunst') ]] || dunst -config ~/.config/dunst/dunstrc &
