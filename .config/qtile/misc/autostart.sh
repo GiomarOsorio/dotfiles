@@ -4,6 +4,12 @@
 # >> This get's run on restart as well!
 # -------------------------------------
 
+#running only when ~/.cache/i3lock is missing
+if [ -d ~/.cache/i3lock/ ]; then
+    betterlockscreen -u ~/.config/qtile/misc/wallpaper.png
+    betterlockscreen -w
+fi
+
 # pgrep -x doesn't seem to work for this. No idea why...
 # This is used to make sure that things only get executed once
 is_running() {
