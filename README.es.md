@@ -2,6 +2,7 @@
 
 ![Qtile](qtile_screenshot.png)
 ![Qtile2](qtile_screenshot2.png)
+![Qtile3](qtile_screenshot3.png)
 
 **_Idioma_**
 
