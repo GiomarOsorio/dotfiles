@@ -4,11 +4,11 @@
 # >> This get's run on restart as well!
 # -------------------------------------
 
-#running only when ~/.cache/i3lock is missing
-if [ -d ~/.cache/i3lock/ ]; then
-    betterlockscreen -u ~/.config/qtile/misc/wallpaper.png
+#create cache directory from wallpaper.png and set wallpaper if folder ~/.cache/i3lock is missing
+betterlockscreeninit(){
+    betterlockscreen -u $HOME/.config/qtile/misc/wallpaper.png
     betterlockscreen -w
-fi
+}
 
 # pgrep -x doesn't seem to work for this. No idea why...
 # This is used to make sure that things only get executed once
@@ -20,6 +20,8 @@ export PRIMARY_DISPLAY="$(xrandr | awk '/ primary/{print $1}')"
 # Set screen resolutions (add additional screens here)
 xrandr --output VGA-0 --mode 1280x1024 --rate 60 &
 
+# Betterlockscreen
+[[ -d "$HOME/.cache/i3lock" ]] || betterlockscreeninit
 # Set the wallpaper
 ~/.fehbg &
 # Gif wallpaper
@@ -35,14 +37,11 @@ sleep 1
 [[ $(is_running 'polkit-gnome') ]] || /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # Daemon
 [[ $(is_running 'xfsettingsd') ]] || xfsettingsd &
-# ScreenSaver 
-#[[ $(is_running 'xfce4-screensaver') ]] || xfce4-screensaver &
 
 # Compton visual compositing but not for qtile as it messes things up
 if ! [[ $RUNNING_QTILE ]]; then
   [[ $(is_running 'compton') ]] || compton -CG &
 else
-  #[[ $(is_running 'picom') ]] || picom -CG &
   [[ $(is_running 'picom') ]] || picom &
 fi;
 
