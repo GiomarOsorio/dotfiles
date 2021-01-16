@@ -259,7 +259,7 @@ Description of the basic shortcuts according to my configuration in Qtile
 | **mod + enter**         | open alacritty |
 | **mod + shift + enter** | open dmenu     |
 | **mod + r**             | open ranger    |
-| **mod + d**             | open thunar    |
+| **mod + e**             | open thunar    |
 | **mod + b**             | open chrome    |
 | **mod + m**             | open ncmpcpp   |
 
@@ -292,5 +292,6 @@ Description of the basic shortcuts according to my configuration in Qtile
 | **mod + w**              | close window                                               |
 | **mod + ctrl + l**       | lock session                                               |
 | **mod + space**          | change keyboard layout                                     |
-| **mod + shift + r**      | restart qtile                                              |
-| **mod + shift + q**      | log out                                                    |
+| **mod + control + r**    | restart qtile                                              |
+| **mod + control + l**    | lockscreen                                                 |
+| **mod + control + q**    | log out                                                    |

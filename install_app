@@ -506,7 +506,7 @@ loadstrings(){
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts"
+    pkgs_aurpackages="i3lock-color betterlockscreen-git lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts xidlehook"
 
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"

@@ -177,10 +177,10 @@ keys = [Key(k[0], k[1], k[2]) for k in [
     ## .: Sys + Utils :. #
     # Restart qtile in place and pull in config changes (check config before
     # doing this with `check-qtile-conf` script to avoid crashes)
-    ([MOD, "shift"], "r", lazy.restart()),
+    ([MOD, "control"], "r", lazy.restart()),
     # Shut down qtile.
-    ([MOD, "shift"], "Escape", lazy.shutdown()),
-    ([MOD, "control"], "l", lazy.spawn("dm-tool switch-to-greeter")),
+    ([MOD, "control"], "Escape", lazy.shutdown("")),
+    ([MOD, "control"], "l", lazy.spawn("betterlockscreen --off 15 -t 'LOCKED' -l")),
     ([MOD], "space", lazy.function(toggle_klayout))
     #([MOD,"shift"],"Delete", lazy.spawn(script("power-menu.sh"))),
 
