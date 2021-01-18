@@ -34,3 +34,6 @@ Plug 'ap/vim-css-color'
 
 "Vim Pug(formerly Jade) template engine syntax highlighting and indentation
 Plug 'digitaltoad/vim-jade'
+
+"A Git wrapper so awesome, it should be illegal
+Plug 'tpope/vim-fugitive'
