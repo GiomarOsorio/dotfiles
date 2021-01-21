@@ -264,10 +264,12 @@ dotfiles(){
     cloningrepo
     if [ $workflow = true ]; then
         installpkgs "${workflow_generalpackages}" "${txtworkflow}"
+        systemctlenable "${dotfiles_services}"
         installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
         installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
         checkfolder "${npm_install_folder//%1/$defaultuser}"
         installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
+        usermod -a -G docker ${defaultuser}
     else
         showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
         showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/bashmount"
@@ -513,9 +515,11 @@ loadstrings(){
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"
     txtworkflow="Installing extra packages"
-    workflow_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
+    workflow_generalpackages="ctags docker hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
     workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
     txturlrepo="-b master --single-branch https://github.com/GiomarOsorio/dotfiles.git"
+    dotfiles_services=("docker.service")
+
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
