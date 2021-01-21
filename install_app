@@ -515,8 +515,8 @@ loadstrings(){
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"
     txtworkflow="Installing extra packages"
-    workflow_generalpackages="ctags docker hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
-    workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    workflow_generalpackages="ctags docker hplip hunspell hunspell-es_ve hyphen hyphen-es jq kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
+    workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher slack-desktop telegram-desktop-bin ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
     txturlrepo="-b master --single-branch https://github.com/GiomarOsorio/dotfiles.git"
     dotfiles_services=("docker.service")
 
