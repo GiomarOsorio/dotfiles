@@ -1,4 +1,4 @@
-'''
+"""
 qtile calls i3-style workspaces `groups`.
 
 Groups are a little more powerful as we can specify additional config
@@ -19,19 +19,19 @@ NOTE :: Match is imported from libqtile.config
         # Create this group when qtile starts?
         init=True
     )
-'''
+"""
 from libqtile.config import Group, ScratchPad, DropDown
 
 
 # Named Groups copied from i3
 # >>> See https://fontawesome.com/cheatsheet for more fontawesome icons
 groups = [
-    Group("1 "),
-    Group("2 "),
-    Group("3 "),
-    Group("4 "),
-    Group("5 "),
-    Group("6 "),
+    Group("1 爵"),
+    Group("2 亮"),
+    Group("3 "),
+    Group("4 "),
+    Group("5 "),
+    Group("6 "),
 ]
 
 # Simple numbered groups
@@ -39,12 +39,12 @@ groups = [
 
 # Roman numerals + icons
 # groups = [
-#    Group("I "),
-#    Group("II "),
-#    Group("III "),
-#    Group("IV "),
-#    Group("V "),
-#    Group("VI "),
+#    Group("I 爵"),
+#    Group("II 亮"),
+#    Group("III "),
+#    Group("IV "),
+#    Group("V "),
+#    Group("VI "),
 # ]
 
 # Roman numerals only
@@ -59,20 +59,20 @@ groups = [
 
 # Icons only
 # groups = [
-#    Group(""),
+#    Group("爵"),
+#    Group("亮"),
 #    Group(""),
-#    Group(""),
-#    Group(""),
-#    Group(""),
-#    Group(""),
+#    Group(""),
+#    Group(""),
+#    Group(""),
 # ]
 
 # Named
 # groups = [
 #     Group("WEB"),
+#     Group("SCRIPTING"),
 #     Group("TERM"),
-#     Group("NOTES"),
-#     Group("CODE"),
+#     Group("PYTHON"),
 #     Group("SOCIAL"),
-#     Group("GAMES"),
+#     Group("WORK"),
 # ]

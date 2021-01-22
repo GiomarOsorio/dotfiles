@@ -527,7 +527,7 @@ loadstrings(){
     pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
     prefix="--prefix %1"
     command_npm_vim="sudo -u %1 npm install"
-    pkgs_npm_vim="neovim eslint eslint-config-airbnb-base"
+    pkgs_npm_vim="neovim eslint eslint-config-airbnb-base bash-language-server"
      
     # editor ---------------------------------------
     editor="nvim"
