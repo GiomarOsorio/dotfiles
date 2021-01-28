@@ -26,6 +26,12 @@ Plug 'junegunn/fzf.vim'
 "Vastly improved Javascript indentation and syntax support in Vim.
 Plug 'pangloss/vim-javascript'
 
+"Typescript syntax files for Vim 
+Plug 'leafgarland/typescript-vim'
+
+"A Vim plugin that provides GraphQL file detection, syntax highlighting, and indentation.
+Plug 'jparise/vim-graphql'
+
 " Git/mercurial/others diff icons on the side of the file lines
 Plug 'mhinz/vim-signify'
 

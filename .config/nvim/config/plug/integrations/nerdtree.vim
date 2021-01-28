@@ -6,7 +6,7 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <F3> :NERDTreeToggle<CR>
 
 " open nerdtree with the current file selected
-nmap ,t :NERDTreeFind<CR>
+nmap <leader><F3> :NERDTreeFind<CR>
 
 " don;t show these file types
 let NERDTreeIgnore = ['\.pyc$', '\.pyo$', '^node_modules$']
