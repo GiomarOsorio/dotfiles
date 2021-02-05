@@ -506,11 +506,11 @@ loadstrings(){
     
     # general packages -----------------------------
     titlegeneralpackages="INSTALLING GENERAL PACKAGES"
-    pkgs_generalpackages="alacritty dmenu dunst feh firefox ffmpegthumbnailer flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb lib32-mesa lightdm-webkit2-greeter mesa pamixer qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xorg-server xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
+    pkgs_generalpackages="alacritty dmenu dunst feh firefox ffmpegthumbnailer flameshot font-bh-ttf gifsicle gsfonts gvfs gvfs-nfs gvfs-mtp gvfs-smb lib32-mesa lightdm-webkit2-greeter mesa pamixer picom qtile ranger redshift sdl_ttf tig ttf-bitstream-vera ttf-dejavu ttf-liberation ueberzug udiskie xorg-server xorg-fonts-type1 zsh zsh-autosuggestions zsh-completions zsh-lovers"
 
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
-    pkgs_aurpackages="i3lock-color betterlockscreen-git lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts xidlehook"
+    pkgs_aurpackages="i3lock-color betterlockscreen-git lightdm-webkit2-theme-glorious ttf-ms-fonts xidlehook"
 
     # dotfiles ------------------------------------
     localrepopath="%1/dotfiles"
