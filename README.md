@@ -41,7 +41,7 @@ This repository contains my personal configuration, as well as two scripts that 
 Before using the script it is necessary to modify some variables, the first thing is to download the script (make sure you have internet).
 
 ```bash
-curl -O https://raw.githubusercontent.com/giomarosorio/master/install_arch
+curl -O https://raw.githubusercontent.com/dotfiles/giomarosorio/master/install_arch
 ```
 
 Open with the trusted terminal text editor and go to the "loadconfigs" function **line 1184**, from there we will change the following variables for those of your preference.
