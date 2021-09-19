@@ -283,10 +283,10 @@ dotfiles(){
     rm -r "${localrepopath//%1/$homeuserfolder}/.git"
     rm "${localrepopath//%1/$homeuserfolder}/install_arch"
     rm "${localrepopath//%1/$homeuserfolder}/install_app"
-    rm "${localrepopath//%1/$homeuserfolder}/install_app"
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
-    rm "${localrepopath//%1/$homeuserfolder}/readme.md"
+    rm "${localrepopath//%1/$homeuserfolder}/README.md"
+    rm "${localrepopath//%1/$homeuserfolder}/README.es.md"
     copydotfiles
 }
 # --------------------------------------------------------
