@@ -505,7 +505,7 @@ loadstrings(){
     txtworkflow="Installing extra packages"
     workflow_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
     workflow_aurpackages="bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin zoom"
-    txturlrepo="-b dev --single-branch https://github.com/GiomarOsorio/dotfiles.git"
+    txturlrepo="-b new-features --single-branch https://github.com/GiomarOsorio/dotfiles.git"
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
