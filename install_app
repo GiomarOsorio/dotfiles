@@ -254,7 +254,7 @@ copydotfiles(){
 
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
-    rm -r "${$homeuserfolder}/1"
+    rm -r "${homeuserfolder}/1"
 
     sed -i 's/^\(#?greeter\)-session\s*=\s*\(.*\)/greeter-session = lightdm-webkit2-greeter #\1/ #\2g' /etc/lightdm/lightdm.conf
     sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = glorious #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf
@@ -287,7 +287,6 @@ dotfiles(){
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
     rm "${localrepopath//%1/$homeuserfolder}/README.md"
-    rm "${localrepopath//%1/$homeuserfolder}/README.es.md"
     rm "${localrepopath//%1/$homeuserfolder}/README.es.md"
     copydotfiles
 }
