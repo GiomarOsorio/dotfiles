@@ -1241,12 +1241,12 @@ loadconfigs(){
     txthost="127.0.0.1    localhost\n::1          localhost\n127.0.1.1    %1.localdomain    %1"
    
     # locale -----------------------------------------
-    locale="es_VE"
+    locale="es_CO"
     locales="LANG=%1.UTF-8\nLANGUAGE=%1:en\nLC_CTYPE=\"%1.UTF-8\"\nLC_NUMERIC=%1.UTF-8\nLC_TIME=%1.UTF-8\nLC_COLLATE=%1.UTF-8\nLC_MONETARY=%1.UTF-8\nLC_MESSAGES=\"%1.UTF-8\"\nLC_PAPER=\"%1.UTF-8\"\nLC_NAME=\"%1.UTF-8\"\nLC_ADDRESS=\"%1.UTF-8\"\nLC_TELEPHONE=\"%1.UTF-8\"\nLC_MEASUREMENT=%1.UTF-8\nLC_IDENTIFICATION=\"%1.UTF-8\"\nLC_ALL="
     txtsetlocale="Set Locale"
 
     # set time ---------------------------------------
-    timezone="America/Colombia"
+    timezone="America/Bogota"
     txtsettime="Set Time"
     txthwclock="Hardware clock: "
     txthwclockutc="UTC"
