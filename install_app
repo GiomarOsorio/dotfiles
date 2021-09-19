@@ -254,6 +254,7 @@ copydotfiles(){
 
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
+    rm -r "${$homeuserfolder}/1"
 
     sed -i 's/^\(#?greeter\)-session\s*=\s*\(.*\)/greeter-session = lightdm-webkit2-greeter #\1/ #\2g' /etc/lightdm/lightdm.conf
     sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = glorious #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf
@@ -286,6 +287,7 @@ dotfiles(){
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
     rm "${localrepopath//%1/$homeuserfolder}/README.md"
+    rm "${localrepopath//%1/$homeuserfolder}/README.es.md"
     rm "${localrepopath//%1/$homeuserfolder}/README.es.md"
     copydotfiles
 }
@@ -510,7 +512,7 @@ loadstrings(){
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
     command_pip_vim="sudo -u %1 pip install"
-    pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi"
+    pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi jedi-language-server"
     prefix="--prefix %1"
     command_npm_vim="sudo -u %1 npm install"
     pkgs_npm_vim="neovim eslint eslint-config-airbnb-base"
