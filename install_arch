@@ -924,6 +924,7 @@ archgrubinstallchroot(){
 }
 # --------------------------------------------------------
 archgrubinstallbootloader(){
+    clear
     selectdisk "${title_device}" "${txtinstall//%1/bootloader}"
     device_bootloader="${sel_device}"
 
@@ -1009,6 +1010,7 @@ archgrubinstallbootloader(){
         archchroot grubbootloaderinstall ${device_bootloader}
         pressanykey
     fi
+    clear
 }
 # --------------------------------------------------------
 archgrubinstallbootloaderchroot(){
