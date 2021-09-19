@@ -385,10 +385,6 @@ run(){
     # sound ----------------------------------------
     installpkgs "${pkgs_sound}" "${titlesound}"
  
-    # printer --------------------------------------
-    installpkgs "${pkgs_printer}" "${titleprinter}"
-    systemctlenable "${services_printer}"
-
     # console --------------------------------------
     installpkgs "${pkgs_console}" "${titleconsole}"
  
@@ -478,11 +474,6 @@ loadstrings(){
     titlesound="INSTALLING SOUND"
     pkgs_sound="pulseaudio pulseaudio-alsa pavucontrol alsa-utils alsa-plugins alsa-lib alsa-firmware gstreamer gst-plugins-good gst-plugins-bad gst-plugins-base gst-plugins-ugly volumeicon playerctl"
 	
-    # printer --------------------------------------
-    titleprinter="INSTALLING PRINTER"
-    pkgs_printer="cups cups-pdf ghostscript gsfonts gutenprint gtk3-print-backends libcups system-config-printer"
-    services_printer=("cups")
-	
     # console --------------------------------------
     titleconsole="INSTALLING CONSOLE"
     pkgs_console="pacman-contrib base-devel bash-completion usbutils dmidecode dialog gpm"
@@ -512,7 +503,7 @@ loadstrings(){
     localrepopath="%1/dotfiles"
     txtworkflow="Installing extra packages"
     workflow_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
-    workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher nvidia-390xx-dkms nvidia-390xx-settings nvidia-390xx-utils opencl-nvidia-390xx runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    workflow_aurpackages="bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin zoom"
     txturlrepo="-b dev --single-branch https://github.com/GiomarOsorio/dotfiles.git"
 
     # setup vim ------------------------------------

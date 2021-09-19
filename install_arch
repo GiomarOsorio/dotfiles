@@ -1246,7 +1246,7 @@ loadconfigs(){
     txtsetlocale="Set Locale"
 
     # set time ---------------------------------------
-    timezone="America/Caracas"
+    timezone="America/Colombia"
     txtsettime="Set Time"
     txthwclock="Hardware clock: "
     txthwclockutc="UTC"
