@@ -5,8 +5,7 @@ from settings import SCRIPT_DIR
 
 from libqtile.widget import base
 
-
-class ShellScript(base.ThreadedPollText):
+class ShellScript(base.ThreadPoolText):
     '''
     A generic text widget that polls using a poll function to get its text
     and accepts mouse interaction through the bar.
@@ -29,7 +28,7 @@ class ShellScript(base.ThreadedPollText):
     ]
 
     def __init__(self, **config):
-        base.ThreadedPollText.__init__(self, **config)
+        base.ThreadPoolText.__init__(self, "", **config)
         self.add_defaults(ShellScript.defaults)
         self.fname = self.script_dir + config['fname']
 

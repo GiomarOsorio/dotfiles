@@ -4,8 +4,7 @@ from subprocess import CalledProcessError, Popen
 from libqtile.log_utils import logger
 from libqtile.widget import base
 
-
-class ArchCheckUpdates(base.ThreadedPollText):
+class ArchCheckUpdates(base.ThreadPoolText):
     """Shows number of pending updates in arch using YAY as default"""
     orientations = base.ORIENTATION_HORIZONTAL
     defaults = [
@@ -21,7 +20,7 @@ class ArchCheckUpdates(base.ThreadedPollText):
     ]
 
     def __init__(self, **config):
-        base.ThreadedPollText.__init__(self, **config)
+        base.ThreadPoolText.__init__(self, "", **config)
         self.add_defaults(ArchCheckUpdates.defaults)
 
         # format: "Distro": ("cmd", "number of lines to subtract from output")

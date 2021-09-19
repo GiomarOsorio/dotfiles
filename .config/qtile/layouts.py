@@ -12,6 +12,7 @@ Look at porting some Xmonad layouts to qtile:
         http://qtile.readthedocs.io/en/latest/_modules/libqtile/layout/xmonad.html#MonadTall
 """
 from libqtile import layout
+from libqtile.config import Match
 
 from settings import FONT_PARAMS, COLOR_SCHEME
 
@@ -110,22 +111,24 @@ floating_layout = layout.Floating(
     border_focus=BORDER_FOCUS,
     border_width=BORDER_WIDTH,
     float_rules=[
-        {"wmclass": "confirm"},
-        {"wmclass": "dialog"},
-        {"wmclass": "download"},
-        {"wmclass": "error"},
-        {"wmclass": "file_progress"},
-        {"wmclass": "notification"},
-        {"wmclass": "splash"},
-        {"wmclass": "toolbar"},
-        {"wmclass": "gcr-prompter"},
-        {"wmclass": "confirmreset"},
-        {"wmclass": "makebranch"},
-        {"wmclass": "maketag"},
-        {"wmclass": "peek"},
-        {"wname": "branchdialog"},
-        {"wname": "pinentry"},
-        {"wmclass": "ssh-askpass"},
-        {"wmclass": "megasync"},
+    *layout.Floating.default_float_rules,
+    Match(wm_class='confirm'),  
+    Match(wm_class='confirmreset'),
+    Match(wm_class='dialog'),  
+    Match(wm_class='download'),  
+    Match(wm_class='error'),  
+    Match(wm_class='file_progress'),  
+    Match(wm_class='notification'),  
+    Match(wm_class='splash'),  
+    Match(wm_class='toolbar'),  
+    Match(wm_class='gcr-prompter'),  
+    Match(wm_class='peek'),  
+    Match(wm_class='ssh-askpass'),  
+    Match(wm_class='megasync'),  
+    Match(wm_class='makebranch'),
+    Match(wm_class='maketag'),
+    Match(wm_class='ssh-askpass'),
+    Match(title='branchdialog'),
+    Match(title='pinentry'),
     ],
 )
