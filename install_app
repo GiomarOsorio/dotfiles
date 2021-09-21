@@ -256,7 +256,7 @@ copydotfiles(){
     rm -r "${localrepopath//%1/$homeuserfolder}"
     rm -r "${homeuserfolder}/1"
 
-    sed -i 's/^\(#greeter\)-session\s*=\s*\(.*\)/greeter-session=lightdm-webkit2-greeter' /etc/lightdm/lightdm.conf
+    sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = glorious' /etc/lightdm/lightdm-webkit2-greeter.conf
     sed -i 's/^debug_mode\s*=\s*\(.*\)/debug_mode = true' /etc/lightdm/lightdm-webkit2-greeter.conf
 }
