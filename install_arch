@@ -1097,8 +1097,8 @@ installdotfiles(){
 }
 # --------------------------------------------------------
 installdotfilesdownload(){
-	showcommand "curl -L ${installdotfilesurl} >installdotfiles"
-    curl -L ${installdotfilesurl} >installdotfiles
+	showcommand "curl -L ${installconfigurationurl} >installdotfiles"
+    curl -L ${installconfigurationurl} >installdotfiles
 }
 # --------------------------------------------------------
 installdotfileslaunchchroot(){
@@ -1270,7 +1270,7 @@ loadconfigs(){
 
     # dotfiles ---------------------------------------
     txtdotfiles="Do you want to install the configuration?"
-    installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/new-features/install_configuration
+    installconfigurationurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/new-features/install_configuration
 
     # messages ---------------------------------------
     txtnextscreen="Select the installation %1 on the next screen"	
