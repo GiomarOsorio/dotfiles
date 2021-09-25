@@ -1073,24 +1073,23 @@ installdotfiles(){
     options=""
     options+="[1] Yes\n"
     options+="[2] No\n"
-
-    showmessage "${txtdotfiles}"
-    echo -e "${options}"
+    if [ $workflow = true ]; then
+    	archchroot dotfilesinstall --workflow
+    else
+        showmessage "${txtdotfiles}"
+        echo -e "${options}"
 	
-    while true; do
-        echo "Select a option: "
-        read sel
-        if ! [[ $sel =~ $re ]]; then
-            showmessage "${txtinvalid}"
-        else
-            echo ""
-            break
-        fi
-    done
-    if [[ $sel == 1 ]]; then
-        if [ $workflow = true ]; then
-    		archchroot dotfilesinstall --workflow
-        else
+        while true; do
+            echo "Select a option: "
+            read sel
+            if ! [[ $sel =~ $re ]]; then
+                showmessage "${txtinvalid}"
+            else
+                echo ""
+                break
+            fi
+        done
+        if [[ $sel == 1 ]]; then
     		archchroot dotfilesinstall
         fi
     fi

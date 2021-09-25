@@ -335,7 +335,6 @@ copydotfiles(){
 
     fc-cache -f
     rm -r "${localrepopath//%1/$homeuserfolder}"
-    rm -r "${homeuserfolder}/1"
 
     sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
     sudo sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = glorious #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf
@@ -364,7 +363,7 @@ dotfiles(){
     fi
     rm -r "${localrepopath//%1/$homeuserfolder}/.git"
     rm "${localrepopath//%1/$homeuserfolder}/install_arch"
-    rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/install_configuration"
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
     rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
     rm "${localrepopath//%1/$homeuserfolder}/README.md"
