@@ -1269,8 +1269,8 @@ loadconfigs(){
     txtbootloadergrubmenu="Choose your bootloader"
 
     # dotfiles ---------------------------------------
-    txtdotfiles="Do you want to install my personal configuration?"
-    installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/dev/install_app
+    txtdotfiles="Do you want to install the configuration?"
+    installdotfilesurl=https://raw.githubusercontent.com/GiomarOsorio/dotfiles/new-features/install_configuration
 
     # messages ---------------------------------------
     txtnextscreen="Select the installation %1 on the next screen"	
