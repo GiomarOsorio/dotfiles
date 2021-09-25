@@ -317,6 +317,61 @@ settingohmyzsh(){
     chsh -s /bin/zsh ${defaultuser}
 }
 # --------------------------------------------------------
+cloningrepo(){
+    showtitle "CLONING REPO"
+    showcommand "cd $homeuserfolder"
+    cd $homeuserfolder
+    if [ -d ${localrepopath//%1/$homeuserfolder} ]; then
+        rm -r ${localrepopath//%1/$homeuserfolder}
+    fi
+    showcommand "git clone ${txturlrepo}"
+    git clone ${txturlrepo}
+    chown -R $defaultuser: ${localrepopath//%1/$homeuserfolder}
+}
+# --------------------------------------------------------
+copydotfiles(){
+    showcommand "sudo -u ${defaultuser} cp -a \"${localrepopath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
+    sudo -u ${defaultuser} cp -a "${localrepopath//%1/$homeuserfolder}/." "${homeuserfolder}/"
+
+    fc-cache -f
+    rm -r "${localrepopath//%1/$homeuserfolder}"
+    rm -r "${homeuserfolder}/1"
+
+    sed -i "/^#greeter-session=example-gtk-gnome/ cgreeter-session=lightdm-webkit2-greeter" /etc/lightdm/lightdm.conf
+    sudo sed -i 's/^webkit_theme\s*=\s*\(.*\)/webkit_theme = glorious #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf
+    sudo sed -i 's/^debug_mode\s*=\s*\(.*\)/debug_mode = true #\1/g' /etc/lightdm/lightdm-webkit2-greeter.conf
+}
+# --------------------------------------------------------
+dotfiles(){
+    cloningrepo
+    if [ $workflow = true ]; then
+        installpkgs "${workflow_generalpackages}" "${txtworkflow}"
+        installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
+        installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
+        checkfolder "${npm_install_folder//%1/$defaultuser}"
+        installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
+    else
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/bashmount"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/mpd"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
+        showcommand "rm -r ${localrepopath//%1/$homeuserfolder}/.config/nvim"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.eslintrc.json"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/bashmount"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/mpd"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/ncmpcpp"
+        rm -r "${localrepopath//%1/$homeuserfolder}/.config/nvim"
+    fi
+    rm -r "${localrepopath//%1/$homeuserfolder}/.git"
+    rm "${localrepopath//%1/$homeuserfolder}/install_arch"
+    rm "${localrepopath//%1/$homeuserfolder}/install_app"
+    rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot.png"
+    rm "${localrepopath//%1/$homeuserfolder}/qtile_screenshot2.png"
+    rm "${localrepopath//%1/$homeuserfolder}/README.md"
+    rm "${localrepopath//%1/$homeuserfolder}/README.es.md"
+    copydotfiles
+}
+# --------------------------------------------------------
 run(){
     loadstrings
     userdefaultselect
@@ -359,6 +414,9 @@ run(){
     
     # oh-my-zsh ------------------------------------
     settingohmyzsh
+
+    # dotfiles -------------------------------------
+    dotfiles
 }
 # --------------------------------------------------------
 pressanykey(){
@@ -442,6 +500,21 @@ loadstrings(){
     # aur packages ---------------------------------
     titleaurpackages="INSTALLING AUR PACKAGES"
     pkgs_aurpackages="i3lock-color betterlockscreen-git lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts xidlehook"
+
+    # dotfiles ------------------------------------
+    localrepopath="%1/dotfiles"
+    txtworkflow="Installing extra packages"
+    workflow_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
+    workflow_aurpackages="bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher runelite-launcher telegram-desktop-bin ventoy-bin visual-studio-code-bin zoom"
+    txturlrepo="-b new-features --single-branch https://github.com/GiomarOsorio/dotfiles.git"
+
+    # setup vim ------------------------------------
+    titlesvim="SETTING UP VIM"
+    command_pip_vim="sudo -u %1 pip install"
+    pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi jedi-language-server"
+    prefix="--prefix %1"
+    command_npm_vim="sudo -u %1 npm install"
+    pkgs_npm_vim="neovim eslint eslint-config-airbnb-base"
 
     # editor ---------------------------------------
     editor="nvim"
