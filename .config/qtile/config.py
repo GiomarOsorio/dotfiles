@@ -20,7 +20,7 @@ from layouts import layouts, floating_layout  # NOQA
 from bindings import keys, mouse  # NOQA
 from groups import groups  # NOQA
 #from widgets import ShellScript
-from custom_widgets import ArchCheckUpdates
+from custom_widget.arch_check_updates import ArchCheckUpdates
 
 # ----------------------------------------------------------------------------
 # Hooks
