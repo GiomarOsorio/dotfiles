@@ -532,9 +532,6 @@ while (( "$#" )); do
         --chroot)
             chrootoption=true
         ;;
-        --workflow)
-            workflow=true
-        ;;
   esac
   shift
 done
