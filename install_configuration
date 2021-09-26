@@ -338,8 +338,8 @@ cloningrepo(){
 copydotfiles(){
     showcommand "sudo -u ${defaultuser} cp -a \"${localrepodotfilespath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
     sudo -u ${defaultuser} cp -a "${localrepodotfilespath//%1/$homeuserfolder}/." "${homeuserfolder}/"
-    showcommand "sudo -u ${defaultuser} mv \"${localrepovimpath//%1/$homeuserfolder}/.\" \"${homeuserfolder}\""
-    sudo -u ${defaultuser} mv "${localrepovimpath//%1/$homeuserfolder}/." "${homeuserfolder}"
+    showcommand "sudo -u ${defaultuser} mv \"${localrepovimpath//%1/$homeuserfolder}/.config/nvim\" \"${homeuserfolder}/.config/\""
+    sudo -u ${defaultuser} mv "${localrepovimpath//%1/$homeuserfolder}/.config/nvim" "${homeuserfolder}/.config/"
 
     fc-cache -f
     rm -r "${localrepodotfilespath//%1/$homeuserfolder}"
