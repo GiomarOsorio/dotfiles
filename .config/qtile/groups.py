@@ -26,17 +26,26 @@ from libqtile.config import Group, ScratchPad, DropDown
 # Named Groups copied from i3
 # >>> See https://fontawesome.com/cheatsheet for more fontawesome icons
 groups = [
-    Group("1 "),
-    Group("2 "),
-    Group("3 "),
-    Group("4 "),
-    Group("5 "),
-    Group("6 "),
-]
+   Group(""),
+   Group(""),
+   Group(""),
+   Group(""),
+   Group(""),
+   Group(""),
+# ]
 
 # Simple numbered groups
 # groups = [Group(str(x+1)) for x in range(10)]
 
+# Numerals + icons
+#groups = [
+#    Group("1 "),
+#    Group("2 "),
+#    Group("3 "),
+#    Group("4 "),
+#    Group("5 "),
+#    Group("6 "),
+]
 # Roman numerals + icons
 # groups = [
 #    Group("I "),
