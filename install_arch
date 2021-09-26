@@ -231,13 +231,13 @@ formatdevice(){
 formatbootdevice(){
     options=""
     re='^[1-3]$'
-    if [ "${efimode}" == "1" ]||[ "${efimode}" = "2" ]; then
-        re='^[0-3]$'
-        options+="[0] fat32 (EFI)\n"
-    fi
     options+="[1] ext4\n"
     options+="[2] ext3\n"
     options+="[3] ext2\n"
+    if [ "${efimode}" == "1" ]||[ "${efimode}" = "2" ]; then
+        re='^[1-4]$'
+        options+="[4] fat32 (EFI)\n"
+    fi
     echo -e "${txtselectpartformat//%1/${1} (${2})}"
     echo -e "${options}"
     while true;do
@@ -247,9 +247,6 @@ formatbootdevice(){
             showmessage "${txtinvalid}"
         else
             case ${sel} in
-                "0")
-                    formatboot="fat32"
-                    ;;
                 "1")
                     formatboot="ext4"
                     ;;
@@ -258,6 +255,9 @@ formatbootdevice(){
                     ;;
                 "3")
                     formatboot="ext2"
+                    ;;
+                "4")
+                    formatboot="fat32"
                     ;;
             esac
             echo ""
