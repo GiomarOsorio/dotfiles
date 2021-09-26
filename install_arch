@@ -235,9 +235,9 @@ formatbootdevice(){
         re='^[0-3]$'
         options+="[0] fat32 (EFI)\n"
     fi
-    options+="[1] ext2\n"
+    options+="[1] ext4\n"
     options+="[2] ext3\n"
-    options+="[3] ext4\n"
+    options+="[3] ext2\n"
     echo -e "${txtselectpartformat//%1/${1} (${2})}"
     echo -e "${options}"
     while true;do
@@ -251,13 +251,13 @@ formatbootdevice(){
                     formatboot="fat32"
                     ;;
                 "1")
-                    formatboot="ext2"
+                    formatboot="ext4"
                     ;;
                 "2")
                     formatboot="ext3"
                     ;;
                 "3")
-                    formatboot="ext4"
+                    formatboot="ext2"
                     ;;
             esac
             echo ""
