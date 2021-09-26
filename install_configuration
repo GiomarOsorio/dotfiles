@@ -352,8 +352,10 @@ copydotfiles(){
 # --------------------------------------------------------
 dotfiles(){
     cloningrepo
-    installpkgs "${workflow_generalpackages}" "${txtworkflow}"
-    installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
+    installpkgs "${dotfiles_generalpackages}" "${txtworkflow}"
+    if [ $workflow = true ]; then
+        installaurpkgs "${workflow_aurpackages}" "${txtworkflow} from AUR"
+    fi
     installpkgs "${pkgs_pip_vim}" "${titlesvim} PIP DEPENDENCIES" "${command_pip_vim//%1/$defaultuser}"
     checkfolder "${npm_install_folder//%1/$defaultuser}"
     installpkgs "${pkgs_npm_vim}" "${titlesvim} NPM DEPENDENCIES" "${command_npm_vim//%1/$defaultuser} ${prefix//%1/$homeuserfolder}"
@@ -498,12 +500,14 @@ loadstrings(){
     titleaurpackages="INSTALLING AUR PACKAGES"
     pkgs_aurpackages="i3lock-color betterlockscreen-git lightdm-webkit2-theme-glorious picom-ibhagwan-git ttf-ms-fonts xidlehook"
 
-    # dotfiles ------------------------------------
+    # dotfiles -------------------------------------
     localrepodotfilespath="%1/dotfiles"
     txtworkflow="Installing extra packages"
-    workflow_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
-    workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher runelite-launcher telegram-desktop-bin upd72020x-fw ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
+    dotfiles_generalpackages="ctags hplip hunspell hunspell-es_ve hyphen hyphen-es kolourpaint languagetool libreoffice-fresh mpc mpd mpv mythes-es ncmpcpp neovim nodejs npm python-neovim python-pip qbittorrent xcb-util-cursor"
     txturldotfiles="-b new-features --single-branch https://github.com/GiomarOsorio/dotfiles.git"
+
+    #workflow --------------------------------------
+    workflow_aurpackages="aic94xx-firmware bashmount discord_arch_electron google-chrome jdownloader2 libpdfium-nojs megasync minecraft-launcher runelite-launcher telegram-desktop-bin upd72020x-fw ventoy-bin visual-studio-code-bin wd719x-firmware zoom"
 
     # setup vim ------------------------------------
     titlesvim="SETTING UP VIM"
@@ -529,9 +533,12 @@ chrootoption=false
 workflow=false
 while (( "$#" )); do
   case $1 in
-        --chroot)
-            chrootoption=true
-        ;;
+    --chroot)
+        chrootoption=true
+    ;;
+    --workflow)
+        workflow=true
+    ;;
   esac
   shift
 done
