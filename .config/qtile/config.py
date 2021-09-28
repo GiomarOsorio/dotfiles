@@ -63,7 +63,6 @@ def make_screen(systray=False):
             fontsize=50,
             padding=-1,
         ),
-        widget.
         widget.GroupBox(
             other_current_screen_border=COLOR_SCHEME["selected"],
             this_current_screen_border=COLOR_SCHEME["selected"],
