@@ -1,25 +1,29 @@
 import re
 import subprocess
+import itertools
+import operator
+import time
 from os import statvfs
 
 import cairocffi
 
 from libqtile.widget import base
-
-__all__ = [
-    'VolumeBar',
-]
+from libqtile.log_utils import logger
 
 re_vol = re.compile(r'\[(\d?\d?\d?)%\]')
 
 class _Line(base._Widget):
     fixed_upper_bound = False
     defaults = [
-        ("line_width", 3, "Line width"),
-        ("rounded", True, "To round or not to round line borders"),
-        ("background", None, "Widget background color"),
-        ("line_color", "18BAEB", "Line color"),
-        ("fill_color", "1667EB.3", "Fill color for linefill line"),
+        ("inner_bar_padding", 1, "Inner bar padding"),
+        ("inner_bar_color", "#FFFFFF", "Inner bar color"),
+        ("inner_bar_border_color", "#FFFFFF", "Inner bar border color"),
+        ("inner_bar_border_width", 1, "Inner bar border width"),
+        ("outer_bar_color", "#808080", "Outer bar color"),
+        ("outer_bar_border_color", "#808080", "Outer bar border color"),
+        ("outer_bar_border_width", 1, "Outer bar border width"),
+        ("bar_height", 5, "Outer bar height"),
+        ("rounded", False, "To round or not round corners"),
         ("margin_x", 3, "Margin X"),
         ("margin_y", 3, "Margin Y"),
         ("start_pos", "bottom", "Drawer starting position ('bottom'/'top')"),
@@ -32,25 +36,17 @@ class _Line(base._Widget):
 
     def _configure(self, qtile, bar):
         super()._configure(qtile, bar)
-        if self.rounded:
-            self.drawer.ctx.set_antialias(cairocffi.ANTIALIAS_NONE)
+        self.drawer.ctx.set_antialias(cairocffi.ANTIALIAS_NONE)
 
     @property
-    def graphwidth(self):
-        return self.width - self.border_width * 2 - self.margin_x * 2
+    def bar_width(self):
+        return self.width - self.inner_bar_border_width * 2 - self.margin_x * 2
 
-    @property
-    def graphheight(self):
-        return self.bar.height - self.margin_y * 2 - self.border_width * 2
-
-    def _prepare_context(self):
-        if self.fill_color is not None:
-            self.drawer.set_source_rgb(self.fill_color)
-        self.drawer.ctx.set_line_width(self.line_width)
-
-    def draw_line(self, x, y, val):
-        self._prepare_context()
-        self.drawer.ctx.line_to(x - self.val(val), y)
+    def draw_box(self, color, border_width, x1, y1, x2, y2):
+        self.drawer.set_source_rgb(color)
+        self.drawer.ctx.set_line_width(border_width)
+        self.drawer.ctx.rectangle(x1,y1,x2,y2)
+        self.drawer.ctx.fill()
         self.drawer.ctx.stroke()
 
     def val(self, val):
@@ -63,19 +59,26 @@ class _Line(base._Widget):
 
     def draw(self):
         self.drawer.clear(self.background or self.bar.background)
-        x = self.margin_x
-        y = self.margin_y
-        if self.start_pos == 'bottom':
-            y += self.line_width
-        elif not self.start_pos == 'top':
-            raise ValueError("Unknown starting position: %s." % self.start_pos)
-        scaled = self.line_width * self.value
-
-        self.draw_line(x, y, scaled)
+        self.draw_box(
+            self.outer_bar_color,
+            self.outer_bar_border_width,
+            self.margin_x + self.outer_bar_border_width / 2.0,
+            self.margin_y + self.outer_bar_border_width / 2.0 + self.bar_height,
+            self.bar_width + self.outer_bar_border_width,
+            self.bar.height - self.margin_y * 2.0 - self.outer_bar_border_width - 2.0 * self.bar_height,
+        ),
+        self.draw_box(
+            self.inner_bar_color,
+            self.inner_bar_border_width,
+            self.margin_x + self.inner_bar_border_width / 2.0 + self.inner_bar_padding,
+            self.margin_y + self.inner_bar_border_width / 2.0 + self.bar_height + self.inner_bar_padding,
+            self.bar_width * self.value + self.inner_bar_border_width - 2 * self.inner_bar_padding,
+            self.bar.height - self.margin_y * 2.0 - self.inner_bar_border_width - 2.0 * self.bar_height - 2 * self.inner_bar_padding,
+        ),
         self.drawer.draw(offsetx=self.offset, width=self.width)
 
     def update(self, value):
-        self.value=value
+        self.value = value / 100
         self.draw()
 
 class VolumeBar(_Line):
@@ -91,7 +94,6 @@ class VolumeBar(_Line):
         ("cardid", None, "Card Id"),
         ("device", "default", "Device Name"),
         ("channel", "Master", "Channel"),
-        ("padding", 3, "Padding left and right. Calculated if None."),
         ("update_interval", 0.2, "Update time in seconds."),
         ("mute_command", None, "Mute command"),
         ("volume_app", None, "App to control volume"),
@@ -137,7 +139,8 @@ class VolumeBar(_Line):
         vol = self.get_volume()
         if vol != self.volume:
             self.volume = vol
-            self.bar.draw()
+            _Line.update(self, self.volume)
+            self.draw()
         self.timeout_add(self.update_interval, self.update)
 
     def get_volume(self):

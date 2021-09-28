@@ -21,6 +21,7 @@ from bindings import keys, mouse  # NOQA
 from groups import groups  # NOQA
 #from widgets import ShellScript
 from custom_widget.arch_check_updates import ArchCheckUpdates
+from custom_widget.volume_bar import VolumeBar
 
 # ----------------------------------------------------------------------------
 # Hooks
@@ -62,6 +63,7 @@ def make_screen(systray=False):
             fontsize=50,
             padding=-1,
         ),
+        widget.
         widget.GroupBox(
             other_current_screen_border=COLOR_SCHEME["selected"],
             this_current_screen_border=COLOR_SCHEME["selected"],
@@ -143,7 +145,8 @@ def make_screen(systray=False):
         widget.TextBox("┊", **FONT_PARAMS),
         # Volume % : scroll mouse wheel to change volume
         widget.TextBox("", **FONT_PARAMS),
-        widget.Volume(**FONT_PARAMS),
+        VolumeBar(),
+        #widget.Volume(**FONT_PARAMS),
         widget.TextBox("┊", **FONT_PARAMS),
         # Current time
         widget.Clock(format="%I:%M %p, %a %d de %b %Y", **FONT_PARAMS),
