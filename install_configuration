@@ -369,6 +369,8 @@ dotfiles(){
     rm "${localrepovimpath//%1/$homeuserfolder}/README.md"
     rm "${localrepovimpath//%1/$homeuserfolder}/neovim.png"
     copydotfiles
+    terraform_lsp_install_command="${terraform_lsp//%1/${defaultuser}}"
+    $terraform_lsp_install_command
 }
 # --------------------------------------------------------
 run(){
@@ -514,10 +516,12 @@ loadstrings(){
     localrepovimpath="%1/vim"
     txturlnvim="-b master --single-branch https://github.com/GiomarOsorio/vim.git"
     command_pip_vim="sudo -u %1 pip install"
-    pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi jedi-language-server psutil"
+    pkgs_pip_vim="virtualenv pynvim python-language-server flake8 pylint black jedi jedi-language-server"
     prefix="--prefix %1"
     command_npm_vim="sudo -u %1 npm install"
-    pkgs_npm_vim="neovim eslint eslint-config-airbnb-base"
+    pkgs_npm_vim="neovim bash-language-server"
+    GO111MODULE="on go mod download"
+    terraform_lsp="sudo %1 make && sudo %1 make copy"
 
     # editor ---------------------------------------
     editor="nvim"
