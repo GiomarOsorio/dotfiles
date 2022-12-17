@@ -1191,7 +1191,7 @@ loadconfigs(){
     efimode=""
 
     # keymap -----------------------------------------
-    keymap="us"
+    keymap="es"
     title_keymap="Loading Keymap"
     menu_keymap="loadkeys ${keymap}"
 
